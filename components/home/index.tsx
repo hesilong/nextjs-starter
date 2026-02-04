@@ -1,13 +1,19 @@
+import Ecosystem from "@/components/home/Ecosystem";
+import Features from "@/components/home/Features";
 import Hero from "@/components/home/Hero";
-import ProductSubmission from "@/components/home/ProductSubmission";
-import Showcase from "@/components/home/Showcase";
+import PathSteps from "@/components/home/PathSteps";
+import SafetyNotice from "@/components/home/SafetyNotice";
+import SkillCategories from "@/components/home/SkillCategories";
 
 export default function HomeComponent() {
   return (
     <>
       <Hero />
-      <Showcase />
-      <ProductSubmission />
+      <Features />
+      <PathSteps />
+      <SkillCategories />
+      <Ecosystem />
+      <SafetyNotice />
     </>
   );
 }

@@ -8,24 +8,24 @@
   "Header": {
     "links": [
       {
+        "name": "Product",
+        "href": "/#path"
+      },
+      {
+        "name": "Docs",
+        "href": "/install"
+      },
+      {
         "name": "Blog",
         "href": "/blog"
       },
       {
-        "name": "About",
-        "href": "/about"
+        "name": "Community",
+        "href": "/#ecosystem"
       },
       {
-        "name": "Source Code",
-        "href": "https://github.com/weijunext/nextjs-starter",
-        "target": "_blank",
-        "rel": "noopener noreferrer nofollow"
-      },
-      {
-        "name": "Pro Version",
-        "href": "https://nexty.dev",
-        "target": "_blank",
-        "rel": "noopener noreferrer"
+        "name": "Skills",
+        "href": "/skills"
       }
     ]
   },
@@ -110,9 +110,249 @@
     }
   },
   "Home": {
-    "title": "Next.js Starter",
-    "tagLine": "Multilingual Next.js 16 Starter",
-    "description": "A multilingual Next.js 16 starter with built-in i18n support. Launch your global-ready web application with a clean, efficient, and SEO-friendly foundation."
+    "title": "OpenClaw",
+    "tagLine": "Make OpenClaw accessible to everyone.",
+    "description": "OpenClaw aggregates installation, model configuration, chat integration, web search, and skills into a guided path.",
+    "hero": {
+      "kicker": "Open-source AI assistant guide",
+      "title": "Make {name} accessible to everyone",
+      "subtitle": "Install, connect models, integrate chat tools, enable web search, and add skills ? all in one guided path.",
+      "ctaPrimary": "Start building",
+      "ctaSecondary": "View docs",
+      "stats": [
+        {
+          "value": "161k+",
+          "label": "GitHub Stars"
+        },
+        {
+          "value": "Multi-platform",
+          "label": "Chat Integrations"
+        },
+        {
+          "value": "Marketplace",
+          "label": "Skill Ecosystem"
+        }
+      ]
+    },
+    "features": {
+      "title": "Why OpenClaw",
+      "description": "All-platform access, extensible skills, and ownership of your data.",
+      "items": {
+        "platform": {
+          "title": "All-platform access",
+          "description": "Connect to Feishu, DingTalk, and more ? continuously expanding."
+        },
+        "skills": {
+          "title": "Skill expansion",
+          "description": "Official and community skills with one-click install."
+        },
+        "ownership": {
+          "title": "Data ownership",
+          "description": "Self-hosted, permissioned, and secure by design."
+        }
+      }
+    },
+    "steps": {
+      "title": "Build in 5 steps",
+      "description": "Follow the path and dive into details whenever you need.",
+      "more": "Learn more",
+      "items": {
+        "install": {
+          "title": "Install",
+          "description": "Quick setup for Windows, macOS, Linux, and Docker.",
+          "cta": "Install now",
+          "tabs": [
+            {
+              "title": "Windows",
+              "description": "Use the installer or package manager to bootstrap quickly."
+            },
+            {
+              "title": "macOS",
+              "description": "Install via Homebrew and verify with a quick run."
+            },
+            {
+              "title": "Linux & Docker",
+              "description": "Choose native packages or containerized deployment."
+            }
+          ]
+        },
+        "models": {
+          "title": "Configure models",
+          "description": "Claude, Codex, Alibaba Cloud, and proxy APIs.",
+          "cta": "Configure models",
+          "tabs": [
+            {
+              "title": "Claude",
+              "description": "Set API keys and select the Claude model preset."
+            },
+            {
+              "title": "Codex",
+              "description": "Connect Codex for coding workflows and agents."
+            },
+            {
+              "title": "Alibaba & Proxy",
+              "description": "Configure Alibaba Cloud or proxy APIs for routing."
+            }
+          ]
+        },
+        "chat": {
+          "title": "Connect chat tools",
+          "description": "Integrate Feishu, DingTalk, and enterprise chat tools.",
+          "cta": "Connect chat",
+          "tabs": [
+            {
+              "title": "Feishu",
+              "description": "Create a bot, configure callbacks, and test events."
+            },
+            {
+              "title": "DingTalk",
+              "description": "Set permissions and verify signature handling."
+            },
+            {
+              "title": "Other tools",
+              "description": "Prepare Slack/Telegram/Discord integrations."
+            }
+          ]
+        },
+        "webSearch": {
+          "title": "Enable web search",
+          "description": "Web Search Browser with safe proxy and caching.",
+          "cta": "Enable web search",
+          "tabs": [
+            {
+              "title": "Built-in",
+              "description": "Enable Web Search Browser and test a query."
+            },
+            {
+              "title": "Custom search",
+              "description": "Connect your own search endpoint or engine."
+            },
+            {
+              "title": "Safe proxy",
+              "description": "Add rate limits, caching, and safe proxy rules."
+            }
+          ]
+        },
+        "skills": {
+          "title": "Add skills",
+          "description": "Access skill marketplace and private skills.",
+          "cta": "Add skills",
+          "tabs": [
+            {
+              "title": "Official",
+              "description": "Install curated skills with trusted defaults."
+            },
+            {
+              "title": "Community",
+              "description": "Browse community skills and check permissions."
+            },
+            {
+              "title": "Private",
+              "description": "Ship internal skills with scoped access."
+            }
+          ]
+        }
+      },
+      "cardBadge": "Guide"
+    },
+    "skills": {
+      "title": "Skill scenarios",
+      "description": "Pick a category and launch quickly.",
+      "categories": {
+        "productivity": {
+          "title": "Productivity",
+          "items": [
+            "Gmail automation",
+            "Calendar reminders",
+            "TODO tracking",
+            "File organization"
+          ]
+        },
+        "marketing": {
+          "title": "Marketing",
+          "items": [
+            "SEO analysis",
+            "Keyword research",
+            "Competitor monitoring",
+            "Report generation"
+          ]
+        },
+        "development": {
+          "title": "Development",
+          "items": [
+            "GitHub integration",
+            "Code review",
+            "CI/CD monitoring",
+            "Log alerts"
+          ]
+        },
+        "content": {
+          "title": "Content",
+          "items": [
+            "Content planning",
+            "Multi-channel publishing",
+            "Video scripting",
+            "SEO writing"
+          ]
+        },
+        "life": {
+          "title": "Life",
+          "items": [
+            "Habit tracking",
+            "Fitness logs",
+            "Travel planning",
+            "Expense reminders"
+          ]
+        },
+        "wellness": {
+          "title": "Wellness",
+          "items": [
+            "Mood tracking",
+            "Meditation guide",
+            "Sleep routines",
+            "Stress management"
+          ]
+        }
+      }
+    },
+    "ecosystem": {
+      "title": "Ecosystem & integrations",
+      "description": "Works with popular models and collaboration platforms.",
+      "groups": [
+        {
+          "title": "Chat platforms",
+          "items": [
+            "Feishu",
+            "DingTalk",
+            "Slack",
+            "Telegram",
+            "Discord"
+          ]
+        },
+        {
+          "title": "Model providers",
+          "items": [
+            "Claude",
+            "Codex",
+            "Alibaba Cloud",
+            "Proxy APIs"
+          ]
+        },
+        {
+          "title": "Web & tools",
+          "items": [
+            "Web Search Browser",
+            "Custom search",
+            "Safe proxy",
+            "Caching & rate limits"
+          ]
+        }
+      ]
+    },
+    "safety": {
+      "title": "Security notice",
+      "description": "We have observed malicious third-party skills in the wild. Always review the source code before installing, and prefer official or audited community skills."
+    }
   },
   "Blog": {
     "title": "Blog Posts",
@@ -146,5 +386,25 @@
     "submitting": "Submitting...",
     "successMessage": "Thank you! Your submission has been received. We'll review it shortly.",
     "errorMessage": "Something went wrong. Please try again."
+  },
+  "Install": {
+    "title": "Install OpenClaw",
+    "description": "Set up OpenClaw on your system."
+  },
+  "Models": {
+    "title": "Configure Models",
+    "description": "Connect Claude, Codex, and other providers."
+  },
+  "ChatIntegrations": {
+    "title": "Chat Integrations",
+    "description": "Connect Feishu, DingTalk, and more."
+  },
+  "WebSearch": {
+    "title": "Web Search Browser",
+    "description": "Enable safe, traceable web search."
+  },
+  "Skills": {
+    "title": "Skill Marketplace",
+    "description": "Install and manage skills."
   }
 }
