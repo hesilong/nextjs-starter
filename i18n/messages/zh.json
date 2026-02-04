@@ -1,36 +1,36 @@
 {
   "LanguageDetection": {
     "title": "语言建议",
-    "description": "检测到你的浏览器语言和当前语言不一样，你随时都可切换语言。",
+    "description": "检测到你的浏览器语言与当前站点语言不一致，你可以随时切换语言。",
     "countdown": "将在 {countdown} 秒后关闭",
     "switchTo": "切换到"
   },
   "Header": {
     "links": [
       {
-        "name": "??",
+        "name": "产品",
         "href": "/#path"
       },
       {
-        "name": "??",
+        "name": "文档",
         "href": "/install"
       },
       {
-        "name": "??",
+        "name": "博客",
         "href": "/blog"
       },
       {
-        "name": "??",
+        "name": "社区",
         "href": "/#ecosystem"
       },
       {
-        "name": "????",
+        "name": "技能",
         "href": "/skills"
       }
     ]
   },
   "Footer": {
-    "Copyright": "版权所有 © {year} {name} 保留所有权利。",
+    "Copyright": "版权 © {year} {name} 保留所有权利。",
     "PrivacyPolicy": "隐私政策",
     "TermsOfService": "服务条款",
     "Links": {
@@ -99,259 +99,340 @@
     },
     "Newsletter": {
       "title": "订阅我们的邮件",
-      "description": "获取最新的 Next.js 资讯和教程",
+      "description": "获取 Next.js Starter 的最新动态和更新",
       "defaultErrorMessage": "请输入有效的邮箱地址",
       "successMessage": "订阅成功",
       "errorMessage": "订阅失败",
-      "errorMessage2": "订阅失败，请稍后再试",
+      "errorMessage2": "订阅失败，请稍后再试。",
       "subscribe": "订阅",
-      "subscribing": "订阅中",
-      "subscribed": "订阅成功！感谢您的关注。"
+      "subscribing": "订阅中...",
+      "subscribed": "订阅成功！感谢你的关注。"
     }
   },
   "Home": {
     "title": "OpenClaw",
-    "tagLine": "??????? OpenClaw",
-    "description": "OpenClaw ?????????????????????????????",
+    "tagLine": "让 OpenClaw 触达每个人。",
+    "description": "OpenClaw 将安装、模型配置、聊天集成、网页搜索和技能整合为一条引导路径。",
     "hero": {
-      "kicker": "?? AI ??????",
-      "title": "??????? {name}",
-      "subtitle": "??????????????????????????????????",
-      "ctaPrimary": "????",
-      "ctaSecondary": "????",
+      "kicker": "开源 AI 助手指南",
+      "title": "让 {name} 触达每个人",
+      "subtitle": "安装、连接模型、集成聊天工具、启用网页搜索，并添加技能——全部在一条引导路径中完成。",
+      "ctaPrimary": "开始搭建",
+      "ctaSecondary": "查看文档",
       "stats": [
         {
           "value": "161k+",
-          "label": "GitHub Stars"
+          "label": "GitHub 星标"
         },
         {
-          "value": "???",
-          "label": "??????"
+          "value": "多平台",
+          "label": "聊天集成"
         },
         {
-          "value": "????",
-          "label": "?????"
+          "value": "市场",
+          "label": "技能生态"
         }
       ]
     },
     "features": {
-      "title": "????? OpenClaw",
-      "description": "????????????????",
+      "title": "为什么选择 OpenClaw",
+      "description": "全平台接入、可扩展技能，以及你的数据所有权。",
       "items": {
         "platform": {
-          "title": "?????",
-          "description": "????????????????"
+          "title": "全平台接入",
+          "description": "连接飞书、钉钉等，不断扩展。"
         },
         "skills": {
-          "title": "????",
-          "description": "???????????????"
+          "title": "技能扩展",
+          "description": "官方与社区技能一键安装。"
         },
         "ownership": {
-          "title": "????",
-          "description": "??????????????"
+          "title": "数据所有权",
+          "description": "自托管、可授权、默认安全。"
         }
       }
     },
     "steps": {
-      "title": "5 ?????",
-      "description": "?????????????????",
-      "more": "??",
+      "title": "5 步搭建",
+      "description": "按路径走，随时深入细节。",
+      "more": "了解更多",
       "items": {
         "install": {
-          "title": "??",
-          "description": "Windows/macOS/Linux/Docker ?????",
-          "cta": "????",
+          "title": "安装",
+          "description": "本地部署、阿里云服务器、腾讯云服务器三种方式快速上手。",
+          "cta": "立即安装",
           "tabs": [
             {
-              "title": "Windows",
-              "description": "???????????????"
+              "title": "本地部署",
+              "description": "适合开发与试用，10 分钟内完成安装。"
             },
             {
-              "title": "macOS",
-              "description": "?? Homebrew ????????"
+              "title": "阿里云服务器部署",
+              "description": "适合国内生产环境，购买实例后快速上线。"
             },
             {
-              "title": "Linux / Docker",
-              "description": "????????????"
+              "title": "腾讯云服务器部署",
+              "description": "适合团队试用，按需购买更灵活。"
             }
-          ]
+          ],
+          "more": "查看更多安装教程"
         },
         "models": {
-          "title": "????",
-          "description": "Claude?Codex??????? API?",
-          "cta": "????",
+          "title": "配置模型",
+          "description": "Claude、Codex、阿里云以及代理 API。",
+          "cta": "配置模型",
           "tabs": [
             {
               "title": "Claude",
-              "description": "?? API Key ??? Claude ???"
+              "description": "设置 API Key 并选择 Claude 预设模型。"
             },
             {
               "title": "Codex",
-              "description": "?? Codex ????? Agent ???"
+              "description": "连接 Codex 以支持编码工作流与 Agent。"
             },
             {
-              "title": "??? / ??",
-              "description": "???????? API?"
+              "title": "阿里云 / 代理",
+              "description": "配置阿里云或代理 API 进行路由。"
             }
           ]
         },
         "chat": {
-          "title": "??????",
-          "description": "?????????????",
-          "cta": "????",
+          "title": "接入聊天工具",
+          "description": "集成飞书、钉钉等企业聊天工具。",
+          "cta": "连接聊天",
           "tabs": [
             {
-              "title": "??",
-              "description": "????????????????"
+              "title": "飞书",
+              "description": "创建机器人，配置回调并测试事件。"
             },
             {
-              "title": "??",
-              "description": "??????????"
+              "title": "钉钉",
+              "description": "设置权限并验证签名处理。"
             },
             {
-              "title": "????",
-              "description": "?? Slack/Telegram/Discord ???"
+              "title": "其他工具",
+              "description": "准备 Slack/Telegram/Discord 集成。"
             }
           ]
         },
         "webSearch": {
-          "title": "????",
-          "description": "Web Search Browser ??????",
-          "cta": "????",
+          "title": "启用网页搜索",
+          "description": "Web Search Browser，带安全代理与缓存。",
+          "cta": "启用网页搜索",
           "tabs": [
             {
-              "title": "?????",
-              "description": "?? Web Search Browser ??????"
+              "title": "内置",
+              "description": "启用 Web Search Browser 并测试查询。"
             },
             {
-              "title": "?????",
-              "description": "????????????"
+              "title": "自定义搜索",
+              "description": "连接自定义搜索端点或引擎。"
             },
             {
-              "title": "????",
-              "description": "?????????????"
+              "title": "安全代理",
+              "description": "增加限流、缓存和安全代理规则。"
             }
           ]
         },
         "skills": {
-          "title": "????",
-          "description": "????????????",
-          "cta": "????",
+          "title": "添加技能",
+          "description": "访问技能市场与私有技能。",
+          "cta": "添加技能",
           "tabs": [
             {
-              "title": "????",
-              "description": "?????????"
+              "title": "官方",
+              "description": "安装官方精选技能，默认可信。"
             },
             {
-              "title": "????",
-              "description": "????????????"
+              "title": "社区",
+              "description": "浏览社区技能并检查权限。"
             },
             {
-              "title": "????",
-              "description": "??????????????"
+              "title": "私有",
+              "description": "发布内部技能并做权限范围控制。"
             }
           ]
         }
       },
-      "cardBadge": "??"
+      "cardBadge": "指南"
     },
     "skills": {
-      "title": "???????",
-      "description": "???????????",
+      "title": "技能场景",
+      "description": "选择一个分类快速启动。",
       "categories": {
         "productivity": {
-          "title": "????",
+          "title": "效率",
           "items": [
-            "Gmail ??",
-            "????",
-            "TODO ??",
-            "????"
+            "Gmail 自动化",
+            "日历提醒",
+            "TODO 跟踪",
+            "文件整理"
           ]
         },
         "marketing": {
-          "title": "????",
+          "title": "市场",
           "items": [
-            "SEO ??",
-            "?????",
-            "????",
-            "????"
+            "SEO 分析",
+            "关键词研究",
+            "竞品监控",
+            "报告生成"
           ]
         },
         "development": {
-          "title": "????",
+          "title": "研发",
           "items": [
-            "GitHub ??",
-            "????",
-            "CI/CD ??",
-            "????"
+            "GitHub 集成",
+            "代码评审",
+            "CI/CD 监控",
+            "日志告警"
           ]
         },
         "content": {
-          "title": "????",
+          "title": "内容",
           "items": [
-            "????",
-            "?????",
-            "????",
-            "SEO ??"
+            "内容规划",
+            "多渠道发布",
+            "视频脚本",
+            "SEO 写作"
           ]
         },
         "life": {
-          "title": "????",
+          "title": "生活",
           "items": [
-            "????",
-            "????",
-            "????",
-            "????"
+            "习惯追踪",
+            "健身记录",
+            "旅行规划",
+            "费用提醒"
           ]
         },
         "wellness": {
-          "title": "????",
+          "title": "健康",
           "items": [
-            "????",
-            "????",
-            "????",
-            "????"
+            "情绪记录",
+            "冥想指导",
+            "睡眠习惯",
+            "压力管理"
           ]
         }
       }
     },
     "ecosystem": {
-      "title": "?????",
-      "description": "?????????????",
+      "title": "生态与集成",
+      "description": "适配主流模型与协作平台。",
       "groups": [
         {
-          "title": "????",
+          "title": "聊天平台",
           "items": [
-            "??",
-            "??",
+            "飞书",
+            "钉钉",
             "Slack",
             "Telegram",
             "Discord"
           ]
         },
         {
-          "title": "?????",
+          "title": "模型提供方",
           "items": [
             "Claude",
             "Codex",
-            "???",
-            "????? API"
+            "阿里云",
+            "代理 API"
           ]
         },
         {
-          "title": "Web ???",
+          "title": "网页与工具",
           "items": [
             "Web Search Browser",
-            "???????",
-            "????",
-            "?????"
+            "自定义搜索",
+            "安全代理",
+            "缓存与限流"
           ]
         }
       ]
     },
     "safety": {
-      "title": "????",
-      "description": "?????????????????????????????????????????????"
+      "title": "安全提示",
+      "description": "我们在野外发现过恶意第三方技能。安装前请检查源码，优先选择官方或经过审计的社区技能。"
+    },
+    "longform": {
+      "title": "OpenClaw 是什么，以及为什么现在需要它",
+      "subtitle": "如果你在寻找一套可自托管、可扩展且可持续维护的 AI 平台，OpenClaw 提供了更清晰的路径与更安全的选择。",
+      "sections": [
+        {
+          "title": "OpenClaw 的起点与目标",
+          "paragraphs": [
+            "OpenClaw 从一个周末项目开始，但目标一直清晰：让每个人都能用上可自托管的 AI 助手。OpenClaw 选择开放路线，是因为我们相信工具应该可检查、可替换、可迁移。",
+            "OpenClaw 不把你的数据锁进黑箱。你可以在自己的电脑、家庭服务器或公司云上运行 OpenClaw，并用现有的聊天应用触达团队。"
+          ]
+        },
+        {
+          "title": "OpenClaw 的安装哲学",
+          "paragraphs": [
+            "OpenClaw 的安装不只有一种路径：本地快速体验、云服务器上线、Docker 容器化、K8s 集群化。OpenClaw 把复杂度拆成可读的教程，让你按需求选择。",
+            "如果你只想在 10 分钟内验证价值，OpenClaw 提供最短路径；如果你要生产级稳定性，OpenClaw 也准备了更完整的部署方案。"
+          ]
+        },
+        {
+          "title": "OpenClaw 的工作方式",
+          "paragraphs": [
+            "OpenClaw 运行在你选择的机器上，却能从 WhatsApp、Telegram、Discord、Slack 等入口工作。OpenClaw 把模型能力放在靠近业务的地方。",
+            "OpenClaw 不是单点工具，而是可以组合的能力集合：模型路由、知识整合、权限控制、工具执行。OpenClaw 让自动化变得可追踪、可回滚。"
+          ]
+        },
+        {
+          "title": "OpenClaw 的安全与数据所有权",
+          "paragraphs": [
+            "OpenClaw 的默认原则是最小权限与可审计。OpenClaw 支持将密钥留在你自己的基础设施里，避免第三方接触敏感数据。",
+            "Prompt injection 仍是行业问题，所以 OpenClaw 把安全提示写进流程，帮助你构建更稳妥的配置。OpenClaw 也在持续完善安全基线。"
+          ]
+        },
+        {
+          "title": "OpenClaw 的生态与社区",
+          "paragraphs": [
+            "OpenClaw 正在建立技能生态：官方技能、社区技能、私有技能并存。OpenClaw 鼓励复用与共享，让团队快速启动。",
+            "OpenClaw 的成长来自社区的反馈与贡献。无论是提交 Issue、写文档还是分享案例，OpenClaw 都会变得更好。"
+          ]
+        },
+        {
+          "title": "OpenClaw 的下一步",
+          "paragraphs": [
+            "OpenClaw 接下来将继续打磨稳定性、网关可靠性与多模型支持。OpenClaw 会优先保证基础体验，再扩展高级能力。",
+            "如果你正在寻找一个可掌控、可迁移、可长期维护的 AI 平台，OpenClaw 值得一试。OpenClaw 也欢迎你参与共建。"
+          ]
+        }
+      ],
+      "highlights": {
+        "title": "OpenClaw 关键价值",
+        "items": [
+          "支持多种安装方式，有清晰的迁移路径。",
+          "运行在你的机器与网络中，数据不出界。",
+          "面向团队协作与权限控制设计。",
+          "技能可扩展，可审计，方便二次开发。",
+          "强调可观察性与可靠性。",
+          "为长期维护而设计。"
+        ]
+      },
+      "faq": {
+        "title": "关于 OpenClaw 的常见问题",
+        "items": [
+          {
+            "q": "OpenClaw 适合个人还是团队？",
+            "a": "OpenClaw 同时适合个人开发者与团队协作场景，可从本地体验逐步扩展。"
+          },
+          {
+            "q": "OpenClaw 和 SaaS 助手的区别是什么？",
+            "a": "OpenClaw 运行在你选择的基础设施上，你拥有数据与密钥，部署方式更灵活。"
+          },
+          {
+            "q": "OpenClaw 部署复杂吗？",
+            "a": "我们提供从本地到云端的分级教程，新手也能快速完成。"
+          },
+          {
+            "q": "OpenClaw 是否支持自定义模型？",
+            "a": "OpenClaw 支持多模型接入与路由配置，可根据需求扩展。"
+          }
+        ]
+      }
     }
   },
   "Blog": {
@@ -360,7 +441,7 @@
   },
   "About": {
     "title": "关于",
-    "description": "关于网站"
+    "description": "关于本站"
   },
   "TermsOfService": {
     "title": "服务条款",
@@ -371,40 +452,229 @@
     "description": "隐私政策"
   },
   "Showcase": {
-    "title": "使用案例展示",
-    "description": "探索使用本 Next.js 启动模板构建的优秀产品和网站。",
+    "title": "使用本模板的案例",
+    "description": "探索使用本 Next.js 启动模板构建的优秀产品与网站。",
     "visitSite": "访问网站"
   },
   "Submission": {
     "badge": "获得展示",
-    "title": "提交您的产品",
-    "description": "用这套模板构建了出色的产品？与我们的社区分享您的作品，并在展示区获得曝光。",
+    "title": "提交你的产品",
+    "description": "用这套模板做出了很棒的产品？把你的作品分享给社区，在展示区获得曝光。",
     "productNameLabel": "产品名称",
-    "productNamePlaceholder": "我的优秀项目",
+    "productNamePlaceholder": "我的精彩项目",
     "productUrlLabel": "产品链接",
     "submit": "提交产品",
     "submitting": "提交中...",
-    "successMessage": "感谢您的提交！我们会尽快审核。",
-    "errorMessage": "出了点问题，请重试。"
+    "successMessage": "感谢提交！我们已收到，会尽快审核。",
+    "errorMessage": "出现了一些问题，请重试。"
   },
   "Install": {
-    "title": "?? OpenClaw",
-    "description": "???????? OpenClaw ???"
+    "title": "安装 OpenClaw",
+    "description": "在你的系统上安装 OpenClaw。",
+    "hero": {
+      "eyebrow": "安装指南",
+      "title": "用最适合你的方式部署 OpenClaw",
+      "subtitle": "OpenClaw 支持本地、云服务器、Docker、K8s 等多种安装方式。先从 3 条推荐路径开始，稍后可查看完整教程。",
+      "ctaPrimary": "查看推荐路径",
+      "ctaSecondary": "查看更多安装教程"
+    },
+    "featured": {
+      "title": "推荐安装路径",
+      "description": "适合第一次体验或快速上线的 3 种方式。",
+      "more": "查看更多安装教程",
+      "items": [
+        {
+          "id": "method-local",
+          "title": "本地部署",
+          "description": "适合开发与试用，10 分钟内完成安装。",
+          "badge": "推荐",
+          "href": "#method-local",
+          "icon": "laptop"
+        },
+        {
+          "id": "method-aliyun",
+          "title": "阿里云服务器部署",
+          "description": "适合国内生产环境，购买实例后快速上线。",
+          "badge": "企业",
+          "href": "#method-aliyun",
+          "icon": "cloud"
+        },
+        {
+          "id": "method-tencent",
+          "title": "腾讯云服务器部署",
+          "description": "适合团队试用，按需购买更灵活。",
+          "badge": "团队",
+          "href": "#method-tencent",
+          "icon": "server"
+        }
+      ]
+    },
+    "allMethods": {
+      "title": "全部安装方式",
+      "description": "根据环境与规模选择合适方案，点击卡片查看教程细节。",
+      "items": [
+        {
+          "id": "method-docker",
+          "title": "Docker 部署",
+          "description": "容器化运行，适合快速试用。",
+          "tags": [
+            "Docker",
+            "Linux"
+          ],
+          "icon": "docker"
+        },
+        {
+          "id": "method-k8s",
+          "title": "Kubernetes 部署",
+          "description": "适合规模化与高可用场景。",
+          "tags": [
+            "K8s",
+            "集群"
+          ],
+          "icon": "k8s"
+        },
+        {
+          "id": "method-marketplace",
+          "title": "云市场镜像",
+          "description": "一键购买与交付，适合快速上线。",
+          "tags": [
+            "云市场",
+            "镜像"
+          ],
+          "icon": "marketplace"
+        },
+        {
+          "id": "method-script",
+          "title": "一键脚本",
+          "description": "适合 VPS 与轻量服务器。",
+          "tags": [
+            "脚本",
+            "VPS"
+          ],
+          "icon": "script"
+        },
+        {
+          "id": "method-source",
+          "title": "源代码部署",
+          "description": "适合深度定制与二次开发。",
+          "tags": [
+            "源码",
+            "定制"
+          ],
+          "icon": "source"
+        },
+        {
+          "id": "method-private",
+          "title": "私有化部署",
+          "description": "满足内网与合规需求。",
+          "tags": [
+            "内网",
+            "合规"
+          ],
+          "icon": "private"
+        },
+        {
+          "id": "method-nas",
+          "title": "NAS / 家用服务器",
+          "description": "家用环境低成本运行。",
+          "tags": [
+            "NAS",
+            "家庭"
+          ],
+          "icon": "nas"
+        },
+        {
+          "id": "method-gpu",
+          "title": "GPU 服务器",
+          "description": "适合大模型与高并发。",
+          "tags": [
+            "GPU",
+            "性能"
+          ],
+          "icon": "gpu"
+        },
+        {
+          "id": "method-local",
+          "title": "本地部署（详细）",
+          "description": "适合开发调试与快速验证。",
+          "tags": [
+            "Windows",
+            "macOS",
+            "Linux"
+          ],
+          "icon": "laptop"
+        },
+        {
+          "id": "method-aliyun",
+          "title": "阿里云服务器（详细）",
+          "description": "推荐国内生产环境部署。",
+          "tags": [
+            "ECS",
+            "公网"
+          ],
+          "icon": "cloud"
+        },
+        {
+          "id": "method-tencent",
+          "title": "腾讯云服务器（详细）",
+          "description": "适合团队试用与快速扩展。",
+          "tags": [
+            "CVM",
+            "公网"
+          ],
+          "icon": "server"
+        }
+      ]
+    },
+    "requirements": {
+      "title": "安装前准备",
+      "items": [
+        "Node.js 20.x",
+        "pnpm 10.12.4"
+      ]
+    },
+    "quickStart": {
+      "title": "快速开始（本地）",
+      "steps": [
+        "安装依赖",
+        "启动开发服务器",
+        "打开浏览器确认运行"
+      ],
+      "code": "pnpm install\npnpm dev",
+      "verify": "打开 http://localhost:3000 确认首页加载成功。"
+    },
+    "faq": {
+      "title": "常见问题",
+      "items": [
+        {
+          "q": "端口 3000 被占用怎么办？",
+          "a": "使用 pnpm dev -- --port 3001。"
+        },
+        {
+          "q": "没有 pnpm 怎么办？",
+          "a": "先安装 pnpm，再执行安装命令。"
+        },
+        {
+          "q": "安装失败或依赖报错？",
+          "a": "确认 Node.js 版本为 20.x，并检查网络与镜像源。"
+        }
+      ]
+    }
   },
   "Models": {
-    "title": "????",
-    "description": "?? Claude?Codex ???????"
+    "title": "配置模型",
+    "description": "连接 Claude、Codex 等提供方。"
   },
   "ChatIntegrations": {
-    "title": "??????",
-    "description": "???????????"
+    "title": "聊天集成",
+    "description": "连接飞书、钉钉等。"
   },
   "WebSearch": {
-    "title": "????",
-    "description": "???????? Web Search?"
+    "title": "Web Search Browser",
+    "description": "启用安全、可追踪的网页搜索。"
   },
   "Skills": {
-    "title": "????",
-    "description": "????????"
+    "title": "技能市场",
+    "description": "安装并管理技能。"
   }
 }

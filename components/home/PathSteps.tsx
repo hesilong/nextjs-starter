@@ -50,6 +50,10 @@ export default function PathSteps() {
           const tabs = t.raw(
             `steps.items.${step.id}.tabs` as const
           ) as StepTab[];
+          const isInstall = step.id === "install";
+          const moreText = isInstall
+            ? t("steps.items.install.more")
+            : t("steps.more");
 
           return (
             <div
@@ -76,38 +80,56 @@ export default function PathSteps() {
 
                 <div className="flex items-start lg:justify-end">
                   <I18nLink
-                    href={routes.docs}
+                    href={step.href}
                     className="cursor-pointer text-sm font-medium text-primary hover:text-primary/80"
                   >
-                    {t("steps.more")}
+                    {moreText}
                   </I18nLink>
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {tabs.map((tab) => (
-                  <div
-                    key={tab.title}
-                    className="min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-shadow duration-200 hover:shadow-md"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-primary">
-                        <BookOpen className="h-3 w-3" />
-                        {stepTitle}
-                      </span>
-                      <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
-                        {t("steps.cardBadge")}
-                      </span>
+              {isInstall ? (
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {tabs.map((tab) => (
+                    <div
+                      key={tab.title}
+                      className="min-h-[170px] rounded-3xl border border-border bg-background/90 p-6 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                    >
+                      <p className="text-base font-semibold text-foreground">
+                        {tab.title}
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        {tab.description}
+                      </p>
                     </div>
-                    <p className="mt-4 text-sm font-semibold text-foreground">
-                      {tab.title}
-                    </p>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {tab.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {tabs.map((tab) => (
+                    <div
+                      key={tab.title}
+                      className="min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                          <BookOpen className="h-3 w-3" />
+                          {stepTitle}
+                        </span>
+                        <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                          {t("steps.cardBadge")}
+                        </span>
+                      </div>
+                      <p className="mt-4 text-sm font-semibold text-foreground">
+                        {tab.title}
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {tab.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })}

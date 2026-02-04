@@ -174,7 +174,8 @@
               "title": "Linux & Docker",
               "description": "Choose native packages or containerized deployment."
             }
-          ]
+          ],
+          "more": "Learn more"
         },
         "models": {
           "title": "Configure models",

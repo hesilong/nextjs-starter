@@ -8,23 +8,23 @@
   "Header": {
     "links": [
       {
-        "name": "??",
+        "name": "製品",
         "href": "/#path"
       },
       {
-        "name": "??????",
+        "name": "ドキュメント",
         "href": "/install"
       },
       {
-        "name": "???",
+        "name": "ブログ",
         "href": "/blog"
       },
       {
-        "name": "??????",
+        "name": "コミュニティ",
         "href": "/#ecosystem"
       },
       {
-        "name": "???",
+        "name": "スキル",
         "href": "/skills"
       }
     ]
@@ -174,7 +174,8 @@
               "title": "Linux / Docker",
               "description": "????????????????"
             }
-          ]
+          ],
+          "more": "??????"
         },
         "models": {
           "title": "?????",
