@@ -24,6 +24,7 @@ type StepId = (typeof steps)[number]["id"];
 type StepTab = {
   title: string;
   description: string;
+  href?: string;
 };
 
 export default function PathSteps() {
@@ -90,19 +91,33 @@ export default function PathSteps() {
 
               {isInstall ? (
                 <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {tabs.map((tab) => (
-                    <div
-                      key={tab.title}
-                      className="min-h-[170px] rounded-3xl border border-border bg-background/90 p-6 shadow-sm transition-shadow duration-200 hover:shadow-md"
-                    >
-                      <p className="text-base font-semibold text-foreground">
-                        {tab.title}
-                      </p>
-                      <p className="mt-3 text-sm text-muted-foreground">
-                        {tab.description}
-                      </p>
-                    </div>
-                  ))}
+                  {tabs.map((tab) => {
+                    const href = tab.href || step.href;
+                    const isExternal =
+                      href?.startsWith("http://") ||
+                      href?.startsWith("https://");
+                    return (
+                      <a
+                        key={tab.title}
+                        href={href}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noreferrer" : undefined}
+                        className="group min-h-[170px] rounded-3xl border border-border bg-background/90 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                      >
+                        <p className="text-base font-semibold text-foreground">
+                          {tab.title}
+                        </p>
+                        <p className="mt-3 text-sm text-muted-foreground">
+                          {tab.description}
+                        </p>
+                        <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
+                          <span className="opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
+                            Visit
+                          </span>
+                        </div>
+                      </a>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

@@ -159,20 +159,23 @@
       "items": {
         "install": {
           "title": "安装",
-          "description": "本地部署、阿里云服务器、腾讯云服务器三种方式快速上手。",
+          "description": "官方、阿里云、腾讯云三种安装教程入口。",
           "cta": "立即安装",
           "tabs": [
             {
-              "title": "本地部署",
-              "description": "适合开发与试用，10 分钟内完成安装。"
+              "title": "官方安装教程",
+              "description": "OpenClaw 官方文档与安装指南。",
+              "href": "https://openclaw.ai/"
             },
             {
-              "title": "阿里云服务器部署",
-              "description": "适合国内生产环境，购买实例后快速上线。"
+              "title": "阿里云服务安装教程",
+              "description": "阿里云轻量应用服务器一键部署。",
+              "href": "https://developer.aliyun.com/article/1709228"
             },
             {
-              "title": "腾讯云服务器部署",
-              "description": "适合团队试用，按需购买更灵活。"
+              "title": "腾讯云服务安装教程",
+              "description": "腾讯云轻量应用服务器部署指南。",
+              "href": "https://cloud.tencent.com/document/product/1207/127874"
             }
           ],
           "more": "查看更多安装教程"
@@ -485,26 +488,26 @@
       "items": [
         {
           "id": "method-local",
-          "title": "本地部署",
-          "description": "适合开发与试用，10 分钟内完成安装。",
-          "badge": "推荐",
-          "href": "#method-local",
+          "title": "官方安装教程",
+          "description": "OpenClaw 官方文档与安装指南。",
+          "badge": "官方",
+          "href": "https://openclaw.ai/",
           "icon": "laptop"
         },
         {
           "id": "method-aliyun",
-          "title": "阿里云服务器部署",
-          "description": "适合国内生产环境，购买实例后快速上线。",
-          "badge": "企业",
-          "href": "#method-aliyun",
+          "title": "阿里云服务安装教程",
+          "description": "阿里云轻量应用服务器一键部署。",
+          "badge": "阿里云",
+          "href": "https://developer.aliyun.com/article/1709228",
           "icon": "cloud"
         },
         {
           "id": "method-tencent",
-          "title": "腾讯云服务器部署",
-          "description": "适合团队试用，按需购买更灵活。",
-          "badge": "团队",
-          "href": "#method-tencent",
+          "title": "腾讯云服务安装教程",
+          "description": "腾讯云轻量应用服务器部署指南。",
+          "badge": "腾讯云",
+          "href": "https://cloud.tencent.com/document/product/1207/127874",
           "icon": "server"
         }
       ]

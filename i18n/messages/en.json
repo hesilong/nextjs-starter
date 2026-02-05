@@ -159,20 +159,23 @@
       "items": {
         "install": {
           "title": "Install",
-          "description": "Quick setup for Windows, macOS, Linux, and Docker.",
+          "description": "Official, Alibaba Cloud, and Tencent Cloud install guides.",
           "cta": "Install now",
           "tabs": [
             {
-              "title": "Windows",
-              "description": "Use the installer or package manager to bootstrap quickly."
+              "title": "Official install guide",
+              "description": "OpenClaw official documentation and setup steps.",
+              "href": "https://openclaw.ai/"
             },
             {
-              "title": "macOS",
-              "description": "Install via Homebrew and verify with a quick run."
+              "title": "Alibaba Cloud install guide",
+              "description": "Lightweight server deployment on Alibaba Cloud.",
+              "href": "https://developer.aliyun.com/article/1709228"
             },
             {
-              "title": "Linux & Docker",
-              "description": "Choose native packages or containerized deployment."
+              "title": "Tencent Cloud install guide",
+              "description": "Lightweight server deployment on Tencent Cloud.",
+              "href": "https://cloud.tencent.com/document/product/1207/127874"
             }
           ],
           "more": "Learn more"

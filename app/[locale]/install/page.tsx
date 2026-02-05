@@ -200,11 +200,15 @@ export default async function Page({ params }: { params: Params }) {
           {featured.map((item) => {
             const Icon =
               iconMap[(item.icon || "package") as IconKey] || Package;
+            const href = item.href || "#all-methods";
+            const isExternal = href.startsWith("http://") || href.startsWith("https://");
             return (
               <a
                 key={item.id}
-                href={item.href || "#all-methods"}
-                className="group rounded-2xl border border-border bg-card/60 p-5 shadow-sm transition-colors hover:bg-card"
+                href={href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noreferrer" : undefined}
+                className="group rounded-2xl border border-border bg-card/60 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -222,8 +226,10 @@ export default async function Page({ params }: { params: Params }) {
                 <p className="mt-2 text-sm text-muted-foreground">
                   {item.description}
                 </p>
-                <div className="mt-4 text-sm font-medium text-primary">
-                  {install.featured.more}
+                <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
+                  <span className="opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
+                    Visit
+                  </span>
                 </div>
               </a>
             );
