@@ -28,10 +28,14 @@ export default function LocaleSwitcher() {
   const { dismissLanguageAlert } = useLocaleStore();
   const [, startTransition] = useTransition();
   const [currentLocale, setCurrentLocale] = useState("locale");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     setCurrentLocale(locale);
   }, [locale, setCurrentLocale]);
+
+  if (!mounted) return null;
 
   function onSelectChange(nextLocale: Locale) {
     setCurrentLocale(nextLocale);
@@ -60,7 +64,9 @@ export default function LocaleSwitcher() {
         <SelectValue placeholder="Language" />
       </SelectTrigger>
       <SelectContent>
-        {routing.locales.map((cur) => (
+        {routing.locales
+          .filter((cur) => cur !== "ja")
+          .map((cur) => (
           <SelectItem key={cur} value={cur}>
             {LOCALE_NAMES[cur]}
           </SelectItem>

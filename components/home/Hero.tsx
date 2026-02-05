@@ -28,13 +28,10 @@ export default function Hero() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <I18nLink href={routes.install} className="gap-2">
+            <I18nLink href="/#path" className="gap-2">
               {t("hero.ctaPrimary")}
               <ArrowRight className="h-4 w-4" />
             </I18nLink>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <I18nLink href={routes.docs}>{t("hero.ctaSecondary")}</I18nLink>
           </Button>
         </div>
       </div>

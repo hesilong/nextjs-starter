@@ -55,6 +55,9 @@ export default function PathSteps() {
           const moreText = isInstall
             ? t("steps.items.install.more")
             : t("steps.more");
+          const visitText = isInstall
+            ? t("steps.items.install.visit")
+            : t("steps.more");
 
           return (
             <div
@@ -70,23 +73,25 @@ export default function PathSteps() {
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" />
                     </div>
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {stepTitle}
+                    </h3>
                   </div>
-                  <h3 className="mt-4 text-xl font-semibold text-foreground">
-                    {stepTitle}
-                  </h3>
                   <p className="mt-3 text-sm text-muted-foreground">
                     {t(`steps.items.${step.id}.description` as const)}
                   </p>
                 </div>
 
-                <div className="flex items-start lg:justify-end">
-                  <I18nLink
-                    href={step.href}
-                    className="cursor-pointer text-sm font-medium text-primary hover:text-primary/80"
-                  >
-                    {moreText}
-                  </I18nLink>
-                </div>
+                {isInstall && (
+                  <div className="flex items-start lg:justify-end">
+                    <I18nLink
+                      href={step.href}
+                      className="cursor-pointer text-sm font-medium text-primary hover:text-primary/80"
+                    >
+                      {moreText}
+                    </I18nLink>
+                  </div>
+                )}
               </div>
 
               {isInstall ? (
@@ -96,26 +101,42 @@ export default function PathSteps() {
                     const isExternal =
                       href?.startsWith("http://") ||
                       href?.startsWith("https://");
-                    return (
-                      <a
-                        key={tab.title}
-                        href={href}
-                        target={isExternal ? "_blank" : undefined}
-                        rel={isExternal ? "noreferrer" : undefined}
-                        className="group min-h-[170px] rounded-3xl border border-border bg-background/90 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                      >
+                    const content = (
+                      <>
                         <p className="text-base font-semibold text-foreground">
                           {tab.title}
                         </p>
                         <p className="mt-3 text-sm text-muted-foreground">
                           {tab.description}
                         </p>
-                        <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
-                          <span className="opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
-                            Visit
-                          </span>
+                        <div className="mt-4 text-sm font-medium text-primary opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
+                          {visitText}
                         </div>
-                      </a>
+                      </>
+                    );
+
+                    if (isExternal) {
+                      return (
+                        <a
+                          key={tab.title}
+                          href={href}
+                          target="_blank"
+                          rel="noreferrer nofollow noopener"
+                          className="group min-h-[170px] rounded-3xl border border-border bg-background/90 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                        >
+                          {content}
+                        </a>
+                      );
+                    }
+
+                    return (
+                      <I18nLink
+                        key={tab.title}
+                        href={href}
+                        className="group min-h-[170px] rounded-3xl border border-border bg-background/90 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                      >
+                        {content}
+                      </I18nLink>
                     );
                   })}
                 </div>

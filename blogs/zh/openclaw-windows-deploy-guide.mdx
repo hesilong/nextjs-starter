@@ -1,0 +1,186 @@
+---
+title: OpenClaw Windows环境部署全攻略
+description: 从环境准备到飞书接入，梳理 OpenClaw 在 Windows 下的完整部署流程与避坑指南。
+slug: /openclaw-windows-deploy-guide
+tags: openclaw,windows,install,deploy,ai,automation
+date: 2026-02-05
+visible: published
+---
+
+关注 AI 自动化的朋友，最近应该都被 OpenClaw 刷屏了。
+
+简单来说，它就像是给 AI 加上了“手”和“眼”，让原本只能动嘴的 Agent 具备了实打实的桌面控制力。虽然功能很强，但 Windows 环境下的部署细节确实比较多，劝退了不少想尝鲜的朋友。
+
+本着“不仅要好用，还要好装”的原则，我们整理了这篇详细的配置指南。从环境准备到成功运行，所有可能踩雷的地方都标注好了，直接看实操。
+
+## 一、前置环境准备
+
+OpenClaw 依赖 Node.js 和 Git，需先完成以下组件安装。
+
+### 1.1 安装 Node.js（版本 ≥ 22）
+
+1. 下载：访问 Node.js 官网，选择“Windows 安装包（64 位）”（.msi 格式）。
+2. 安装步骤：
+   - 双击安装包，勾选“我接受许可协议”，点击“Next”。
+   - 保持默认安装路径（`C:\Program Files\nodejs\`），点击“Next”。
+   - 关键选项：确保 “Add Node.js to PATH” 已勾选（自动配置环境变量）。
+   - 后续页面保持默认，点击 “Install” 完成安装。
+3. 验证：重启 PowerShell，执行命令：
+
+```bash
+node -v
+```
+
+4. 输出 `v22.x.x` 或更高版本即成功。
+
+### 1.2 安装 Git
+
+作用：拉取 OpenClaw 的代码与依赖。
+
+1. 下载：访问 Git 官网，下载 64 位安装包。
+2. 安装步骤：全程保持默认选项（自动配置环境变量）。
+3. 验证：执行命令：
+
+```bash
+git --version
+```
+
+4. 输出版本号即成功。
+
+### 1.3 解锁 PowerShell 脚本权限
+
+Windows 默认禁止运行脚本，需以管理员身份打开 PowerShell，执行：
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+输入 `Y` 确认。
+
+## 二、安装 OpenClaw 主程序
+
+以管理员身份打开 PowerShell，执行官方一键安装脚本：
+
+```powershell
+iwr -useb https://clawd.bot/install.ps1 | iex
+```
+
+等待终端显示 “Clawdbot installed successfully” 即完成安装。
+
+## 三、初始化配置向导
+
+执行以下命令启动配置向导：
+
+```bash
+openclaw onboard
+```
+
+以下是每一步的选项说明与推荐选择：
+
+### 3.1 模式选择（Mode）
+
+选项：QuickStart / Advanced  
+含义：
+- QuickStart：自动配置基础参数，适合新手。
+- Advanced：自定义模型、端口等，适合技术用户。
+
+推荐：选择 QuickStart，按回车。
+
+### 3.2 模型提供方（Provider）
+
+选项：Qwen / OpenAI / Skip for now  
+含义：选择 OpenClaw 的 AI 模型平台。
+
+推荐：选择 Qwen（国内可直接访问），后续会弹出网页登录通义千问账号完成授权。
+
+### 3.3 默认模型（Default model）
+
+选项：qwen-portal/coder-model  
+含义：设置 OpenClaw 默认使用的 AI 模型。
+
+推荐：保持默认，直接按回车。
+
+### 3.4 通道配置（Channels）
+
+选项：Telegram / WhatsApp / Skip for now  
+含义：选择与 OpenClaw 交互的聊天平台。
+
+推荐：选择 Skip for now（默认选项均为国外平台，国内无法直接使用）。
+
+### 3.5 技能配置（Skills）
+
+选项：Yes / No  
+含义：Skills 是 OpenClaw 的功能模块（如文件操作、代码执行）。
+
+推荐：选择 Yes，启用基础技能。
+
+### 3.6 技能安装工具（Skill install）
+
+选项：npm / pnpm / bun  
+含义：选择安装技能依赖的包管理器。
+
+推荐：选择 npm（兼容性最好，国内可通过镜像加速）。
+
+### 3.7 技能依赖安装（Skill Dependencies）
+
+选项：Skip for now / 选择具体依赖  
+含义：部分技能依赖海外服务，国内无法直接下载。
+
+推荐：选择 Skip for now，后续按需安装本地技能。
+
+### 3.8 API 密钥配置
+
+选项：No / Yes  
+含义：配置第三方服务的 API 密钥（如谷歌地图）。
+
+推荐：选择 No（国内无法使用这些服务）。
+
+### 3.9 Hooks 配置（Hooks）
+
+选项：Skip for now / 启用  
+含义：Hooks 是自动化触发功能，需配置 Token。
+
+推荐：选择 Skip for now，后续手动配置。
+
+## 四、启动网关服务
+
+配置完成后，执行以下命令启动 OpenClaw 核心服务：
+
+```bash
+openclaw gateway start
+```
+
+## 五、访问管理界面
+
+在浏览器中打开地址：
+
+```
+http://127.0.0.1:18789
+```
+
+## 六、国内适配：配置飞书通道
+
+飞书是国内支持的官方平台，配置步骤如下：
+
+1. 前往飞书开放平台，创建“企业自建应用”。
+2. 获取 App ID 和 App Secret。
+3. 编辑 `C:\Users\你的用户名\.openclaw\openclaw.json`，添加飞书配置：
+
+```json
+"channels": {
+  "feishu": {
+    "enabled": true,
+    "appId": "你的App ID",
+    "appSecret": "你的App Secret",
+    "connectionMode": "websocket"
+  }
+}
+```
+
+4. 重启网关：
+
+```bash
+openclaw gateway restart
+```
+
+5. 重启后即可通过飞书与 OpenClaw 交互。

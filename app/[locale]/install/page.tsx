@@ -135,9 +135,10 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Params }) {
   const { locale } = await params;
-  const isZh = locale === "zh";
+  const structuredLocales = new Set(["zh", "en"]);
+  const isStructured = structuredLocales.has(locale);
 
-  if (!isZh) {
+  if (!isStructured) {
     const content = await getMDXContent(locale);
     return (
       <article className="w-full md:w-3/5 px-2 md:px-12">
@@ -285,60 +286,6 @@ export default async function Page({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="mt-14 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card/40 p-6">
-          <h2 className="text-xl font-semibold text-foreground">
-            {install.requirements.title}
-          </h2>
-          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            {install.requirements.items.map((item) => (
-              <li key={item} className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="rounded-2xl border border-border bg-card/40 p-6">
-          <h2 className="text-xl font-semibold text-foreground">
-            {install.quickStart.title}
-          </h2>
-          <ol className="mt-4 space-y-2 text-sm text-muted-foreground">
-            {install.quickStart.steps.map((step) => (
-              <li key={step} className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-          <pre className="mt-4 rounded-xl bg-muted px-4 py-3 text-sm text-foreground overflow-x-auto">
-            <code>{install.quickStart.code}</code>
-          </pre>
-          <p className="mt-3 text-xs text-muted-foreground">
-            {install.quickStart.verify}
-          </p>
-        </div>
-      </section>
-
-      <section className="mt-14 space-y-6">
-        <h2 className="text-2xl font-semibold text-foreground">
-          {install.faq.title}
-        </h2>
-        <div className="grid gap-4 lg:grid-cols-2">
-          {install.faq.items.map((item) => (
-            <div
-              key={item.q}
-              className="rounded-2xl border border-border bg-card/40 p-5"
-            >
-              <h3 className="text-base font-semibold text-foreground">
-                {item.q}
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground">{item.a}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </article>
   );
 }

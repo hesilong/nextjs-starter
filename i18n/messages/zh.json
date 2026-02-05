@@ -30,7 +30,7 @@
     ]
   },
   "Footer": {
-    "Copyright": "版权 © {year} {name} 保留所有权利。",
+    "Copyright": "版权 © {year} OPENCLAWAI 保留所有权利。",
     "PrivacyPolicy": "隐私政策",
     "TermsOfService": "服务条款",
     "Links": {
@@ -47,51 +47,6 @@
               "href": "/zh",
               "name": "中文",
               "useA": true
-            },
-            {
-              "href": "/ja",
-              "name": "日本語",
-              "useA": true
-            }
-          ]
-        },
-        {
-          "title": "开源项目",
-          "links": [
-            {
-              "href": "https://github.com/weijunext/nextjs-starter",
-              "name": "Next.js Starter",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            },
-            {
-              "href": "https://github.com/weijunext/landing-page-boilerplate",
-              "name": "Landing Page Boilerplate",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            },
-            {
-              "href": "https://github.com/weijunext/weekly-boilerplate",
-              "name": "Blog Boilerplate",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            }
-          ]
-        },
-        {
-          "title": "其他产品",
-          "links": [
-            {
-              "href": "https://nexty.dev/",
-              "name": "Nexty - SaaS Template",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
-            },
-            {
-              "href": "https://myogimage.com/",
-              "name": "OG Image Generator",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
             }
           ]
         }
@@ -99,7 +54,7 @@
     },
     "Newsletter": {
       "title": "订阅我们的邮件",
-      "description": "获取 Next.js Starter 的最新动态和更新",
+      "description": "获取 OpenClawAI 的最新动态和更新",
       "defaultErrorMessage": "请输入有效的邮箱地址",
       "successMessage": "订阅成功",
       "errorMessage": "订阅失败",
@@ -110,7 +65,7 @@
     }
   },
   "Home": {
-    "title": "OpenClaw",
+    "title": "OPENCLAWAI",
     "tagLine": "让 OpenClaw 触达每个人。",
     "description": "OpenClaw 将安装、模型配置、聊天集成、网页搜索和技能整合为一条引导路径。",
     "hero": {
@@ -155,30 +110,46 @@
     "steps": {
       "title": "5 步搭建",
       "description": "按路径走，随时深入细节。",
-      "more": "了解更多",
+      "more": "查看更多",
       "items": {
         "install": {
           "title": "安装",
-          "description": "官方、阿里云、腾讯云三种安装教程入口。",
+          "description": "Windows、MacOS、Linux、官方、阿里云与腾讯云安装指南。",
           "cta": "立即安装",
           "tabs": [
             {
-              "title": "官方安装教程",
-              "description": "OpenClaw 官方文档与安装指南。",
-              "href": "https://openclaw.ai/"
+              "title": "OpenClaw Windows 全攻略",
+              "description": "从环境准备到飞书接入的完整教程。",
+              "href": "/blog/openclaw-windows-deploy-guide"
             },
             {
-              "title": "阿里云服务安装教程",
-              "description": "阿里云轻量应用服务器一键部署。",
+              "title": "OpenClaw MacOS 安装教程",
+              "description": "适用于 MacOS 的本地部署与配置指南。",
+              "href": "/blog/openclaw-macos-deploy-guide"
+            },
+            {
+              "title": "OpenClaw Linux 安装教程",
+              "description": "适用于 Linux 服务器的部署流程。",
+              "href": "/blog/openclaw-linux-deploy-guide"
+            },
+            {
+              "title": "官方安装指南",
+              "description": "官方文档与基础安装步骤。",
+              "href": "/install"
+            },
+            {
+              "title": "阿里云服务器指南",
+              "description": "阿里云轻量服务器部署。",
               "href": "https://developer.aliyun.com/article/1709228"
             },
             {
-              "title": "腾讯云服务安装教程",
-              "description": "腾讯云轻量应用服务器部署指南。",
+              "title": "腾讯云服务器指南",
+              "description": "腾讯云轻量服务器部署。",
               "href": "https://cloud.tencent.com/document/product/1207/127874"
             }
           ],
-          "more": "查看更多安装教程"
+          "more": "查看更多",
+          "visit": "查看"
         },
         "models": {
           "title": "配置模型",
@@ -362,42 +333,42 @@
       "subtitle": "如果你在寻找一套可自托管、可扩展且可持续维护的 AI 平台，OpenClaw 提供了更清晰的路径与更安全的选择。",
       "sections": [
         {
-          "title": "OpenClaw 的起点与目标",
+          "title": "起点与目标",
           "paragraphs": [
             "OpenClaw 从一个周末项目开始，但目标一直清晰：让每个人都能用上可自托管的 AI 助手。OpenClaw 选择开放路线，是因为我们相信工具应该可检查、可替换、可迁移。",
             "OpenClaw 不把你的数据锁进黑箱。你可以在自己的电脑、家庭服务器或公司云上运行 OpenClaw，并用现有的聊天应用触达团队。"
           ]
         },
         {
-          "title": "OpenClaw 的安装哲学",
+          "title": "安装哲学",
           "paragraphs": [
             "OpenClaw 的安装不只有一种路径：本地快速体验、云服务器上线、Docker 容器化、K8s 集群化。OpenClaw 把复杂度拆成可读的教程，让你按需求选择。",
             "如果你只想在 10 分钟内验证价值，OpenClaw 提供最短路径；如果你要生产级稳定性，OpenClaw 也准备了更完整的部署方案。"
           ]
         },
         {
-          "title": "OpenClaw 的工作方式",
+          "title": "工作方式",
           "paragraphs": [
             "OpenClaw 运行在你选择的机器上，却能从 WhatsApp、Telegram、Discord、Slack 等入口工作。OpenClaw 把模型能力放在靠近业务的地方。",
             "OpenClaw 不是单点工具，而是可以组合的能力集合：模型路由、知识整合、权限控制、工具执行。OpenClaw 让自动化变得可追踪、可回滚。"
           ]
         },
         {
-          "title": "OpenClaw 的安全与数据所有权",
+          "title": "安全与数据所有权",
           "paragraphs": [
             "OpenClaw 的默认原则是最小权限与可审计。OpenClaw 支持将密钥留在你自己的基础设施里，避免第三方接触敏感数据。",
             "Prompt injection 仍是行业问题，所以 OpenClaw 把安全提示写进流程，帮助你构建更稳妥的配置。OpenClaw 也在持续完善安全基线。"
           ]
         },
         {
-          "title": "OpenClaw 的生态与社区",
+          "title": "生态与社区",
           "paragraphs": [
             "OpenClaw 正在建立技能生态：官方技能、社区技能、私有技能并存。OpenClaw 鼓励复用与共享，让团队快速启动。",
             "OpenClaw 的成长来自社区的反馈与贡献。无论是提交 Issue、写文档还是分享案例，OpenClaw 都会变得更好。"
           ]
         },
         {
-          "title": "OpenClaw 的下一步",
+          "title": "下一步",
           "paragraphs": [
             "OpenClaw 接下来将继续打磨稳定性、网关可靠性与多模型支持。OpenClaw 会优先保证基础体验，再扩展高级能力。",
             "如果你正在寻找一个可掌控、可迁移、可长期维护的 AI 平台，OpenClaw 值得一试。OpenClaw 也欢迎你参与共建。"
@@ -479,12 +450,12 @@
       "title": "用最适合你的方式部署 OpenClaw",
       "subtitle": "OpenClaw 支持本地、云服务器、Docker、K8s 等多种安装方式。先从 3 条推荐路径开始，稍后可查看完整教程。",
       "ctaPrimary": "查看推荐路径",
-      "ctaSecondary": "查看更多安装教程"
+      "ctaSecondary": "查看更多"
     },
     "featured": {
       "title": "推荐安装路径",
       "description": "适合第一次体验或快速上线的 3 种方式。",
-      "more": "查看更多安装教程",
+      "more": "查看更多",
       "items": [
         {
           "id": "method-local",

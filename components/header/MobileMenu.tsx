@@ -20,8 +20,8 @@ import Image from "next/image";
 export default function MobileMenu() {
   const t = useTranslations("Home");
   const tHeader = useTranslations("Header");
-
   const headerLinks: HeaderLink[] = tHeader.raw("links");
+  const showHeaderLinks = false;
 
   return (
     <div className="flex items-center gap-1 md:hidden">
@@ -50,23 +50,25 @@ export default function MobileMenu() {
             </I18nLink>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            {headerLinks.map((link) => (
-              <DropdownMenuItem key={link.name}>
-                <I18nLink
-                  href={link.href}
-                  title={link.name}
-                  prefetch={
-                    link.target && link.target === "_blank" ? false : true
-                  }
-                  target={link.target || "_self"}
-                  rel={link.rel || undefined}
-                >
-                  {link.name}
-                </I18nLink>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
+          {showHeaderLinks && (
+            <DropdownMenuGroup>
+              {headerLinks.map((link) => (
+                <DropdownMenuItem key={link.name}>
+                  <I18nLink
+                    href={link.href}
+                    title={link.name}
+                    prefetch={
+                      link.target && link.target === "_blank" ? false : true
+                    }
+                    target={link.target || "_self"}
+                    rel={link.rel || undefined}
+                  >
+                    {link.name}
+                  </I18nLink>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

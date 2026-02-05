@@ -1,0 +1,68 @@
+---
+title: OpenClaw MacOS Deployment Guide
+description: Local setup guidance for OpenClaw on MacOS.
+slug: /openclaw-macos-deploy-guide
+tags: openclaw,macos,install,deploy,ai,automation
+date: 2026-02-05
+visible: published
+---
+
+How to Set Up and Install Clawdbot (OpenClaw) on a Mac Mini
+
+Setting up Clawdbot on a Mac mini is straightforward, and the same steps work on any Mac. The Mac mini is just a common choice because it is one of the most affordable macOS devices. If you prefer, you can also install Clawdbot on Windows via PowerShell.
+
+Even if you do not code, you can finish this in a few minutes by following the steps below.
+
+## 1. Install OpenClaw
+
+Open Terminal and run:
+
+```bash
+curl -fsSL https://openclaw.ai/install.sh | bash
+```
+
+The installer will download and set up everything automatically.
+
+## 2. Run the setup wizard
+
+Start onboarding:
+
+```bash
+openclaw onboard
+```
+
+When you see the safety prompt, choose **Yes**:
+
+```
+I understand this is powerful and inherently risky. Continue?
+```
+
+## 3. Choose onboarding mode
+
+Select **Quickstart** (recommended for first-time users).
+
+## 4. Choose your model provider
+
+Pick your preferred LLM provider. If you choose OpenAI, select **OpenAI API key**.
+
+Create an API key at:
+
+```
+https://platform.openai.com/api-keys
+```
+
+After pasting the key, select the model you want to use (the latest version is usually a good choice).
+
+## 5. Choose a channel (messaging app)
+
+Pick the app where you want to chat with Clawdbot. Use the arrow keys, then press Return to confirm.
+
+If you choose WhatsApp, a QR code will appear. Scan it using the Linked Devices option in WhatsApp.
+
+## 6. Configure skills
+
+When prompted, select **Yes** to enable skills, then choose the skills you want Clawdbot to access.
+
+## 7. Start using Clawdbot
+
+Once setup finishes, message Clawdbot from your chosen channel. It will start executing commands on your Mac mini right away.

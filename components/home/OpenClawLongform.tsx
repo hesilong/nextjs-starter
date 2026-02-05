@@ -24,7 +24,7 @@ export default async function OpenClawLongform({
 }: {
   locale: string;
 }) {
-  if (locale !== "zh") return null;
+  if (locale !== "zh" && locale !== "en") return null;
 
   const t = await getTranslations({ locale, namespace: "Home" });
   const longform = t.raw("longform") as LongformContent;

@@ -1,0 +1,100 @@
+---
+title: OpenClaw Linux Deployment Guide
+description: Complete Linux server installation steps and caveats for OpenClaw.
+slug: /openclaw-linux-deploy-guide
+tags: openclaw,linux,install,deploy,ai,automation
+date: 2026-02-05
+visible: published
+---
+
+## I. Prerequisites
+
+### 1.1 Install Git
+
+Update the system and install Git:
+
+```bash
+sudo apt update
+sudo apt install git -y
+```
+
+### 1.2 Install Node.js (version ≥ 22)
+
+Install NVM (Node Version Manager):
+
+Mainland China servers (Gitee mirror):
+
+```bash
+curl -o- https://gitee.com/RubyMetric/nvm-cn/raw/main/install.sh | bash
+```
+
+Overseas servers (official source):
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+Reload environment variables:
+
+```bash
+source ~/.bashrc
+```
+
+Install Node.js 22:
+
+```bash
+nvm install 22
+```
+
+Verify: run `node -v`. If it prints `v22.x.x`, you are good.
+
+## II. Install OpenClaw
+
+Run the official one-line installer:
+
+```bash
+curl -fsSL https://openclaw.bot/install.sh | bash
+```
+
+Notes:
+- If installation fails on mainland China servers, fix network access first.
+- 2GB RAM machines may hit OOM; configure swap to use disk as virtual memory.
+- The installation can take some time, so be patient.
+
+## III. Initialize configuration (Onboarding)
+
+After installation, the onboarding wizard starts automatically. Choose:
+
+- Safety prompt: when you see “OpenClaw is a hobby project and still in beta...”, enter “Yes” to continue (understand the permission risks).
+- Deployment mode: choose “QuickStart” (you can later add settings via `clawdbot configure`).
+- Model provider: choose “Qwen (OAuth)” (good free quota for getting started); the system will generate an authorization link.
+- Model authorization: open the link in a browser, log in to Qwen, return to the terminal and select the default model “qwen-portal/coder-model”.
+- Skip channels: choose “Skip for now” (configure Feishu later).
+- Skills: choose “No” (skip for now, add later if needed).
+- Hooks: choose “Skip for now”.
+- Startup mode: choose “TUI” (terminal chat UI). When it opens, type “Hello” to verify.
+- Exit TUI: press `Ctrl + C`, then use Web UI or Feishu later.
+
+## IV. Verify service status
+
+Check whether services are running:
+
+```bash
+clawdbot status
+```
+
+If you see “Gateway service: running” and “Node service: running”, services are up.
+
+## V. Access the Web UI
+
+Create an SSH tunnel (run on your local machine):
+
+```bash
+ssh -N -L 18789:127.0.0.1:18789 username@server_ip
+```
+
+Enter the server password to connect.
+
+Get the dashboard URL by running `clawdbot dashboard` on the server and copy the “Dashboard URL”.
+
+Open the URL in your local browser to access OpenClaw Web UI. On first run you can set the assistant name and your name (e.g., “Name: Openclaw”, “My Name: Boss”).

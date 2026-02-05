@@ -1,0 +1,184 @@
+---
+title: OpenClaw Windows Deployment Guide
+description: A complete Windows deployment guide for OpenClaw, from prerequisites to Feishu integration.
+slug: /openclaw-windows-deploy-guide
+tags: openclaw,windows,install,deploy,ai,automation
+date: 2026-02-05
+visible: published
+---
+
+If you follow AI automation, you have probably seen OpenClaw everywhere lately.
+
+In short, OpenClaw gives AI “hands” and “eyes,” turning chat-only agents into tools that can actually control a desktop. It is powerful, but Windows setup has enough details to discourage first-time users.
+
+To make it “not only good, but easy to install,” here is a full configuration guide. From prerequisites to a successful run, the common pitfalls are marked. Let’s get started.
+
+## 1. Prerequisites
+
+OpenClaw depends on Node.js and Git. Install the following first.
+
+### 1.1 Install Node.js (version ≥ 22)
+
+1. Download: Visit the Node.js official website and choose “Windows Installer (64‑bit)” (.msi).
+2. Install steps:
+   - Double‑click the installer, accept the license, click “Next.”
+   - Keep the default install path (`C:\Program Files\nodejs\`), click “Next.”
+   - Key option: ensure “Add Node.js to PATH” is checked.
+   - Keep defaults on the remaining pages and click “Install.”
+3. Verify: restart PowerShell and run:
+
+```bash
+node -v
+```
+
+4. If the output is `v22.x.x` or higher, it is successful.
+
+### 1.2 Install Git
+
+Purpose: pull OpenClaw code and dependencies.
+
+1. Download the 64‑bit Git installer from the official site.
+2. Install with default options (environment variables are set automatically).
+3. Verify:
+
+```bash
+git --version
+```
+
+4. If a version is printed, it is successful.
+
+### 1.3 Allow PowerShell scripts
+
+Windows blocks scripts by default. Open PowerShell as Administrator and run:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+Type `Y` to confirm.
+
+## 2. Install the OpenClaw core program
+
+Open PowerShell as Administrator and run the official one‑line installer:
+
+```powershell
+iwr -useb https://clawd.bot/install.ps1 | iex
+```
+
+Wait for “Clawdbot installed successfully.”
+
+## 3. Run the onboarding wizard
+
+Start the wizard:
+
+```bash
+openclaw onboard
+```
+
+Recommended choices:
+
+### 3.1 Mode
+
+Options: QuickStart / Advanced  
+Meaning:
+- QuickStart: auto‑configures basic settings, best for beginners.
+- Advanced: custom models/ports, for advanced users.
+
+Recommendation: choose QuickStart.
+
+### 3.2 Provider
+
+Options: Qwen / OpenAI / Skip for now  
+Meaning: choose your model provider.
+
+Recommendation: Qwen (works well in mainland China); you will authorize via browser.
+
+### 3.3 Default model
+
+Option: qwen-portal/coder-model  
+Meaning: the default model OpenClaw uses.
+
+Recommendation: keep default.
+
+### 3.4 Channels
+
+Options: Telegram / WhatsApp / Skip for now  
+Meaning: choose chat platforms for OpenClaw.
+
+Recommendation: Skip for now (defaults are overseas platforms).
+
+### 3.5 Skills
+
+Options: Yes / No  
+Meaning: enable core skills (file ops, code execution, etc.).
+
+Recommendation: Yes.
+
+### 3.6 Skill install
+
+Options: npm / pnpm / bun  
+Meaning: package manager for skill dependencies.
+
+Recommendation: npm (best compatibility, easy to mirror in China).
+
+### 3.7 Skill dependencies
+
+Options: Skip for now / choose dependencies  
+Meaning: some skills require overseas services.
+
+Recommendation: Skip for now, install locally later as needed.
+
+### 3.8 API keys
+
+Options: No / Yes  
+Meaning: configure third‑party API keys (e.g., Google Maps).
+
+Recommendation: No (not accessible in China).
+
+### 3.9 Hooks
+
+Options: Skip for now / Enable  
+Meaning: automation triggers requiring tokens.
+
+Recommendation: Skip for now.
+
+## 4. Start the gateway service
+
+```bash
+openclaw gateway start
+```
+
+## 5. Open the admin UI
+
+Visit:
+
+```
+http://127.0.0.1:18789
+```
+
+## 6. China‑friendly channel: Feishu
+
+Feishu is officially supported in China. Steps:
+
+1. Create an “enterprise self‑built app” on the Feishu developer platform.
+2. Get App ID and App Secret.
+3. Edit `C:\Users\YOUR_USERNAME\.openclaw\openclaw.json`, add:
+
+```json
+"channels": {
+  "feishu": {
+    "enabled": true,
+    "appId": "YOUR_APP_ID",
+    "appSecret": "YOUR_APP_SECRET",
+    "connectionMode": "websocket"
+  }
+}
+```
+
+4. Restart the gateway:
+
+```bash
+openclaw gateway restart
+```
+
+5. After restart, you can interact with OpenClaw via Feishu.

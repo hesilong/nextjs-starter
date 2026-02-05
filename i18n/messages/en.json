@@ -30,7 +30,7 @@
     ]
   },
   "Footer": {
-    "Copyright": "Copyright © {year} {name} All rights reserved.",
+    "Copyright": "Copyright © {year} OpenClawAI All rights reserved.",
     "PrivacyPolicy": "Privacy Policy",
     "TermsOfService": "Terms of Service",
     "Links": {
@@ -47,51 +47,6 @@
               "href": "/zh",
               "name": "中文",
               "useA": true
-            },
-            {
-              "href": "/ja",
-              "name": "日本語",
-              "useA": true
-            }
-          ]
-        },
-        {
-          "title": "Open Source",
-          "links": [
-            {
-              "href": "https://github.com/weijunext/nextjs-starter",
-              "name": "Next.js Starter",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            },
-            {
-              "href": "https://github.com/weijunext/landing-page-boilerplate",
-              "name": "Landing Page Boilerplate",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            },
-            {
-              "href": "https://github.com/weijunext/weekly-boilerplate",
-              "name": "Blog Boilerplate",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            }
-          ]
-        },
-        {
-          "title": "Other Products",
-          "links": [
-            {
-              "href": "https://nexty.dev/",
-              "name": "Nexty - SaaS Template",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
-            },
-            {
-              "href": "https://myogimage.com/",
-              "name": "OG Image Generator",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
             }
           ]
         }
@@ -110,13 +65,13 @@
     }
   },
   "Home": {
-    "title": "OpenClaw",
+    "title": "OPENCLAWAI",
     "tagLine": "Make OpenClaw accessible to everyone.",
     "description": "OpenClaw aggregates installation, model configuration, chat integration, web search, and skills into a guided path.",
     "hero": {
       "kicker": "Open-source AI assistant guide",
-      "title": "Make {name} accessible to everyone",
-      "subtitle": "Install, connect models, integrate chat tools, enable web search, and add skills ? all in one guided path.",
+      "title": "Make OpenClaw Accessible to Everyone",
+      "subtitle": "Install, connect models, integrate chat tools, enable web search, and add skills — all in one guided path.",
       "ctaPrimary": "Start building",
       "ctaSecondary": "View docs",
       "stats": [
@@ -140,7 +95,7 @@
       "items": {
         "platform": {
           "title": "All-platform access",
-          "description": "Connect to Feishu, DingTalk, and more ? continuously expanding."
+          "description": "Connect to Feishu, DingTalk, and more — continuously expanding."
         },
         "skills": {
           "title": "Skill expansion",
@@ -159,26 +114,42 @@
       "items": {
         "install": {
           "title": "Install",
-          "description": "Official, Alibaba Cloud, and Tencent Cloud install guides.",
+          "description": "Windows, MacOS, Linux, Official, Alibaba Cloud, and Tencent Cloud install guides.",
           "cta": "Install now",
           "tabs": [
             {
-              "title": "Official install guide",
-              "description": "OpenClaw official documentation and setup steps.",
-              "href": "https://openclaw.ai/"
+              "title": "OpenClaw Windows Install Guide",
+              "description": "Step-by-Step Windows Deployment and Setup.",
+              "href": "/blog/openclaw-windows-deploy-guide"
             },
             {
-              "title": "Alibaba Cloud install guide",
-              "description": "Lightweight server deployment on Alibaba Cloud.",
+              "title": "OpenClaw MacOS Install Guide",
+              "description": "Local Setup Guidance for MacOS Environments.",
+              "href": "/blog/openclaw-macos-deploy-guide"
+            },
+            {
+              "title": "OpenClaw Linux Install Guide",
+              "description": "Deployment Steps for Linux Servers.",
+              "href": "/blog/openclaw-linux-deploy-guide"
+            },
+            {
+              "title": "Official Install Guide",
+              "description": "OpenClaw Official Documentation and Setup Steps.",
+              "href": "/install"
+            },
+            {
+              "title": "Alibaba Cloud Install Guide",
+              "description": "Lightweight Server Deployment on Alibaba Cloud.",
               "href": "https://developer.aliyun.com/article/1709228"
             },
             {
-              "title": "Tencent Cloud install guide",
-              "description": "Lightweight server deployment on Tencent Cloud.",
+              "title": "Tencent Cloud Install Guide",
+              "description": "Lightweight Server Deployment on Tencent Cloud.",
               "href": "https://cloud.tencent.com/document/product/1207/127874"
             }
           ],
-          "more": "Learn more"
+          "more": "Learn more",
+          "visit": "Visit"
         },
         "models": {
           "title": "Configure models",
@@ -356,6 +327,72 @@
     "safety": {
       "title": "Security notice",
       "description": "We have observed malicious third-party skills in the wild. Always review the source code before installing, and prefer official or audited community skills."
+    },
+    "longform": {
+      "title": "What OpenClaw Is and Why It Matters Now",
+      "subtitle": "If you are looking for a self-hosted, extensible, and maintainable AI platform, OpenClaw offers a clearer path and a safer choice.",
+      "sections": [
+        {
+          "title": "Origin and goal",
+          "paragraphs": [
+            "OpenClaw started as a weekend project, but the goal was always clear: make a self-hosted AI assistant available to everyone. OpenClaw chooses the open path because tools should be inspectable, replaceable, and portable.",
+            "OpenClaw does not lock your data into a black box. You can run OpenClaw on your own laptop, home server, or cloud, and reach your team through the chat apps you already use."
+          ]
+        },
+        {
+          "title": "Installation philosophy",
+          "paragraphs": [
+            "OpenClaw is not tied to a single install path: quick local trials, cloud server deployment, Docker containers, and K8s clusters are all supported. OpenClaw turns complexity into readable guides so you can choose what fits.",
+            "If you just want to validate value in 10 minutes, OpenClaw provides the shortest path. If you need production-grade stability, OpenClaw also offers a more complete deployment plan."
+          ]
+        },
+        {
+          "title": "How OpenClaw works",
+          "paragraphs": [
+            "OpenClaw runs on infrastructure you choose, yet works through WhatsApp, Telegram, Discord, Slack, and more. OpenClaw keeps model capability close to the business context.",
+            "OpenClaw is not a single tool, but a composable capability set: model routing, knowledge integration, permission control, and tool execution. OpenClaw makes automation traceable and reversible."
+          ]
+        },
+        {
+          "title": "Security and data ownership",
+          "paragraphs": [
+            "OpenClaw defaults to least privilege and auditability. OpenClaw lets you keep keys on your own infrastructure to avoid exposing sensitive data to third parties.",
+            "Prompt injection remains an industry-wide problem, so OpenClaw bakes security reminders into the workflow to help you build safer configurations. OpenClaw continues to strengthen its security baseline."
+          ]
+        }
+      ],
+      "highlights": {
+        "title": "Key OpenClaw benefits",
+        "items": [
+          "Supports multiple installation paths with clear migration routes.",
+          "Runs on your own machines and networks; data stays inside.",
+          "Built for team collaboration and permission control.",
+          "Skills are extensible, auditable, and easy to customize.",
+          "Emphasizes observability and reliability.",
+          "Designed for long-term maintenance."
+        ]
+      },
+      "faq": {
+        "title": "Common questions about OpenClaw",
+        "items": [
+          {
+            "q": "Is OpenClaw for individuals or teams?",
+            "a": "OpenClaw fits both solo developers and teams. You can start locally and scale as needed."
+          },
+          {
+            "q": "How is OpenClaw different from SaaS assistants?",
+            "a": "OpenClaw runs on infrastructure you choose. You keep your data and keys, with more flexible deployment options."
+          },
+          {
+            "q": "Is OpenClaw hard to deploy?",
+            "a": "We provide tiered guides from local to cloud, so beginners can finish quickly."
+          },
+          {
+            "q": "Does OpenClaw support custom models?",
+            "a": "OpenClaw supports multi-model access and routing, and can be extended to fit your needs."
+          }
+        ]
+      }
     }
   },
   "Blog": {

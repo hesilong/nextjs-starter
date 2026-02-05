@@ -1,0 +1,100 @@
+---
+title: OpenClaw Linux 环境安装教程
+description: 在 Linux 服务器上安装 OpenClaw 的完整步骤与注意事项。
+slug: /openclaw-linux-deploy-guide
+tags: openclaw,linux,install,deploy,ai,automation
+date: 2026-02-05
+visible: published
+---
+
+## 一、前置准备
+
+### 1.1 安装 Git
+
+执行以下命令更新系统并安装 Git：
+
+```bash
+sudo apt update
+sudo apt install git -y
+```
+
+### 1.2 安装 Node.js（版本 ≥ 22）
+
+安装 NVM（Node 版本管理工具）：
+
+国内服务器（使用 Gitee 镜像源）：
+
+```bash
+curl -o- https://gitee.com/RubyMetric/nvm-cn/raw/main/install.sh | bash
+```
+
+海外服务器（使用官方源）：
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+重新加载环境变量：
+
+```bash
+source ~/.bashrc
+```
+
+安装 Node.js 22 版本：
+
+```bash
+nvm install 22
+```
+
+验证版本：执行 `node -v`，输出 `v22.x.x` 即符合要求。
+
+## 二、安装 OpenClaw
+
+执行官方一键安装脚本：
+
+```bash
+curl -fsSL https://openclaw.bot/install.sh | bash
+```
+
+注意事项：
+- 国内服务器若安装失败，需先解决网络问题。
+- 2G 内存服务器可能出现 OOM（内存溢出），建议配置 swap 交换空间（将硬盘空间作为虚拟内存）。
+- 安装过程耗时较长，需耐心等待。
+
+## 三、初始化配置（Onboarding）
+
+安装成功后自动进入初始化向导，按以下步骤选择配置：
+
+- 安全提示确认：提示 “OpenClaw is a hobby project and still in beta...”，输入 “Yes” 继续（需知晓其权限风险）。
+- 选择部署模式：选择 “QuickStart”（后续可通过 `clawdbot configure` 补充配置）。
+- 选择模型服务商：选择 “Qwen（OAuth）”（免费额度充足，适合入门），系统会生成授权链接。
+- 模型授权：复制链接在浏览器打开，登录 Qwen 账号完成授权，返回终端选择默认模型 “qwen-portal/coder-model”。
+- 跳过通信通道配置：选择 “Skip for now”（后续专门配置飞书）。
+- 技能配置：选择 “No”（暂不配置，后续可按需扩展）。
+- Hooks 配置：选择 “Skip for now”（暂不启用）。
+- 启动方式选择：选择 “TUI”（终端聊天界面），出现聊天界面后输入 “Hello” 测试，确认安装成功。
+- 关闭 TUI 界面：按 `Ctrl + C` 退出，后续通过 Web UI 或飞书交互。
+
+## 四、验证服务状态
+
+执行命令查看服务是否正常运行：
+
+```bash
+clawdbot status
+```
+
+若输出包含 “Gateway service: running”“Node service: running” 等信息，说明服务启动成功。
+
+## 五、访问 Web UI 面板
+
+建立 SSH 隧道（本地电脑终端执行）：
+
+```bash
+ssh -N -L 18789:127.0.0.1:18789 用户名@服务器IP
+```
+
+输入服务器密码完成连接。
+
+获取授权链接：服务器终端执行 `clawdbot dashboard`，复制输出的 “Dashboard URL”。
+
+访问面板：本地浏览器打开复制的 URL，即可进入 OpenClaw Web UI。首次使用可设置 AI 助手名称与自身称呼（如输入 “Name: Openclaw”“My Name: Boss”）。
