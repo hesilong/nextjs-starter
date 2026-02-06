@@ -62,22 +62,32 @@ export default async function BlogPage({ params }: { params: Params }) {
   if (!post) {
     return notFound();
   }
+  const content = post?.content || "";
+  const hasLeadingH1 = /^\s*#\s+/.test(content);
+  const contentWithoutLeadingH1 = hasLeadingH1
+    ? content.replace(/^\s*#\s+.*(?:\r?\n)+/, "")
+    : content;
+  const tags = Array.isArray(post.tags)
+    ? post.tags
+    : post.tags
+        ?.split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean) ?? [];
 
   return (
     <div className="w-full md:w-3/5 px-2 md:px-12">
-      <h1 className="break-words text-4xl font-bold mt-6 mb-4">{post.title}</h1>
-      {post.image && (
-        <img src={post.image} alt={post.title} className="rounded-sm" />
-      )}
-      {post.tags && post.tags.split(",").length ? (
+      <h1 className="break-words text-4xl font-bold mt-6 mb-4">
+        {post.title}
+      </h1>
+      {tags.length ? (
         <div className="flex flex-wrap gap-2">
-          {post.tags.split(",").map((tag) => {
+          {tags.map((tag) => {
             return (
               <div
                 key={tag}
                 className={`rounded-md bg-gray-200 hover:!no-underline dark:bg-[#24272E] flex px-2.5 py-1.5 text-sm font-medium transition-colors hover:text-black hover:dark:bg-[#15AFD04C] hover:dark:text-[#82E9FF] text-gray-500 dark:text-[#7F818C] outline-none focus-visible:ring transition`}
               >
-                {tag.trim()}
+                {tag}
               </div>
             );
           })}
@@ -85,9 +95,11 @@ export default async function BlogPage({ params }: { params: Params }) {
       ) : (
         <></>
       )}
-      {post.description && <Callout>{post.description}</Callout>}
+      {!hasLeadingH1 && post.description && (
+        <Callout>{post.description}</Callout>
+      )}
       <MDXRemote
-        source={post?.content || ""}
+        source={contentWithoutLeadingH1}
         components={MDXComponents}
         options={mdxOptions}
       />

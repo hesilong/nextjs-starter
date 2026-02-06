@@ -4,6 +4,7 @@ import { Locale, LOCALES } from "@/i18n/routing";
 import { constructMetadata } from "@/lib/metadata";
 import fs from "fs/promises";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getMessages, getTranslations } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
 import path from "path";
@@ -30,7 +31,7 @@ const options = {
   },
 };
 
-async function getMDXContent(locale: string) {
+async function getMDXContent(locale: string): Promise<string | null> {
   const filePath = path.join(
     process.cwd(),
     "content",
@@ -42,7 +43,7 @@ async function getMDXContent(locale: string) {
     return content;
   } catch (error) {
     console.error(`Error reading MDX file: ${error}`);
-    return "";
+    return null;
   }
 }
 
@@ -140,6 +141,9 @@ export default async function Page({ params }: { params: Params }) {
 
   if (!isStructured) {
     const content = await getMDXContent(locale);
+    if (!content) {
+      return notFound();
+    }
     return (
       <article className="w-full md:w-3/5 px-2 md:px-12">
         <MDXRemote

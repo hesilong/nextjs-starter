@@ -12,12 +12,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = [
     '',
     '/blog',
-    '/about',
+    // '/about',
     '/install',
-    '/models',
-    '/chat-integrations',
-    '/web-search',
-    '/skills',
+    // '/models',
+    // '/chat-integrations',
+    // '/web-search',
+    // '/skills',
     '/privacy-policy',
     '/terms-of-service',
   ]

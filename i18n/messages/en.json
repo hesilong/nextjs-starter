@@ -22,10 +22,6 @@
       {
         "name": "Community",
         "href": "/#ecosystem"
-      },
-      {
-        "name": "Skills",
-        "href": "/skills"
       }
     ]
   },
@@ -110,7 +106,7 @@
     "steps": {
       "title": "Build in 5 steps",
       "description": "Follow the path and dive into details whenever you need.",
-      "more": "Learn more",
+      "more": "Visit",
       "items": {
         "install": {
           "title": "Install",

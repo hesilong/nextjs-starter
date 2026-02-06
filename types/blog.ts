@@ -5,7 +5,7 @@ export type BlogPost = {
   description?: string
   image?: string
   slug: string
-  tags?: string
+  tags?: string | string[]
   date: Date
   visible?: 'draft' | 'invisible' | 'published'
   pin?: boolean

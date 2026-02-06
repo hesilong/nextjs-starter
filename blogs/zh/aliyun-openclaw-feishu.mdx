@@ -15,13 +15,7 @@ pin: false
 
 ## 步骤一、购买 OpenClaw 套餐
 
-购买链接在这里购买预装 Moltbot 应用的轻量应用服务器。
-
-### 🖼️ 配置选项截图说明：
-此部分包含阿里云轻量应用服务器的购买页面截图，显示：
-- 实例配置选项（内存必须2GiB及以上）
-- 地域选择（默认美国弗吉尼亚）
-- 购买时长设置（默认12个月）
+购买链接在这里<a href="https://swasnext.console.aliyun.com/buy?regionId=us-east-1&planId=swas.s.c2m2s40b1.linux&imageId=bd45493af84846deb5dcd3fca6c1a1d9&amount=1&duration=12&autoRenew=false#/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">购买预装 Moltbot 应用的轻量应用服务器</a>。
 
 ### 详细配置说明：
 
@@ -37,7 +31,7 @@ pin: false
 先默认选择阿里的大模型，后续会讲如何切换，我们首先跑通流程：
 
 ### 🖼️ 阿里云百炼平台截图：
-显示API密钥管理页面，包含创建API-Key的按钮和界面布局。
+![阿里云百炼平台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-1.PNG)
 
 1. 在阿里云百炼大模型服务平台前往密钥管理页面，单击创建 API-Key。
 
@@ -46,11 +40,13 @@ pin: false
    - 后面我们讲一下如何接入 nvidia 的免费 minimax-m2 大模型
 
 ### 🖼️ 服务器概览页面截图：
+![服务器概览页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-2.PNG)
 展示服务器卡片、实例ID位置，以及概览页面的整体布局。
 
 2. 在服务器页面，单击服务器卡片中的实例 ID，进入服务器概览页面。
 
 ### 🖼️ OpenClaw配置页面截图：
+![OpenClaw配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-3.PNG)
 显示应用详情页签、OpenClaw配置界面和各项设置选项。
 
 3. 单击应用详情页签，配置 OpenClaw。
@@ -61,6 +57,7 @@ pin: false
    - **查看 Token**：在帮助 > Token 配置中单击执行命令，获取 Token。
 
 ### 🖼️ Clawdbot Gateway配置截图：
+![Clawdbot Gateway配置截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-4.PNG)
 显示Setting > Config页面，Gateway配置，HTTP页签和Responses区域的位置。
 
 4. 开启 Response API 访问，后续 AppFlow 会通过 API 访问 OpenClaw。
@@ -71,16 +68,19 @@ pin: false
 ## 步骤三：创建并配置应用
 
 ### 🖼️ 飞书开发者后台截图：
+![飞书开发者后台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-11.PNG)
 展示创建企业自建应用的界面，包含应用信息填写区域。
 
 1. 登录飞书开发者后台，点击创建企业自建应用，填写应用信息后单击创建。
 
 ### 🖼️ 添加应用能力页面截图：
+![添加应用能力页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-12.PNG)
 显示添加应用能力的界面，找到机器人卡片的步骤和位置。
 
 2. 在左侧导航栏中单击添加应用能力，选择按能力添加页签，找到机器人卡片，点击添加。
 
 ### 🖼️ 权限管理页面截图：
+![权限管理页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-13.PNG)
 显示权限管理界面，包含权限搜索框和已添加权限的列表。
 
 3. 在左侧导航栏中单击权限管理，单击开通权限，搜索并添加以下 API 权限：
@@ -94,6 +94,7 @@ pin: false
 | im:message.group_msg:readonly | 允许机器人获取所在群组的所有消息。 | 敏感权限。 |
 
 ### 🖼️ 凭证与基础信息页面截图：
+![凭证与基础信息页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-14.PNG)
 展示App ID、App Secret的查看和复制方式。
 
 4. 收集集成所需的凭证。后续配置 AppFlow 连接时需要使用这些信息。
@@ -101,6 +102,7 @@ pin: false
    - 在左侧导航栏进入凭证与基础信息页面，查看并复制 App ID 和 App Secret。
 
 ### 🖼️ 加密策略页面截图：
+![加密策略页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-2.PNG)
 显示Encrypt Key和Verification Token的位置，以及重置按钮的界面。
 
    - 在左侧导航栏进入事件与回调页面，找到加密策略页签。复制 Encrypt Key 和 Verification Token。
@@ -109,21 +111,25 @@ pin: false
 ## 步骤四：创建飞书连接流
 
 ### 🖼️ AppFlow模板中心截图：
+![AppFlow模板中心截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-3.PNG)
 展示飞书-OpenClaw模板的位置和"立即使用"按钮。
 
 1. 访问 AppFlow 模板中心飞书-OpenClaw 模板，单击立即使用。
 
 ### 🖼️ AppFlow凭证配置页面截图：
+![AppFlow凭证配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-4.PNG)
 显示添加鉴权凭证的界面，包含凭证名称填写区域和凭证信息输入框。
 
 2. 点击添加飞书鉴权凭证，填写凭证名称（随便填写），及参考下图填入步骤三获取的信息。填写完成后单击确定并在下拉框中选中创建好的凭证。
 
 ### 🖼️ Moltbot凭证配置界面：
+![Moltbot凭证配置界面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-5.PNG)
 展示创建Moltbot鉴权凭证的填写方式和字段说明。
 
 3. 创建 Moltbot 鉴权凭证。填入步骤二获取的凭证，填写完成后单击确定并在下拉框中选中创建好的凭证。
 
 ### 🖼️ 公网IP配置页面截图：
+![公网IP配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-6.PNG)
 显示服务器公网地址输入框和端口设置说明。
 
 4. 点击下一步，前往服务器详情页获取服务器公网地址并按页面提示填入您的公网IP：端口号，端口号默认为 18789。
@@ -131,6 +137,7 @@ pin: false
    例如：48.253.178.133:18789
 
 ### 🖼️ AppFlow发布成功页面：
+![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-8.PNG)
 显示WebhookUrl的复制位置和发布完成的确认信息。
 
 5. 配置完成后点击发布，复制并保存您的 Webhook Url。
@@ -169,51 +176,6 @@ pin: false
 1. 按照添加路径添加机器人：··· > 设置 > 群机器人 > 添加机器人。
 2. @机器人发送消息即可实现对话。
 
----
-
-## 🔄 图片处理说明
-
-### 如何在MDX中显示图片？
-
-如果原PDF包含图片，你有以下几种处理方式：
-
-#### 方案1：图片描述 + 占位符
-```mdx
-// 原文档中提到的截图位置
-![OpenClaw配置界面](./images/openclaw-config.png)
-
-// 如果没有图片文件，可以这样描述
-🖼️ **配置界面说明**：
-此处应显示OpenClaw的配置页面，包含API-Key输入框和配置选项。
-```
-
-#### 方案2：使用在线图片服务
-```mdx
-// 如果能获取到原图片，可以上传到图床
-![配置截图](https://your-image-hosting.com/openclaw-config.png)
-```
-
-#### 方案3：React组件方式
-```mdx
-// 在支持JSX的MDX环境中
-<figure>
-  <img src="./images/config-step1.png" alt="OpenClaw配置步骤" />
-  <figcaption>步骤1：配置OpenClaw API-Key</figcaption>
-</figure>
-```
-
-### 获取原PDF图片的方法
-
-如果需要提取PDF中的图片，可以：
-
-1. **使用在线PDF工具**：pdf24.org, ilovepdf.com
-2. **使用桌面软件**：Adobe Acrobat, PDFtk
-3. **命令行工具**：
-   ```bash
-   # 如果安装有pdfimages
-   pdfimages input.pdf ./images/
-   ```
-
 ## 总结
 
 本教程详细介绍了如何将 OpenClaw（原 Moltbot、Clawdbot）集成到飞书中，实现通过自然语言与 AI 助手的直接交互。主要步骤包括：
@@ -225,13 +187,3 @@ pin: false
 5. **部署和验证集成效果**
 
 通过这套完整的集成方案，用户可以在飞书的工作环境中无缝使用 OpenClaw 的强大功能，提升工作效率。
-
-### 注意事项
-- 中国内地地域（除香港）无法使用 OpenClaw 的联网搜索功能
-- 某些配置步骤包含重要的界面截图说明
-- 确保按照步骤完整配置所有必需的权限
-
----
-*文档转换时间：2026-02-05*  
-*原始文档：阿里云 OpenClaw（原Moltbot、Clawdbot）集成飞书（保姆级教程）.pdf*  
-*转换工具：markitdown + 手动图片说明补充*

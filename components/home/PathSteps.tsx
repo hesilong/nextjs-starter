@@ -142,28 +142,71 @@ export default function PathSteps() {
                 </div>
               ) : (
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {tabs.map((tab) => (
-                    <div
-                      key={tab.title}
-                      className="min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-shadow duration-200 hover:shadow-md"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-primary">
-                          <BookOpen className="h-3 w-3" />
-                          {stepTitle}
-                        </span>
-                        <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
-                          {t("steps.cardBadge")}
-                        </span>
-                      </div>
-                      <p className="mt-4 text-sm font-semibold text-foreground">
-                        {tab.title}
-                      </p>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        {tab.description}
-                      </p>
-                    </div>
-                  ))}
+                  {tabs.map((tab) => {
+                    const href = tab.href;
+                    const isExternal =
+                      href?.startsWith("http://") ||
+                      href?.startsWith("https://");
+                    const content = (
+                      <>
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                            <BookOpen className="h-3 w-3" />
+                            {stepTitle}
+                          </span>
+                          <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                            {t("steps.cardBadge")}
+                          </span>
+                        </div>
+                        <p className="mt-4 text-sm font-semibold text-foreground">
+                          {tab.title}
+                        </p>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {tab.description}
+                        </p>
+                        {href && (
+                          <div className="mt-4 text-xs font-medium text-primary opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
+                            {visitText}
+                          </div>
+                        )}
+                      </>
+                    );
+
+                    if (!href) {
+                      return (
+                        <div
+                          key={tab.title}
+                          className="min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                        >
+                          {content}
+                        </div>
+                      );
+                    }
+
+                    if (isExternal) {
+                      return (
+                        <a
+                          key={tab.title}
+                          href={href}
+                          target="_blank"
+                          rel="noreferrer nofollow noopener"
+                          className="group min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                        >
+                          {content}
+                        </a>
+                      );
+                    }
+
+                    return (
+                      <I18nLink
+                        key={tab.title}
+                        href={href}
+                        className="group min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                      >
+                        {content}
+                      </I18nLink>
+                    );
+                  })}
                 </div>
               )}
             </div>

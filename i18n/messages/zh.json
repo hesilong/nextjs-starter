@@ -22,10 +22,6 @@
       {
         "name": "社区",
         "href": "/#ecosystem"
-      },
-      {
-        "name": "技能",
-        "href": "/skills"
       }
     ]
   },
@@ -110,7 +106,7 @@
     "steps": {
       "title": "5 步搭建",
       "description": "按路径走，随时深入细节。",
-      "more": "查看更多",
+      "more": "查看",
       "items": {
         "install": {
           "title": "安装",
@@ -177,7 +173,8 @@
           "tabs": [
             {
               "title": "飞书",
-              "description": "创建机器人，配置回调并测试事件。"
+              "description": "创建机器人，配置回调并测试事件。",
+              "href": "/blog/aliyun-openclaw-feishu"
             },
             {
               "title": "钉钉",
