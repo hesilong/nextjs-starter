@@ -55,9 +55,7 @@ export default function PathSteps() {
           const moreText = isInstall
             ? t("steps.items.install.more")
             : t("steps.more");
-          const visitText = isInstall
-            ? t("steps.items.install.visit")
-            : t("steps.more");
+          const visitText = t("steps.items.install.visit");
 
           return (
             <div
@@ -147,6 +145,8 @@ export default function PathSteps() {
                     const isExternal =
                       href?.startsWith("http://") ||
                       href?.startsWith("https://");
+                    const isLocaleHref =
+                      href?.startsWith("/zh/") || href?.startsWith("/en/");
                     const content = (
                       <>
                         <div className="flex items-center justify-between">
@@ -180,6 +180,18 @@ export default function PathSteps() {
                         >
                           {content}
                         </div>
+                      );
+                    }
+
+                    if (isLocaleHref) {
+                      return (
+                        <a
+                          key={tab.title}
+                          href={href}
+                          className="group min-h-[140px] rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                        >
+                          {content}
+                        </a>
                       );
                     }
 

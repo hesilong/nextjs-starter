@@ -1,0 +1,151 @@
+---
+title: "Aliyun OpenClaw (formerly Moltbot/Clawdbot) Feishu Integration (Step-by-step)"
+description: "Use Alibaba Cloud AppFlow to connect OpenClaw with Feishu so you can interact in group or 1:1 chats with natural language."
+image: "/images/blogs/aliyun-openclaw-feishu/cover.png"
+slug: "/aliyun-openclaw-feishu"
+tags: ["OpenClaw", "Moltbot", "Clawdbot", "Feishu", "AppFlow", "Alibaba Cloud"]
+date: "2026-02-05"
+visible: "published"
+pin: false
+---
+
+# Aliyun OpenClaw (formerly Moltbot/Clawdbot) Feishu Integration (Step-by-step)
+
+With Alibaba Cloud AppFlow, you can integrate OpenClaw with Feishu and interact in Feishu group or 1:1 chats using natural language.
+
+## Step 1. Purchase the OpenClaw package
+
+Purchase link here: <a href="https://swasnext.console.aliyun.com/buy?regionId=us-east-1&planId=swas.s.c2m2s40b1.linux&imageId=bd45493af84846deb5dcd3fca6c1a1d9&amount=1&duration=12&autoRenew=false#/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">Buy a lightweight server with the preinstalled Moltbot image</a>.
+
+### Configuration notes
+
+1. On the lightweight server page, the resource configuration is pre-filled. If you need to adjust it, refer to the notes below.
+
+   - **Instance**: memory must be at least 2GiB. You can switch to a larger plan if needed.
+   - **Region**: default is US (Virginia).
+   - **Important**: lightweight servers in mainland China (excluding Hong Kong) cannot use OpenClaw’s web search feature.
+   - **Purchase period**: default is 12 months. Adjust based on your needs.
+
+## Step 2. Configure OpenClaw
+
+We’ll use Alibaba’s default model first and finish the flow. You can switch models later.
+
+1. Go to <a href="https://bailian.console.aliyun.com/?tab=model#/model-market" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">Alibaba Cloud Bailian Model Service</a>, open the API key page, and create an API key.
+
+![Alibaba Cloud Bailian console](https://cdn.openclawai.cv/aliyun-openclaw-configure-1.PNG)
+
+   - Default model: `qwen3-max-2026-01-23`
+   - New users get 1,000,000 free credits; charges apply after that
+   - We’ll later show how to use NVIDIA’s free `minimax-m2` model
+
+2. On the server page, click the instance ID in the server card to open the overview page.
+
+![Server overview](https://cdn.openclawai.cv/aliyun-openclaw-configure-2.PNG)
+
+3. Open the application detail tab and configure OpenClaw.
+
+![OpenClaw configuration](https://cdn.openclawai.cv/aliyun-openclaw-configure-3.PNG)
+
+   - **Open ports**: allow the required firewall ports with one click.
+   - **Configure OpenClaw**: run the command, paste your Bailian API key, and continue.
+   - **Access the control panel**: run the command to get the Clawdbot chat URL.
+   - **View token**: go to Help > Token and run the command to get the token.
+
+4. Enable Response API access so AppFlow can call OpenClaw.
+
+![Clawdbot Gateway configuration](https://cdn.openclawai.cv/aliyun-openclaw-configure-4.PNG)
+
+   - In Clawdbot, open **Setting > Config** in the left sidebar.
+   - Switch to **Gateway** and then the **Http** tab.
+   - In the **Responses** section, toggle **Enabled** on and click **Save**.
+
+## Step 3. Create and configure the Feishu app
+
+1. Log in to the <a href="https://open.feishu.cn/app" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">Feishu developer console</a>, create an internal app, and fill in the app information.
+
+![Feishu developer console](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-1.PNG)
+
+2. In the left sidebar, click **Add App Capability**, choose **Bot**, and add it.
+
+![Add app capability](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-2.PNG)
+
+3. In **Permission management**, enable permissions and add the following API scopes:
+
+![Permission management](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-3.PNG)
+
+| Permission code | Purpose | Notes |
+|---------|---------|---------|
+| im:message:send_as_bot | Allow the bot to send messages as the app | Required |
+| contact:user.employee_id:readonly | Get user ID | Required |
+| im:message.group_at_msg:readonly | Receive @ mentions in group chats | Core permission |
+| im:message.p2p_msg:readonly | Read messages sent to the bot in 1:1 chats | Required for 1:1 |
+| im:message.group_msg:readonly | Read all messages in a group | Sensitive permission |
+
+4. Collect the required credentials. You’ll need them for AppFlow.
+
+   - In the left sidebar, open **Credentials & Basic Info** and copy **App ID** and **App Secret**.
+
+![Credentials & basic info](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-4.PNG)
+
+   - In **Events & Callbacks**, find **Encryption Strategy**, and copy **Encrypt Key** and **Verification Token**.  
+     If Encrypt Key is empty, click **Reset** to generate a new one.
+
+![Encryption strategy](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-5.PNG)
+
+## Step 4. Create the Feishu connection flow (AppFlow)
+
+1. Open the <a href="https://appflow.console.aliyun.com/vendor/cn-hangzhou/flow/fastTemplate/tl-fa74e4fee3a24ec6945c" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">AppFlow Feishu–OpenClaw template</a> and click **Use now**.
+
+![AppFlow template](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-6.PNG)
+
+2. Add Feishu auth credentials. Enter a name (any), and fill in the values from Step 3. Click **Confirm** and select the credential you created.
+
+![AppFlow credential config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-7.PNG)
+
+3. Create Moltbot auth credentials. Fill in the values from Step 2, click **Confirm**, and select the credential.
+
+![Moltbot credential config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-8.PNG)
+
+4. Click **Next** and fill your public IP and port (default port is 18789).  
+   Example: `48.253.178.133:18789`
+
+![Public IP config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-9.PNG)
+
+5. Publish the flow, then copy and save your **Webhook URL**.
+
+![Publish success](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-10.PNG)
+
+## Step 5. Configure the Feishu bot
+
+### 🖼️ Event configuration page
+
+This page shows **Events & Callbacks** and the event configuration tab.
+
+1. Return to the <a href="https://open.feishu.cn/app" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">Feishu developer console</a>. In the left sidebar, go to **Events & Callbacks**, then configure the subscription method.
+
+![Event config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-11.PNG)
+
+2. Choose **Send events to developer server**, paste the Webhook URL from Step 4, and save.
+
+3. In **Event Configuration**, add **Message Received** events.  
+   **This step is critical—without it, the bot will not receive your messages in groups.**
+
+![Add events](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-12.PNG)
+
+4. In the left sidebar, go to **Version Management & Release**, create a version (or open the latest draft), fill in the required fields, save, and submit for review.
+
+![Version management](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-13.PNG)
+
+## Validation
+
+After configuration, you can add the bot to a group to start interacting.  
+Currently, adding bots is only supported on Feishu desktop. For external groups, follow Feishu’s docs for external group and external user support.
+
+### 🖼️ Add bot screenshot
+
+Path: `... > Settings > Group Bots > Add Bot`
+
+1. Follow the path above to add the bot.
+2. @mention the bot to start a conversation.
+
+![Add bot](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-14.PNG)

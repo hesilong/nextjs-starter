@@ -24,14 +24,26 @@ export default function Ecosystem() {
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {groups.map((group) => (
+        {groups.map((group, index) => (
           <div
             key={group.title}
-            className="rounded-2xl border border-border bg-card/60 p-6 shadow-sm"
+            className="group rounded-2xl border border-border bg-card/60 p-6 shadow-sm"
           >
-            <h3 className="text-lg font-semibold text-foreground">
-              {group.title}
-            </h3>
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="text-lg font-semibold text-foreground">
+                {group.title}
+              </h3>
+              {index < 2 && (
+                <a
+                  href="https://openclaw.ai/integrations"
+                  target="_blank"
+                  rel="noreferrer nofollow noopener"
+                  className="text-xs font-semibold text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                >
+                  {t("ecosystem.visit")}
+                </a>
+              )}
+            </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {group.items.map((item) => (
                 <span

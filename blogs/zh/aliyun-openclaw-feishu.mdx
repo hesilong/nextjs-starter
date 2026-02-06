@@ -30,60 +30,45 @@ pin: false
 
 先默认选择阿里的大模型，后续会讲如何切换，我们首先跑通流程：
 
-### 🖼️ 阿里云百炼平台截图：
+1. 在<a href="https://bailian.console.aliyun.com/?tab=model#/model-market" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">阿里云百炼大模型服务平台</a>前往密钥管理页面，单击创建 API-Key。
 ![阿里云百炼平台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-1.PNG)
 
-1. 在阿里云百炼大模型服务平台前往密钥管理页面，单击创建 API-Key。
+
 
    - 接入的模型默认是 qwen3-max-2026-01-23
    - 新用户有 1,000,000 的免费额度，用完就要产生费用
    - 后面我们讲一下如何接入 nvidia 的免费 minimax-m2 大模型
 
-### 🖼️ 服务器概览页面截图：
-![服务器概览页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-2.PNG)
-展示服务器卡片、实例ID位置，以及概览页面的整体布局。
-
 2. 在服务器页面，单击服务器卡片中的实例 ID，进入服务器概览页面。
 
-### 🖼️ OpenClaw配置页面截图：
-![OpenClaw配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-3.PNG)
-显示应用详情页签、OpenClaw配置界面和各项设置选项。
+![服务器概览页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-2.PNG)
+
+
 
 3. 单击应用详情页签，配置 OpenClaw。
+![OpenClaw配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-3.PNG)
 
    - **端口放通**：需要放通对应端口的防火墙，单击一键放通即可。
    - **配置 OpenClaw**：单击执行命令，输入百炼的 API-Key，单击下一步。
    - **访问控制页面**：单击执行命令可获取 Clawdbot 对话的地址。
    - **查看 Token**：在帮助 > Token 配置中单击执行命令，获取 Token。
 
-### 🖼️ Clawdbot Gateway配置截图：
-![Clawdbot Gateway配置截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-4.PNG)
-显示Setting > Config页面，Gateway配置，HTTP页签和Responses区域的位置。
-
 4. 开启 Response API 访问，后续 AppFlow 会通过 API 访问 OpenClaw。
+![Clawdbot Gateway配置截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-4.PNG)
 
    - 在 Clawdbot 页面左侧导航栏，单击 Setting > Config。
    - 在 Config 页面左侧导航栏单击 Gateway，切换至 Http 页签，在 Responses 区域将 Enabled 切换至开启，单击 Save。
 
 ## 步骤三：创建并配置应用
 
-### 🖼️ 飞书开发者后台截图：
-![飞书开发者后台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-11.PNG)
-展示创建企业自建应用的界面，包含应用信息填写区域。
 
-1. 登录飞书开发者后台，点击创建企业自建应用，填写应用信息后单击创建。
 
-### 🖼️ 添加应用能力页面截图：
-![添加应用能力页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-12.PNG)
-显示添加应用能力的界面，找到机器人卡片的步骤和位置。
-
+1. 登录<a href="https://open.feishu.cn/app" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">飞书开发者后台</a>，点击创建企业自建应用，填写应用信息后单击创建。
+![飞书开发者后台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-1.PNG)
 2. 在左侧导航栏中单击添加应用能力，选择按能力添加页签，找到机器人卡片，点击添加。
-
-### 🖼️ 权限管理页面截图：
-![权限管理页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-13.PNG)
-显示权限管理界面，包含权限搜索框和已添加权限的列表。
-
+![添加应用能力页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-2.PNG)
 3. 在左侧导航栏中单击权限管理，单击开通权限，搜索并添加以下 API 权限：
+![权限管理页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-3.PNG)
 
 | 权限代码 | 用途说明 | 注意事项 |
 |---------|---------|---------|
@@ -93,76 +78,58 @@ pin: false
 | im:message.p2p_msg:readonly | 允许机器人读取用户私聊发给它的消息。 | 单聊场景下必需。 |
 | im:message.group_msg:readonly | 允许机器人获取所在群组的所有消息。 | 敏感权限。 |
 
-### 🖼️ 凭证与基础信息页面截图：
-![凭证与基础信息页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-14.PNG)
-展示App ID、App Secret的查看和复制方式。
+
 
 4. 收集集成所需的凭证。后续配置 AppFlow 连接时需要使用这些信息。
-
    - 在左侧导航栏进入凭证与基础信息页面，查看并复制 App ID 和 App Secret。
+![凭证与基础信息页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-4.PNG)
 
-### 🖼️ 加密策略页面截图：
-![加密策略页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-2.PNG)
-显示Encrypt Key和Verification Token的位置，以及重置按钮的界面。
+   
 
    - 在左侧导航栏进入事件与回调页面，找到加密策略页签。复制 Encrypt Key 和 Verification Token。
-   - 若当前 Encrypt Key 为空，可点击重置生成一个新的 Encrypt Key。
+     若当前 Encrypt Key 为空，可点击重置生成一个新的 Encrypt Key。
+![加密策略页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-5.PNG)
+
+   
 
 ## 步骤四：创建飞书连接流
 
-### 🖼️ AppFlow模板中心截图：
-![AppFlow模板中心截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-3.PNG)
-展示飞书-OpenClaw模板的位置和"立即使用"按钮。
 
-1. 访问 AppFlow 模板中心飞书-OpenClaw 模板，单击立即使用。
 
-### 🖼️ AppFlow凭证配置页面截图：
-![AppFlow凭证配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-4.PNG)
-显示添加鉴权凭证的界面，包含凭证名称填写区域和凭证信息输入框。
+1. 访问 <a href="https://appflow.console.aliyun.com/vendor/cn-hangzhou/flow/fastTemplate/tl-fa74e4fee3a24ec6945c" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold">AppFlow 模板中心飞书-OpenClaw 模板</a>，单击立即使用。
+![AppFlow模板中心截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-6.PNG)
 
 2. 点击添加飞书鉴权凭证，填写凭证名称（随便填写），及参考下图填入步骤三获取的信息。填写完成后单击确定并在下拉框中选中创建好的凭证。
-
-### 🖼️ Moltbot凭证配置界面：
-![Moltbot凭证配置界面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-5.PNG)
-展示创建Moltbot鉴权凭证的填写方式和字段说明。
+![AppFlow凭证配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-7.PNG)
 
 3. 创建 Moltbot 鉴权凭证。填入步骤二获取的凭证，填写完成后单击确定并在下拉框中选中创建好的凭证。
+![Moltbot凭证配置界面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-8.PNG)
 
-### 🖼️ 公网IP配置页面截图：
-![公网IP配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-6.PNG)
-显示服务器公网地址输入框和端口设置说明。
 
-4. 点击下一步，前往服务器详情页获取服务器公网地址并按页面提示填入您的公网IP：端口号，端口号默认为 18789。
 
-   例如：48.253.178.133:18789
-
-### 🖼️ AppFlow发布成功页面：
-![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-8.PNG)
-显示WebhookUrl的复制位置和发布完成的确认信息。
+4. 点击下一步，前往服务器详情页获取服务器公网地址并按页面提示填入您的公网IP：端口号，端口号默认为 18789。 例如：48.253.178.133:18789
+   ![公网IP配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-9.PNG)
 
 5. 配置完成后点击发布，复制并保存您的 Webhook Url。
+![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-10.PNG)
 
 ## 步骤五：配置飞书机器人
 
 ### 🖼️ 飞书事件配置页面：
 显示事件与回调页面，事件配置页签的位置。
 
-1. 返回飞书开发者后台，在左侧导航栏单击事件与回调，在事件配置页签，单击按钮配置订阅方式。
-
-### 🖼️ 订阅方式配置界面：
-展示订阅方式选择界面和WebhookUrl输入框。
+1. 返回<a href="https://open.feishu.cn/app " target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-semibold"> 飞书开发者后台</a>，在左侧导航栏单击事件与回调，在事件配置页签，单击按钮配置订阅方式。
+![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-11.PNG)
 
 2. 选择将事件发送至开发者服务器，并填写上一步复制的 Webhook Url，单击保存。
 
-### 🖼️ 添加事件页面：
-显示已添加事件区域和添加事件按钮的位置。
 
 3. 在事件配置页签的已添加事件区域，单击添加事件，搜索并添加接收消息事件。**这步很关键，不设置，群里机器人是不会收到你的消息的**
+![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-12.PNG)
 
-### 🖼️ 版本管理与发布页面：
-显示版本创建界面、版本信息填写区域和提交审批按钮。
 
 4. 填写完成后，在左侧导航栏点击版本管理与发布，创建版本或点击最新编辑的版本，填写完成相关信息后保存并提交审批。
+![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-13.PNG)
 
 ## 方案验证
 
@@ -175,15 +142,4 @@ pin: false
 
 1. 按照添加路径添加机器人：··· > 设置 > 群机器人 > 添加机器人。
 2. @机器人发送消息即可实现对话。
-
-## 总结
-
-本教程详细介绍了如何将 OpenClaw（原 Moltbot、Clawdbot）集成到飞书中，实现通过自然语言与 AI 助手的直接交互。主要步骤包括：
-
-1. **购买并配置 OpenClaw 服务**
-2. **创建飞书开发者应用**
-3. **通过 AppFlow 建立连接**
-4. **配置机器人权限和事件**
-5. **部署和验证集成效果**
-
-通过这套完整的集成方案，用户可以在飞书的工作环境中无缝使用 OpenClaw 的强大功能，提升工作效率。
+![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-14.PNG)

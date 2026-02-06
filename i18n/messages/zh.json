@@ -91,7 +91,7 @@
       "items": {
         "platform": {
           "title": "全平台接入",
-          "description": "连接飞书、钉钉等，不断扩展。"
+          "description": "连接 WhatsApp、Telegram、Discord、Slack、飞书、钉钉、Teams、iMessage 等平台。"
         },
         "skills": {
           "title": "技能扩展",
@@ -296,9 +296,21 @@
           "items": [
             "飞书",
             "钉钉",
-            "Slack",
+            "WhatsApp",
             "Telegram",
-            "Discord"
+            "Discord",
+            "Slack",
+            "Signal",
+            "iMessage（AppleScript）",
+            "iMessage（BlueBubbles）",
+            "Microsoft Teams",
+            "Nextcloud Talk",
+            "Matrix",
+            "Nostr",
+            "Tlon Messenger",
+            "Zalo",
+            "Zalo 个人号",
+            "WebChat"
           ]
         },
         {
@@ -319,7 +331,8 @@
             "缓存与限流"
           ]
         }
-      ]
+      ],
+      "visit": "查看"
     },
     "safety": {
       "title": "安全提示",

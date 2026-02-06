@@ -91,7 +91,7 @@
       "items": {
         "platform": {
           "title": "All-platform access",
-          "description": "Connect to Feishu, DingTalk, and more — continuously expanding."
+          "description": "Connect to WhatsApp, Telegram, Discord, Slack, Feishu, DingTalk, Teams, and more."
         },
         "skills": {
           "title": "Skill expansion",
@@ -173,7 +173,8 @@
           "tabs": [
             {
               "title": "Feishu",
-              "description": "Create a bot, configure callbacks, and test events."
+              "description": "Create a bot, configure callbacks, and test events.",
+              "href": "/blog/aliyun-openclaw-feishu"
             },
             {
               "title": "DingTalk",
@@ -295,9 +296,21 @@
           "items": [
             "Feishu",
             "DingTalk",
-            "Slack",
+            "WhatsApp",
             "Telegram",
-            "Discord"
+            "Discord",
+            "Slack",
+            "Signal",
+            "iMessage (AppleScript)",
+            "iMessage (BlueBubbles)",
+            "Microsoft Teams",
+            "Nextcloud Talk",
+            "Matrix",
+            "Nostr",
+            "Tlon Messenger",
+            "Zalo",
+            "Zalo Personal",
+            "WebChat"
           ]
         },
         {
@@ -318,7 +331,8 @@
             "Caching & rate limits"
           ]
         }
-      ]
+      ],
+      "visit": "Visit"
     },
     "safety": {
       "title": "Security notice",
@@ -426,7 +440,196 @@
   },
   "Install": {
     "title": "Install OpenClaw",
-    "description": "Set up OpenClaw on your system."
+    "description": "Set up OpenClaw on your system.",
+    "hero": {
+      "eyebrow": "Installation guide",
+      "title": "Deploy OpenClaw the way that fits you",
+      "subtitle": "OpenClaw supports local, cloud servers, Docker, and Kubernetes. Start with 3 recommended paths, then explore the full guide.",
+      "ctaPrimary": "View recommended paths",
+      "ctaSecondary": "See all methods"
+    },
+    "featured": {
+      "title": "Recommended paths",
+      "description": "Three options for first-time setup or a fast launch.",
+      "more": "See all methods",
+      "items": [
+        {
+          "id": "method-local",
+          "title": "Official install guide",
+          "description": "OpenClaw official documentation and setup steps.",
+          "badge": "Official",
+          "href": "https://openclaw.ai/",
+          "icon": "laptop"
+        },
+        {
+          "id": "method-aliyun",
+          "title": "Alibaba Cloud install guide",
+          "description": "One-click deployment on Alibaba Cloud lightweight servers.",
+          "badge": "Alibaba Cloud",
+          "href": "https://developer.aliyun.com/article/1709228",
+          "icon": "cloud"
+        },
+        {
+          "id": "method-tencent",
+          "title": "Tencent Cloud install guide",
+          "description": "Deployment guide for Tencent Cloud lightweight servers.",
+          "badge": "Tencent Cloud",
+          "href": "https://cloud.tencent.com/document/product/1207/127874",
+          "icon": "server"
+        }
+      ]
+    },
+    "allMethods": {
+      "title": "All installation methods",
+      "description": "Choose the right approach for your environment and scale. Click a card for details.",
+      "items": [
+        {
+          "id": "method-docker",
+          "title": "Docker deployment",
+          "description": "Run in containers, ideal for quick trials.",
+          "tags": [
+            "Docker",
+            "Linux"
+          ],
+          "icon": "docker"
+        },
+        {
+          "id": "method-k8s",
+          "title": "Kubernetes deployment",
+          "description": "Best for scalable and highly available setups.",
+          "tags": [
+            "K8s",
+            "Cluster"
+          ],
+          "icon": "k8s"
+        },
+        {
+          "id": "method-marketplace",
+          "title": "Cloud marketplace image",
+          "description": "One-click purchase and delivery for fast launch.",
+          "tags": [
+            "Marketplace",
+            "Image"
+          ],
+          "icon": "marketplace"
+        },
+        {
+          "id": "method-script",
+          "title": "One-click script",
+          "description": "Great for VPS or lightweight servers.",
+          "tags": [
+            "Script",
+            "VPS"
+          ],
+          "icon": "script"
+        },
+        {
+          "id": "method-source",
+          "title": "Source deployment",
+          "description": "Best for deep customization and extensions.",
+          "tags": [
+            "Source",
+            "Custom"
+          ],
+          "icon": "source"
+        },
+        {
+          "id": "method-private",
+          "title": "Private deployment",
+          "description": "Meets intranet and compliance needs.",
+          "tags": [
+            "Private",
+            "Compliance"
+          ],
+          "icon": "private"
+        },
+        {
+          "id": "method-nas",
+          "title": "NAS / Home server",
+          "description": "Low-cost home setup.",
+          "tags": [
+            "NAS",
+            "Home"
+          ],
+          "icon": "nas"
+        },
+        {
+          "id": "method-gpu",
+          "title": "GPU server",
+          "description": "Best for large models and high concurrency.",
+          "tags": [
+            "GPU",
+            "Performance"
+          ],
+          "icon": "gpu"
+        },
+        {
+          "id": "method-local",
+          "title": "Local setup (detailed)",
+          "description": "Great for development, debugging, and fast validation.",
+          "tags": [
+            "Windows",
+            "macOS",
+            "Linux"
+          ],
+          "icon": "laptop"
+        },
+        {
+          "id": "method-aliyun",
+          "title": "Alibaba Cloud server (detailed)",
+          "description": "Recommended for production in mainland China.",
+          "tags": [
+            "ECS",
+            "Public network"
+          ],
+          "icon": "cloud"
+        },
+        {
+          "id": "method-tencent",
+          "title": "Tencent Cloud server (detailed)",
+          "description": "Good for team trials and quick scaling.",
+          "tags": [
+            "CVM",
+            "Public network"
+          ],
+          "icon": "server"
+        }
+      ]
+    },
+    "requirements": {
+      "title": "Prerequisites",
+      "items": [
+        "Node.js 20.x",
+        "pnpm 10.12.4"
+      ]
+    },
+    "quickStart": {
+      "title": "Quick start (local)",
+      "steps": [
+        "Install dependencies",
+        "Start the dev server",
+        "Open the browser and verify"
+      ],
+      "code": "pnpm install\npnpm dev",
+      "verify": "Open http://localhost:3000 to confirm the homepage loads."
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "Port 3000 is in use. What should I do?",
+          "a": "Use pnpm dev -- --port 3001."
+        },
+        {
+          "q": "No pnpm installed?",
+          "a": "Install pnpm first, then run the commands."
+        },
+        {
+          "q": "Install failed or dependencies errored?",
+          "a": "Confirm Node.js is 20.x and check network or mirror settings."
+        }
+      ]
+    }
   },
   "Models": {
     "title": "Configure Models",
