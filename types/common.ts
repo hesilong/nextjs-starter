@@ -4,6 +4,7 @@ export interface HeaderLink {
   href: string;
   target?: string;
   rel?: string;
+  children?: HeaderLink[];
 };
 
 export interface FooterLink {

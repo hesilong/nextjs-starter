@@ -1,0 +1,98 @@
+﻿---
+title: "How to Configure NVIDIA's Free Model for OpenClaw (minimax-m2.1)"
+description: "From getting an NVIDIA API key to generating and merging configs in moltbot.json."
+image: "/cover.png"
+slug: "/nvidia-free-model-openclaw-config"
+tags: ["OpenClaw", "NVIDIA", "minimax-m2.1", "Model config"]
+date: "2026-02-07"
+visible: "published"
+pin: false
+---
+
+# How to Configure NVIDIA's Free Model for OpenClaw (minimax-m2.1)
+
+If your OpenClaw setup fails to start, model parameters are often the culprit. This guide walks through configuring the free **minimax-m2.1** model from **NVIDIA Build**.
+
+---
+
+## Step 1: Register on NVIDIA Build and get an API key
+
+Open the official site: https://build.nvidia.com/
+
+1. Sign up or log in.
+2. Create an **API key** in the console.
+3. Save the key — you will use it later.
+
+![NVIDIA Build API key](https://cdn.openclawai.cv/nvidia-minimax.png)
+
+---
+
+## Step 2: Pick the model and collect required values
+
+Go to **Models** and open the model you want. We use **minimax-m2.1** as the example.
+
+![minimax-m2.1 model page](https://cdn.openclawai.cv/nvidia-minimax-configure-1.png)
+
+1. Open the **minimax-m2.1** detail page.
+2. Click **View Code** (top right).
+3. Note the following values:
+
+- **Base URL**: e.g. `https://integrate.api.nvidia.com/v1`
+- **Model ID**: e.g. `minimaxai/minimax-m2.1`
+- **Max Tokens**: use the value shown on the page
+
+![View Code](https://cdn.openclawai.cv/nvidia-minimax-configure-2.png)
+
+---
+
+## Step 3: Use the config generator
+
+Open the tool:
+
+<a href="/tools/openclaw-model-config-generator" target="_blank" rel="noreferrer noopener" className="text-primary underline font-semibold">openclaw-model-config-generator</a>
+
+Fill it in like this:
+
+- **Provider**: `nvidia` (use other provider names if applicable)
+- **Base URL / API Key / Model ID / Max Tokens**: from steps 1–2
+- Multiple **providers** and **models** are supported
+- Select a **Primary model**
+
+![Config tool](https://cdn.openclawai.cv/nvidia-minimax-configure-4.png)
+
+---
+
+## Step 4: Merge into your OpenClaw config
+
+Locate your config file (usually `moltbot.json`). The easiest method is to upload and merge in the tool:
+
+1. Upload the full config file on the right
+2. The tool merges `models` and `agents`
+3. You can also copy/paste manually if needed
+
+If your original config includes:
+
+```json
+"auth": {
+  "profiles": {
+    "xxxxx": {
+      "provider": "xxxx",
+      "mode": "api_key"
+    }
+  }
+}
+```
+
+**Delete `auth.profiles`** to avoid conflicts.
+
+After merging, check for JSON errors, then restart:
+
+```bash
+moltbot gateway restart
+```
+
+![Merge and restart](https://cdn.openclawai.cv/nvidia-minimax-configure-5.png)
+
+---
+
+That’s it — OpenClaw should now run with NVIDIA’s free model. Good luck!

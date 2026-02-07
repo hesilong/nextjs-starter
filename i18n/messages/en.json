@@ -8,20 +8,18 @@
   "Header": {
     "links": [
       {
-        "name": "Product",
-        "href": "/#path"
-      },
-      {
-        "name": "Docs",
-        "href": "/install"
+        "name": "Tool",
+        "href": "/tools/openclaw-model-config-generator",
+        "children": [
+          {
+            "name": "OpenClaw Model Config Generator",
+            "href": "/tools/openclaw-model-config-generator"
+          }
+        ]
       },
       {
         "name": "Blog",
         "href": "/blog"
-      },
-      {
-        "name": "Community",
-        "href": "/#ecosystem"
       }
     ]
   },
@@ -161,8 +159,9 @@
               "description": "Connect Codex for coding workflows and agents."
             },
             {
-              "title": "Alibaba & Proxy",
-              "description": "Configure Alibaba Cloud or proxy APIs for routing."
+              "title": "NVIDIA free model",
+              "description": "Configure NVIDIA Build and the free minimax-m2.1 model.",
+              "href": "/blog/nvidia-free-model-openclaw-config"
             }
           ]
         },
@@ -646,5 +645,84 @@
   "Skills": {
     "title": "Skill Marketplace",
     "description": "Install and manage skills."
+  },
+  "ConfigTool": {
+    "eyebrow": "Config helper",
+    "title": "OpenClaw Model Config Builder",
+    "description": "Generate the correct model configuration, then copy or merge it into your file.",
+    "privacy": "All processing happens locally in your browser. API keys are not uploaded.",
+    "unnamedModel": "Unnamed model",
+    "providers": {
+      "title": "Providers",
+      "subtitle": "Add providers and credentials. Each provider can include multiple models.",
+      "add": "Add provider",
+      "itemTitle": "Provider {index}",
+      "itemHint": "Use the exact provider key required by OpenClaw.",
+      "fields": {
+        "key": "Provider key",
+        "baseUrl": "Base URL",
+        "apiKey": "API key",
+        "api": "API type",
+        "keyHint": "Example: nvidia",
+        "baseUrlHint": "Example: https://integrate.api.nvidia.com/v1"
+      }
+    },
+    "models": {
+      "title": "Models",
+      "add": "Add model",
+      "itemTitle": "Model {index}",
+      "showAdvanced": "Show advanced options",
+      "hideAdvanced": "Hide advanced options",
+      "fields": {
+        "id": "Model ID",
+        "name": "Model name",
+        "maxTokens": "Max tokens",
+        "reasoning": "Reasoning",
+        "inputText": "Text input",
+        "inputImage": "Image input",
+        "contextWindow": "Context window",
+        "costInput": "Cost input",
+        "costOutput": "Cost output",
+        "costCacheRead": "Cost cache read",
+        "costCacheWrite": "Cost cache write",
+        "idHint": "Example: minimaxai/minimax-m2",
+        "nameHint": "Example: mini-max-thinking"
+      }
+    },
+    "primary": {
+      "title": "Primary model",
+      "subtitle": "This model becomes agents.defaults.model.primary.",
+      "empty": "Add a provider + model first"
+    },
+    "upload": {
+      "title": "Upload config file",
+      "subtitle": "Optional. We will merge the generated config into your file.",
+      "cta": "Select JSON file",
+      "loaded": "Loaded: {name}",
+      "clear": "Clear upload",
+      "invalid": "Invalid JSON file.",
+      "recommendation": "Recommended: upload your config file and we will merge automatically."
+    },
+    "output": {
+      "title": "Generated JSON",
+      "copy": "Copy",
+      "copied": "Copied",
+      "download": "Download",
+      "modeHelp": "Choose full config or snippet mode.",
+      "modeFull": "Full config (downloadable)",
+      "modeSnippet": "Snippet mode (manual insert)",
+      "snippetHint": "Snippet output is not a full JSON file. Paste it next to meta/wizard at the top level."
+    },
+    "errors": {
+      "title": "Please fix the following fields",
+      "providerKey": "Provider {index}: provider key is required.",
+      "baseUrl": "Provider {index}: baseUrl is required.",
+      "apiKey": "Provider {index}: apiKey is required.",
+      "modelId": "Provider {index} / Model {model}: model id is required.",
+      "modelName": "Provider {index} / Model {model}: model name is required.",
+      "modelInput": "Provider {index} / Model {model}: choose at least one input type.",
+      "maxTokens": "Provider {index} / Model {model}: maxTokens must be a number.",
+      "primaryModel": "Primary model is required."
+    }
   }
 }

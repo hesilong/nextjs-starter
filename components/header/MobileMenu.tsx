@@ -21,7 +21,7 @@ export default function MobileMenu() {
   const t = useTranslations("Home");
   const tHeader = useTranslations("Header");
   const headerLinks: HeaderLink[] = tHeader.raw("links");
-  const showHeaderLinks = false;
+  const showHeaderLinks = true;
 
   return (
     <div className="flex items-center gap-1 md:hidden">
@@ -52,21 +52,51 @@ export default function MobileMenu() {
           <DropdownMenuSeparator />
           {showHeaderLinks && (
             <DropdownMenuGroup>
-              {headerLinks.map((link) => (
-                <DropdownMenuItem key={link.name}>
-                  <I18nLink
-                    href={link.href}
-                    title={link.name}
-                    prefetch={
-                      link.target && link.target === "_blank" ? false : true
-                    }
-                    target={link.target || "_self"}
-                    rel={link.rel || undefined}
-                  >
-                    {link.name}
-                  </I18nLink>
-                </DropdownMenuItem>
-              ))}
+              {headerLinks.map((link) => {
+                if (link.children && link.children.length > 0) {
+                  return (
+                    <div key={link.name}>
+                      <DropdownMenuLabel className="text-xs text-muted-foreground">
+                        {link.name}
+                      </DropdownMenuLabel>
+                      {link.children.map((child) => (
+                        <DropdownMenuItem key={child.name} className="pl-6">
+                          <I18nLink
+                            href={child.href}
+                            title={child.name}
+                            prefetch={
+                              child.target && child.target === "_blank"
+                                ? false
+                                : true
+                            }
+                            target={child.target || "_self"}
+                            rel={child.rel || undefined}
+                          >
+                            {child.name}
+                          </I18nLink>
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuSeparator />
+                    </div>
+                  );
+                }
+
+                return (
+                  <DropdownMenuItem key={link.name}>
+                    <I18nLink
+                      href={link.href}
+                      title={link.name}
+                      prefetch={
+                        link.target && link.target === "_blank" ? false : true
+                      }
+                      target={link.target || "_self"}
+                      rel={link.rel || undefined}
+                    >
+                      {link.name}
+                    </I18nLink>
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuGroup>
           )}
         </DropdownMenuContent>

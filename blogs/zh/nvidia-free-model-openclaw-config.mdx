@@ -1,0 +1,88 @@
+﻿---
+title: "如何为 OpenClaw 配置 NVIDIA 免费模型（minimax-m2.1）"
+description: "从申请 NVIDIA API Key 到生成配置、合并到 moltbot.json 的完整教程。"
+image: "/cover.png"
+slug: "/nvidia-free-model-openclaw-config"
+tags: ["OpenClaw", "NVIDIA", "minimax-m2.1", "模型配置"]
+date: "2026-02-07"
+visible: "published"
+pin: false
+---
+
+# 如何为 OpenClaw 配置 NVIDIA 免费模型（minimax-m2.1）
+
+很多人配置 OpenClaw 时出错，往往是模型参数填错导致无法启动。下面用 **NVIDIA Build** 的免费模型 **minimax-m2.1** 做一个完整示例，你照着填就不会踩坑。
+
+---
+
+## 第一步：注册 NVIDIA Build 并申请 API Key
+
+打开官方站点：https://build.nvidia.com/
+
+1. 注册 / 登录账号。
+2. 进入控制台申请 **API Key**。
+3. 复制并保存这个 Key，后面要用到。
+![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax.png)
+
+
+## 第二步：选择模型并获取关键参数
+
+进入 **Models**，找到你要接入的模型。这里以 **minimax-m2.1** 为例：
+1. 打开 **minimax-m2.1** 详情页。
+2. 点击右上角 **View Code**。
+![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-1.png)
+3. 记录下以下参数：
+
+- **Base URL**：例如 `https://integrate.api.nvidia.com/v1`
+- **Model ID**：例如 `minimaxai/minimax-m2.1`
+- **Max Tokens**：以页面显示为准
+![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-2.png)
+
+
+
+
+
+## 第三步：使用配置生成器
+
+打开工具页：
+
+<a href="/zh/tools/openclaw-model-config-generator" target="_blank" rel="noreferrer noopener" className="text-primary underline font-semibold">openclaw-model-config-generator</a>
+
+填写说明：
+
+- **Provider**：输入 `nvidia`（如果是其他平台就填对应平台名）
+- **Base URL / API Key / Model ID / Max Tokens**：按前两步填
+- 支持多个 **providers** 和多个 **models**
+- 记得选择 **Primary model**
+![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-4.png)
+
+## 第四步：合并到 OpenClaw 配置文件
+![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-5.png)
+找到配置文件（一般叫 `moltbot.json`）。推荐用工具直接合并：
+
+1. 在工具右侧上传整个配置文件
+2. 工具会自动合并 `models` / `agents`
+3. 也可以手动复制生成的配置，但要注意合并结构
+
+⚠️ 如果原文件里有以下内容：
+
+```json
+"auth": {
+  "profiles": {
+    "xxxxx": {
+      "provider": "xxxx",
+      "mode": "api_key"
+    }
+  }
+}
+```
+
+**请删除 `auth.profiles`**，否则可能影响配置生效。
+
+完成后检查 JSON 格式是否正确，然后重启服务：
+
+```bash
+moltbot gateway restart
+```
+
+配置完成后，OpenClaw 就可以正常使用 NVIDIA 的免费模型了。祝你配置成功。
