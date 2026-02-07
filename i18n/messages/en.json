@@ -651,6 +651,11 @@
     "title": "OpenClaw Model Config Builder",
     "description": "Generate the correct model configuration, then copy or merge it into your file.",
     "privacy": "All processing happens locally in your browser. API keys are not uploaded.",
+    "guide": {
+      "title": "Need a walkthrough?",
+      "description": "Follow the NVIDIA Build step-by-step guide for OpenClaw.",
+      "cta": "Read the tutorial"
+    },
     "unnamedModel": "Unnamed model",
     "providers": {
       "title": "Providers",

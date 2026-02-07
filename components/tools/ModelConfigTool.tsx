@@ -9,7 +9,8 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const DEFAULT_CONTEXT_WINDOW = 200000;
@@ -77,6 +78,7 @@ type UploadedConfig = {
 
 export default function ModelConfigTool() {
   const t = useTranslations("ConfigTool");
+  const locale = useLocale();
   const [providers, setProviders] = useState<ProviderInput[]>([
     createEmptyProvider(),
   ]);
@@ -86,6 +88,7 @@ export default function ModelConfigTool() {
   const [copied, setCopied] = useState(false);
   const [outputMode, setOutputMode] = useState<"full" | "snippet">("snippet");
   const [uploadKey, setUploadKey] = useState(0);
+  const guideHref = `/${locale}/blog/nvidia-free-model-openclaw-config`;
 
   const modelOptions = useMemo(() => {
     return providers
@@ -408,6 +411,21 @@ export default function ModelConfigTool() {
           {t("description")}
         </p>
         <p className="mt-4 text-sm text-muted-foreground">{t("privacy")}</p>
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-border bg-background/70 px-4 py-3 text-sm text-muted-foreground">
+        <span className="font-semibold text-foreground">
+          {t("guide.title")}
+        </span>{" "}
+        {t("guide.description")}{" "}
+        <Link
+          href={guideHref}
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary underline font-semibold"
+        >
+          {t("guide.cta")}
+        </Link>
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">

@@ -665,6 +665,11 @@
     "title": "OpenClaw 模型配置生成器",
     "description": "输入参数生成正确配置，可复制或合并到你的文件。",
     "privacy": "全部处理在本地浏览器完成，API Key 不会上传。",
+    "guide": {
+      "title": "不会填？",
+      "description": "查看 NVIDIA Build 免费模型的 OpenClaw 配置教程。",
+      "cta": "查看教程"
+    },
     "unnamedModel": "未命名模型",
     "providers": {
       "title": "Provider 配置",
