@@ -1,0 +1,121 @@
+﻿---
+title: "在 VPS 上配置 OpenClaw 读取 Gmail：四步完成授权与长期访问"
+description: "从 Google Cloud 配置到生成 token，再到交付 OpenClaw 与测试使用的完整流程。"
+image: "/cover.png"
+slug: "/vps-openclaw-read-gmail"
+tags: ["OpenClaw", "Gmail", "VPS", "OAuth", "自动化"]
+date: "2026-02-08"
+visible: "published"
+pin: false
+---
+
+# 在 VPS 上配置 OpenClaw 读取 Gmail：四步完成授权与长期访问
+
+在 VPS 上部署 OpenClaw 后，如果想让它读取 Gmail，流程可以拆成四个阶段：申请 Google 授权、在本地生成 token、把文件交给 OpenClaw、最后测试与定时使用。本文按最短路径整理。
+
+---
+
+## 第一步：Google Cloud 后台配置（申请通行证）
+
+1. 登录 Google Cloud Console，新建项目。
+![Google Cloud 控制台首页，进入 API 和服务](https://cdn.openclawai.cv/openclaw-configure-gmail-1.png)
+2. 进入 API 和服务 → 库，搜索并启用：Gmail API
+![在 API 和服务中进入“库”并启用 Gmail API](https://cdn.openclawai.cv/openclaw-configure-gmail-2.png)
+3. 创建凭证：OAuth 客户端 ID。
+![在“凭证”里创建 OAuth 客户端 ID](https://cdn.openclawai.cv/openclaw-configure-gmail-3.png)
+4. 应用类型选择“Desktop App”。
+![选择“桌面应用”并创建 OAuth 客户端](https://cdn.openclawai.cv/openclaw-configure-gmail-4.png)
+5. 下载生成的 JSON 文件，并重命名为 `credentials.json`。
+![创建完成后下载 JSON 文件](https://cdn.openclawai.cv/openclaw-configure-gmail-5.png)
+6. 配置 OAuth 目标对象，并在“测试用户”里添加你的 Gmail 地址，避免 403 报错。
+![在 OAuth 目标对象中添加测试用户](https://cdn.openclawai.cv/openclaw-configure-gmail-7.png)
+
+## 第二步：本地生成 Token（盖章授权）
+应用创建好了之后，google需要浏览器认证，但是VPS上无法调用浏览器，这个时候就要找一台可以打开浏览器的设备，比如电脑，
+拿Windows举例，MacOS类似，
+1. 新建一个文件夹，把 `credentials.json` 放进去。
+2. 初始化并安装依赖。
+
+```bash
+npm init -y
+npm i googleapis @google-cloud/local-auth
+```
+
+3. 新建脚本 `gmail_token_from_desktop.js`，内容如下。
+
+```js
+const fs = require('fs');
+const path = require('path');
+const { authenticate } = require('@google-cloud/local-auth');
+const { google } = require('googleapis');
+
+const SCOPES = ['https://www.googleapis.com/auth/gmail.modify'];
+
+async function main() {
+  const clientPath = process.argv[2];
+  if (!clientPath) {
+    console.error('Usage: node gmail_token_from_desktop.js ./credentials.json');
+    process.exit(1);
+  }
+
+  const auth = await authenticate({
+    keyfilePath: path.resolve(clientPath),
+    scopes: SCOPES,
+  });
+
+  const tokenPath = path.join(process.cwd(), 'gmail_token.json');
+  fs.writeFileSync(tokenPath, JSON.stringify(auth.credentials, null, 2));
+  console.log('Saved token to:', tokenPath);
+  console.log('Scopes:', SCOPES.join(' '));
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+4. 运行脚本并完成授权。
+
+```bash
+node gmail_token_from_desktop.js ./credentials.json
+```
+
+5. 浏览器会弹出授权页面，登录 Gmail 并确认授权。
+![浏览器授权登录 Gmail 账号](https://cdn.openclawai.cv/openclaw-configure-gmail-6.png)
+
+6. 授权成功后本地文件夹生成 `gmail_token.json`。
+
+如果授权页超时，通常是网络或代理问题，可以先设置代理再执行。
+
+```bat
+set HTTPS_PROXY=http://your.proxy.ip:port
+set HTTP_PROXY=http://your.proxy.ip:port
+node gmail_token_from_desktop.js ./credentials.json
+```
+
+## 第三步：发送给 OpenClaw（配置生效）
+
+1. 发送 `credentials.json` 给 OpenClaw。
+2. 发送 `gmail_token.json` 给 OpenClaw（包含 refresh_token）。
+3. 告知你希望的配置偏好。
+
+示例偏好可以是：
+- 每 3 小时检查一次。
+- 只推送 Primary 分类未读邮件。
+- 推送后标记为已读。
+
+## 第四步：测试与使用
+
+1. 发送指令“帮忙总结一下最近的邮件”，确认能够读取并回复。
+2. 设置定时任务，例如“每天早上 9:00 总结重要邮件摘要”。
+
+![OpenClaw 成功读取邮件示例](https://cdn.openclawai.cv/openclaw-configure-gmail-8.png)
+
+---
+
+## 注意事项
+
+- `credentials.json` 和 `gmail_token.json` 都是敏感文件，只能私密发送给自己的机器人。
+- 如果需要自动标记已读，`SCOPES` 必须包含 `gmail.modify`。仅阅读则用 `gmail.readonly`。
+- 若 OpenClaw 提示 keyring，可尝试设置 `GOG_KEYRING_PASSWORD` 与 `GOG_ACCOUNT`，具体方式以你的环境为准。

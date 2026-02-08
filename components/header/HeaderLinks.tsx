@@ -11,11 +11,35 @@ import { cn } from "@/lib/utils";
 import { HeaderLink } from "@/types/common";
 import { ChevronDown, ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const HeaderDropdownLink = ({ link }: { link: HeaderLink }) => {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          className={cn(
+            "rounded-xl px-4 py-2 flex items-center gap-x-1 hover:bg-accent-foreground/10 hover:text-accent-foreground",
+            pathname === link.href && "font-semibold text-accent-foreground"
+          )}
+          aria-haspopup="menu"
+          aria-expanded="false"
+        >
+          {link.name}
+          <ChevronDown className="w-4 h-4 text-muted-foreground" />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div

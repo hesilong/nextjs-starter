@@ -191,8 +191,9 @@
           "cta": "启用网页搜索",
           "tabs": [
             {
-              "title": "内置",
-              "description": "启用 Web Search Browser 并测试查询。"
+              "title": "访问 Gmail 邮箱",
+              "description": "配置 OpenClaw 读取 Gmail 邮件。",
+              "href": "/blog/vps-openclaw-read-gmail"
             },
             {
               "title": "自定义搜索",

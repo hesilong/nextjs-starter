@@ -1,0 +1,124 @@
+﻿---
+title: "Configure OpenClaw on a VPS to Read Gmail: 4 Steps to Long-term Access"
+description: "From Google Cloud setup to token generation, delivery to OpenClaw, and testing."
+image: "/cover.png"
+slug: "/vps-openclaw-read-gmail"
+tags: ["OpenClaw", "Gmail", "VPS", "OAuth", "Automation"]
+date: "2026-02-08"
+visible: "published"
+pin: false
+---
+
+# Configure OpenClaw on a VPS to Read Gmail: 4 Steps to Long-term Access
+
+Once OpenClaw is running on a VPS, you can enable Gmail reading in four stages: get Google OAuth credentials, generate a token locally, send the files to OpenClaw, then test and schedule. This guide keeps it minimal and reliable.
+
+---
+
+## Step 1: Google Cloud setup (get your OAuth credentials)
+
+1. Sign in to Google Cloud Console and create a new project.
+![Google Cloud console home, open APIs & Services](https://cdn.openclawai.cv/openclaw-configure-gmail-1.png)
+2. Go to APIs & Services -> Library, search and enable Gmail API.
+![In APIs & Services, open "Library" and enable Gmail API](https://cdn.openclawai.cv/openclaw-configure-gmail-2.png)
+3. Create credentials: OAuth Client ID.
+![Create an OAuth client ID in "Credentials"](https://cdn.openclawai.cv/openclaw-configure-gmail-3.png)
+4. Choose "Desktop App" as the application type.
+![Choose Desktop App and create the OAuth client](https://cdn.openclawai.cv/openclaw-configure-gmail-4.png)
+5. Download the JSON file and rename it to `credentials.json`.
+![Download the OAuth JSON file after creation](https://cdn.openclawai.cv/openclaw-configure-gmail-5.png)
+6. Configure OAuth audience and add your Gmail address under "Test users" to avoid 403 errors.
+![Add your Gmail account under OAuth "Audience" test users](https://cdn.openclawai.cv/openclaw-configure-gmail-7.png)
+
+## Step 2: Generate the token locally (grant access)
+
+After the app is created, Google requires browser authorization. A VPS cannot open a browser, so use a device that can (your computer). Windows is shown below; macOS is similar.
+
+OpenClaw needs long-term access, so you must generate `gmail_token.json` on your local machine.
+
+1. Create a new folder and put `credentials.json` inside.
+2. Initialize and install dependencies.
+
+```bash
+npm init -y
+npm i googleapis @google-cloud/local-auth
+```
+
+3. Create `gmail_token_from_desktop.js` with the following content.
+
+```js
+const fs = require('fs');
+const path = require('path');
+const { authenticate } = require('@google-cloud/local-auth');
+const { google } = require('googleapis');
+
+const SCOPES = ['https://www.googleapis.com/auth/gmail.modify'];
+
+async function main() {
+  const clientPath = process.argv[2];
+  if (!clientPath) {
+    console.error('Usage: node gmail_token_from_desktop.js ./credentials.json');
+    process.exit(1);
+  }
+
+  const auth = await authenticate({
+    keyfilePath: path.resolve(clientPath),
+    scopes: SCOPES,
+  });
+
+  const tokenPath = path.join(process.cwd(), 'gmail_token.json');
+  fs.writeFileSync(tokenPath, JSON.stringify(auth.credentials, null, 2));
+  console.log('Saved token to:', tokenPath);
+  console.log('Scopes:', SCOPES.join(' '));
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+4. Run the script and complete the authorization flow.
+
+```bash
+node gmail_token_from_desktop.js ./credentials.json
+```
+
+5. A browser window opens. Log in to Gmail and approve access.
+![Authorize with your Gmail account](https://cdn.openclawai.cv/openclaw-configure-gmail-6.png)
+
+6. After authorization, `gmail_token.json` is created in the folder.
+
+If the authorization page times out, it is usually a network or proxy issue. Set proxy variables first (Windows example):
+
+```bat
+set HTTPS_PROXY=http://your.proxy.ip:port
+set HTTP_PROXY=http://your.proxy.ip:port
+node gmail_token_from_desktop.js ./credentials.json
+```
+
+## Step 3: Send to OpenClaw (apply configuration)
+
+1. Send `credentials.json` to OpenClaw.
+2. Send `gmail_token.json` to OpenClaw (contains a refresh token).
+3. Tell OpenClaw your preferences.
+
+Example preferences:
+- Check every 3 hours.
+- Only push unread emails in the Primary category.
+- Mark as read after pushing.
+
+## Step 4: Test and use
+
+1. Test with "Summarize recent emails" and confirm it works.
+2. Set a schedule, e.g. "Summarize important emails every day at 9:00 AM."
+
+![OpenClaw successfully reads emails](https://cdn.openclawai.cv/openclaw-configure-gmail-8.png)
+
+---
+
+## Notes
+
+- `credentials.json` and `gmail_token.json` are sensitive. Only send them privately to your own bot.
+- If you need to mark emails as read, keep `gmail.modify` in `SCOPES`. For read-only access, use `gmail.readonly`.
+- If OpenClaw prompts for a keyring password, try setting `GOG_KEYRING_PASSWORD` and `GOG_ACCOUNT`. The exact steps can vary by environment.

@@ -191,8 +191,9 @@
           "cta": "Enable web search",
           "tabs": [
             {
-              "title": "Built-in",
-              "description": "Enable Web Search Browser and test a query."
+              "title": "Access Gmail Inbox",
+              "description": "Configure OpenClaw to read Gmail emails.",
+              "href": "/blog/vps-openclaw-read-gmail"
             },
             {
               "title": "Custom search",
