@@ -74,11 +74,11 @@
           "label": "GitHub 星标"
         },
         {
-          "value": "多平台",
+          "value": "多通讯平台",
           "label": "聊天集成"
         },
         {
-          "value": "市场",
+          "value": "技能市场",
           "label": "技能生态"
         }
       ]
@@ -222,7 +222,137 @@
               "title": "私有",
               "description": "发布内部技能并做权限范围控制。"
             }
-          ]
+          ],
+          "categories": [
+            {
+              "title": "Coding Agents & IDEs",
+              "count": 55,
+              "skills": [
+                {
+                  "name": "claude-team",
+                  "description": "Claude multi-agent via iTerm2",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/jalehman/claude-team/SKILL.md"
+                },
+                {
+                  "name": "debug-pro",
+                  "description": "Debugging playbooks",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/cmanfre7/debug-pro/SKILL.md"
+                },
+                {
+                  "name": "docker-essentials",
+                  "description": "Docker essentials",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/arnarsson/docker-essentials/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#coding-agents--ides"
+            },
+            {
+              "title": "Git & GitHub",
+              "count": 34,
+              "skills": [
+                {
+                  "name": "github",
+                  "description": "GitHub via gh CLI",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/github/SKILL.md"
+                },
+                {
+                  "name": "github-pr",
+                  "description": "Local PR fetch/preview/merge/test",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/github-pr/SKILL.md"
+                },
+                {
+                  "name": "git-essentials",
+                  "description": "Essential Git workflows",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/arnarsson/git-essentials/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#git--github"
+            },
+            {
+              "title": "DevOps & Cloud",
+              "count": 144,
+              "skills": [
+                {
+                  "name": "kubernetes",
+                  "description": "Kubernetes & OpenShift ops",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/kcns008/kubernetes/SKILL.md"
+                },
+                {
+                  "name": "aws-solution-architect",
+                  "description": "AWS architecture for startups",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/alirezarezvani/aws-solution-architect/SKILL.md"
+                },
+                {
+                  "name": "docker-diag",
+                  "description": "Advanced Docker log analysis",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/mkrdiop/docker-diag/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#devops--cloud"
+            },
+            {
+              "title": "Web & Frontend Development",
+              "count": 46,
+              "skills": [
+                {
+                  "name": "nextjs-expert",
+                  "description": "Next.js 14/15 App Router",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/jgarrison929/nextjs-expert/SKILL.md"
+                },
+                {
+                  "name": "frontend-design",
+                  "description": "Production-grade UI design",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/frontend-design/SKILL.md"
+                },
+                {
+                  "name": "ui-ux-master",
+                  "description": "Apple HIG + modern web UI",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/kdbhalala/ui-ux-master/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#web--frontend-development"
+            }
+          ],
+          "scenarios": {
+            "title": "技能场景",
+            "description": "选择一个分类快速启动。",
+            "groups": [
+              {
+                "title": "开发辅助类（程序员必备）",
+                "items": [
+                  {
+                    "title": "Coding Agents & IDEs",
+                    "count": 55,
+                    "audience": "程序员、开发者",
+                    "example": "帮我创建 Python 虚拟环境，安装 pandas 依赖"
+                  },
+                  {
+                    "title": "Git & GitHub",
+                    "count": 34,
+                    "audience": "所有开发者",
+                    "example": "合并 GitHub 仓库的 PR #123，删除源分支"
+                  },
+                  {
+                    "title": "DevOps & Cloud",
+                    "count": 144,
+                    "audience": "DevOps 工程师、云架构师",
+                    "example": "检查 Kubernetes 集群健康状态，生成诊断报告"
+                  },
+                  {
+                    "title": "Web & Frontend Development",
+                    "count": 46,
+                    "audience": "前端开发者、UI 设计师",
+                    "example": "用 Next.js 搭建博客网站框架，包含登录页面"
+                  }
+                ]
+              }
+            ],
+            "headers": {
+              "category": "分类名称",
+              "audience": "适用人群",
+              "example": "调用示例"
+            }
+          }
         }
       },
       "cardBadge": "指南"

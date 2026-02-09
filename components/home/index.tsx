@@ -4,7 +4,7 @@ import Hero from "@/components/home/Hero";
 import OpenClawLongform from "@/components/home/OpenClawLongform";
 import PathSteps from "@/components/home/PathSteps";
 import SafetyNotice from "@/components/home/SafetyNotice";
-import SkillCategories from "@/components/home/SkillCategories";
+import SkillScenarios from "@/components/home/SkillScenarios";
 
 export default function HomeComponent({ locale }: { locale: string }) {
   return (
@@ -12,8 +12,8 @@ export default function HomeComponent({ locale }: { locale: string }) {
       <Hero />
       <Features />
       <PathSteps />
+      <SkillScenarios />
       <OpenClawLongform locale={locale} />
-      <SkillCategories />
       <Ecosystem />
       <SafetyNotice />
     </>

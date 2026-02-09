@@ -19,12 +19,32 @@ const steps = [
   { id: "skills", icon: Puzzle, href: routes.skills },
 ] as const;
 
+const SKILL_MARKETPLACE_BASE_URL = "https://openclaw.ai/skills";
+
+const toAnchorId = (value: string) =>
+  `skills-${value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")}`;
+
 type StepId = (typeof steps)[number]["id"];
 
 type StepTab = {
   title: string;
   description: string;
   href?: string;
+};
+
+type SkillCategory = {
+  title: string;
+  count: number;
+  href?: string;
+  skills: {
+    name: string;
+    description?: string;
+    href?: string;
+  }[];
 };
 
 export default function PathSteps() {
@@ -52,10 +72,16 @@ export default function PathSteps() {
             `steps.items.${step.id}.tabs` as const
           ) as StepTab[];
           const isInstall = step.id === "install";
+          const isSkills = step.id === "skills";
           const moreText = isInstall
             ? t("steps.items.install.more")
             : t("steps.more");
           const visitText = t("steps.items.install.visit");
+          const skillCategories = isSkills
+            ? (t.raw(
+                "steps.items.skills.categories" as const
+              ) as SkillCategory[])
+            : [];
 
           return (
             <div
@@ -137,6 +163,61 @@ export default function PathSteps() {
                       </I18nLink>
                     );
                   })}
+                </div>
+              ) : isSkills ? (
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {skillCategories.map((category) => (
+                    <div
+                      key={category.title}
+                      id={toAnchorId(category.title)}
+                      className="scroll-mt-24 rounded-2xl border border-border bg-background/80 p-5 shadow-sm target:border-primary/40 target:ring-2 target:ring-primary/20"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <h4 className="text-sm font-semibold text-foreground">
+                          {category.title}
+                        </h4>
+                        {category.href ? (
+                          <a
+                            href={category.href}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                          >
+                            {category.count}
+                          </a>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                            {category.count}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-4 space-y-2">
+                        {category.skills.map((skill) => {
+                          const href =
+                            skill.href ||
+                            `${SKILL_MARKETPLACE_BASE_URL}/${skill.name}`;
+                          return (
+                            <a
+                              key={skill.name}
+                              href={href}
+                              target="_blank"
+                              rel="nofollow noopener noreferrer"
+                              className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/90 px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                            >
+                              <span className="text-foreground font-medium">
+                                {skill.name}
+                              </span>
+                              {skill.description && (
+                                <span className="text-right text-muted-foreground">
+                                  {skill.description}
+                                </span>
+                              )}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

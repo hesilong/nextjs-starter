@@ -146,7 +146,7 @@
           "visit": "Visit"
         },
         "models": {
-          "title": "Configure models",
+          "title": "Configure Models",
           "description": "Claude, Codex, Alibaba Cloud, and proxy APIs.",
           "cta": "Configure models",
           "tabs": [
@@ -166,7 +166,7 @@
           ]
         },
         "chat": {
-          "title": "Connect chat tools",
+          "title": "Connect Chat Tools",
           "description": "Integrate Feishu, DingTalk, and enterprise chat tools.",
           "cta": "Connect chat",
           "tabs": [
@@ -186,7 +186,7 @@
           ]
         },
         "webSearch": {
-          "title": "Enable web search",
+          "title": "Enable Web Search",
           "description": "Web Search Browser with safe proxy and caching.",
           "cta": "Enable web search",
           "tabs": [
@@ -206,7 +206,7 @@
           ]
         },
         "skills": {
-          "title": "Add skills",
+          "title": "Add Skills",
           "description": "Access skill marketplace and private skills.",
           "cta": "Add skills",
           "tabs": [
@@ -222,7 +222,137 @@
               "title": "Private",
               "description": "Ship internal skills with scoped access."
             }
-          ]
+          ],
+          "categories": [
+            {
+              "title": "Coding Agents & IDEs",
+              "count": 55,
+              "skills": [
+                {
+                  "name": "claude-team",
+                  "description": "Claude multi-agent via iTerm2",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/jalehman/claude-team/SKILL.md"
+                },
+                {
+                  "name": "debug-pro",
+                  "description": "Debugging playbooks",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/cmanfre7/debug-pro/SKILL.md"
+                },
+                {
+                  "name": "docker-essentials",
+                  "description": "Docker essentials",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/arnarsson/docker-essentials/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#coding-agents--ides"
+            },
+            {
+              "title": "Git & GitHub",
+              "count": 34,
+              "skills": [
+                {
+                  "name": "github",
+                  "description": "GitHub via gh CLI",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/github/SKILL.md"
+                },
+                {
+                  "name": "github-pr",
+                  "description": "Local PR fetch/preview/merge/test",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/github-pr/SKILL.md"
+                },
+                {
+                  "name": "git-essentials",
+                  "description": "Essential Git workflows",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/arnarsson/git-essentials/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#git--github"
+            },
+            {
+              "title": "DevOps & Cloud",
+              "count": 144,
+              "skills": [
+                {
+                  "name": "kubernetes",
+                  "description": "Kubernetes & OpenShift ops",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/kcns008/kubernetes/SKILL.md"
+                },
+                {
+                  "name": "aws-solution-architect",
+                  "description": "AWS architecture for startups",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/alirezarezvani/aws-solution-architect/SKILL.md"
+                },
+                {
+                  "name": "docker-diag",
+                  "description": "Advanced Docker log analysis",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/mkrdiop/docker-diag/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#devops--cloud"
+            },
+            {
+              "title": "Web & Frontend Development",
+              "count": 46,
+              "skills": [
+                {
+                  "name": "nextjs-expert",
+                  "description": "Next.js 14/15 App Router",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/jgarrison929/nextjs-expert/SKILL.md"
+                },
+                {
+                  "name": "frontend-design",
+                  "description": "Production-grade UI design",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/frontend-design/SKILL.md"
+                },
+                {
+                  "name": "ui-ux-master",
+                  "description": "Apple HIG + modern web UI",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/kdbhalala/ui-ux-master/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#web--frontend-development"
+            }
+          ],
+          "scenarios": {
+            "title": "Skill Scenarios",
+            "description": "Choose a category to get started quickly.",
+            "groups": [
+              {
+                "title": "Developer Essentials",
+                "items": [
+                  {
+                    "title": "Coding Agents & IDEs",
+                    "count": 55,
+                    "audience": "Developers & engineers",
+                    "example": "Create a Python venv and install pandas."
+                  },
+                  {
+                    "title": "Git & GitHub",
+                    "count": 34,
+                    "audience": "All developers",
+                    "example": "Merge PR #123 and delete the source branch."
+                  },
+                  {
+                    "title": "DevOps & Cloud",
+                    "count": 144,
+                    "audience": "DevOps engineers, cloud architects",
+                    "example": "Check cluster health and generate a diagnostic report."
+                  },
+                  {
+                    "title": "Web & Frontend Development",
+                    "count": 46,
+                    "audience": "Frontend devs, UI designers",
+                    "example": "Scaffold a Next.js blog with a login page."
+                  }
+                ]
+              }
+            ],
+            "headers": {
+              "category": "Category",
+              "audience": "Audience",
+              "example": "Example"
+            }
+          }
         }
       },
       "cardBadge": "Guide"
