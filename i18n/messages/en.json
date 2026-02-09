@@ -207,7 +207,7 @@
         },
         "skills": {
           "title": "Add Skills",
-          "description": "Access skill marketplace and private skills.",
+          "description": "Access OpenClaw skill marketplace.",
           "cta": "Add skills",
           "tabs": [
             {
@@ -352,6 +352,12 @@
               "audience": "Audience",
               "example": "Example"
             }
+          },
+          "install": {
+            "title": "Install Any Skill With One Command",
+            "subtitle": "Quick install via ClawHub CLI",
+            "command": "npx clawhub@latest install <skill-name>",
+            "hint": "Replace <skill-name> with the skill id above."
           }
         }
       },

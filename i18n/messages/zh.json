@@ -352,6 +352,12 @@
               "audience": "适用人群",
               "example": "调用示例"
             }
+          },
+          "install": {
+            "title": "一条命令安装技能",
+            "subtitle": "通过 ClawHub CLI 快速安装",
+            "command": "npx clawhub@latest install <skill-name>",
+            "hint": "将 <skill-name> 替换为上方技能名。"
           }
         }
       },

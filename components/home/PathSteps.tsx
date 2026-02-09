@@ -47,6 +47,13 @@ type SkillCategory = {
   }[];
 };
 
+type SkillInstall = {
+  title: string;
+  subtitle: string;
+  command: string;
+  hint?: string;
+};
+
 export default function PathSteps() {
   const t = useTranslations("Home");
 
@@ -82,6 +89,9 @@ export default function PathSteps() {
                 "steps.items.skills.categories" as const
               ) as SkillCategory[])
             : [];
+          const skillInstall = isSkills
+            ? (t.raw("steps.items.skills.install" as const) as SkillInstall)
+            : null;
 
           return (
             <div
@@ -165,59 +175,82 @@ export default function PathSteps() {
                   })}
                 </div>
               ) : isSkills ? (
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {skillCategories.map((category) => (
-                    <div
-                      key={category.title}
-                      id={toAnchorId(category.title)}
-                      className="scroll-mt-24 rounded-2xl border border-border bg-background/80 p-5 shadow-sm target:border-primary/40 target:ring-2 target:ring-primary/20"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <h4 className="text-sm font-semibold text-foreground">
-                          {category.title}
-                        </h4>
-                        {category.href ? (
-                          <a
-                            href={category.href}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-                          >
-                            {category.count}
-                          </a>
-                        ) : (
-                          <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
-                            {category.count}
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-4 space-y-2">
-                        {category.skills.map((skill) => {
-                          const href =
-                            skill.href ||
-                            `${SKILL_MARKETPLACE_BASE_URL}/${skill.name}`;
-                          return (
+                <div className="mt-6 space-y-6">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {skillCategories.map((category) => (
+                      <div
+                        key={category.title}
+                        id={toAnchorId(category.title)}
+                        className="scroll-mt-24 rounded-2xl border border-border bg-background/80 p-5 shadow-sm target:border-primary/40 target:ring-2 target:ring-primary/20"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <h4 className="text-sm font-semibold text-foreground">
+                            {category.title}
+                          </h4>
+                          {category.href ? (
                             <a
-                              key={skill.name}
-                              href={href}
+                              href={category.href}
                               target="_blank"
                               rel="nofollow noopener noreferrer"
-                              className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/90 px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                              className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
                             >
-                              <span className="text-foreground font-medium">
-                                {skill.name}
-                              </span>
-                              {skill.description && (
-                                <span className="text-right text-muted-foreground">
-                                  {skill.description}
-                                </span>
-                              )}
+                              {category.count}
                             </a>
-                          );
-                        })}
+                          ) : (
+                            <span className="inline-flex items-center rounded-full border border-border bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                              {category.count}
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-4 space-y-2">
+                          {category.skills.map((skill) => {
+                            const href =
+                              skill.href ||
+                              `${SKILL_MARKETPLACE_BASE_URL}/${skill.name}`;
+                            return (
+                              <a
+                                key={skill.name}
+                                href={href}
+                                target="_blank"
+                                rel="nofollow noopener noreferrer"
+                                className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/90 px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                              >
+                                <span className="text-foreground font-medium">
+                                  {skill.name}
+                                </span>
+                                {skill.description && (
+                                  <span className="text-right text-muted-foreground">
+                                    {skill.description}
+                                  </span>
+                                )}
+                              </a>
+                            );
+                          })}
+                        </div>
                       </div>
+                    ))}
+                  </div>
+
+                  {skillInstall ? (
+                    <div className="rounded-2xl border border-border bg-muted/40 p-6 shadow-sm">
+                      <div className="space-y-2">
+                        <h4 className="text-base font-semibold text-foreground">
+                          {skillInstall.title}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {skillInstall.subtitle}
+                        </p>
+                      </div>
+                      <div className="mt-4 rounded-xl border border-border bg-background/90 px-4 py-3 font-mono text-sm text-emerald-600">
+                        {skillInstall.command}
+                      </div>
+                      {skillInstall.hint && (
+                        <p className="mt-3 text-xs text-muted-foreground">
+                          {skillInstall.hint}
+                        </p>
+                      )}
                     </div>
-                  ))}
+                  ) : null}
                 </div>
               ) : (
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
