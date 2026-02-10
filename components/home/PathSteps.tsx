@@ -181,7 +181,7 @@ export default function PathSteps() {
                       <div
                         key={category.title}
                         id={toAnchorId(category.title)}
-                        className="scroll-mt-24 rounded-2xl border border-border bg-background/80 p-5 shadow-sm target:border-primary/40 target:ring-2 target:ring-primary/20"
+                        className="scroll-mt-24 rounded-2xl border border-border bg-background/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40 target:border-primary/40 target:ring-2 target:ring-primary/20"
                       >
                         <div className="flex items-center justify-between gap-3">
                           <h4 className="text-sm font-semibold text-foreground">

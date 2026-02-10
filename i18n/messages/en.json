@@ -311,6 +311,72 @@
                 }
               ],
               "href": "https://github.com/VoltAgent/awesome-openclaw-skills?tab=readme-ov-file#web--frontend-development"
+            },
+            {
+              "title": "Image & Video Generation",
+              "count": 41,
+              "skills": [
+                {
+                  "name": "fal-ai",
+                  "description": "Images, video & audio via fal.ai",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/agmmnn/fal-ai/SKILL.md"
+                },
+                {
+                  "name": "remotion-video-toolkit",
+                  "description": "Programmatic video toolkit",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/shreefentsar/remotion-video-toolkit/SKILL.md"
+                },
+                {
+                  "name": "nano-banana-pro",
+                  "description": "Nano Banana Pro image editor",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/nano-banana-pro/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#image--video-generation"
+            },
+            {
+              "title": "Search & Research",
+              "count": 148,
+              "skills": [
+                {
+                  "name": "brave-search",
+                  "description": "Brave Search web extraction",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/brave-search/SKILL.md"
+                },
+                {
+                  "name": "deep-research",
+                  "description": "Multi-step research agent",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/seyhunak/deep-research/SKILL.md"
+                },
+                {
+                  "name": "perplexity",
+                  "description": "Perplexity web research",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/dronnick/perplexity-bash/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#search--research"
+            },
+            {
+              "title": "Notes & PKM",
+              "count": 61,
+              "skills": [
+                {
+                  "name": "obsidian",
+                  "description": "Obsidian vault automation",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/obsidian/SKILL.md"
+                },
+                {
+                  "name": "notion",
+                  "description": "Notion API pages & databases",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/steipete/notion/SKILL.md"
+                },
+                {
+                  "name": "raindrop",
+                  "description": "Raindrop.io bookmark CLI",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/velvet-shark/raindrop/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#notes--pkm"
             }
           ],
           "scenarios": {
@@ -343,6 +409,29 @@
                     "count": 46,
                     "audience": "Frontend devs, UI designers",
                     "example": "Scaffold a Next.js blog with a login page."
+                  }
+                ]
+              },
+              {
+                "title": "Content creation",
+                "items": [
+                  {
+                    "title": "Image & Video Generation",
+                    "count": 41,
+                    "audience": "Designers, video creators",
+                    "example": "Generate a cyberpunk city night scene, 1920x1080."
+                  },
+                  {
+                    "title": "Search & Research",
+                    "count": 148,
+                    "audience": "Creators, students, researchers",
+                    "example": "Find the latest in quantum computing and summarize 5 key breakthroughs."
+                  },
+                  {
+                    "title": "Notes & PKM",
+                    "count": 61,
+                    "audience": "Knowledge workers, learners",
+                    "example": "Create AI study notes in Obsidian under 'Tech Learning'."
                   }
                 ]
               }

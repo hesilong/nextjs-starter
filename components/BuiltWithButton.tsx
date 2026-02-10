@@ -12,7 +12,7 @@ export default function BuiltWithButton() {
       title="Built with NEXTY.DEV"
       prefetch={false}
       target="_blank"
-      rel="noopener noreferrer"
+      rel="nofollow noopener noreferrer"
       className={cn(
         buttonVariants({ variant: "outline", size: "sm" }),
         "px-4 rounded-md bg-transparent border-gray-500 hover:bg-gray-950 text-white hover:text-gray-100"
