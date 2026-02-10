@@ -1,5 +1,6 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
 import { Link as I18nLink } from "@/i18n/routing";
 import { ArrowRight } from "lucide-react";
@@ -13,6 +14,19 @@ type HeroStat = {
 export default function Hero() {
   const t = useTranslations("Home");
   const stats = t.raw("hero.stats") as HeroStat[];
+
+  const handleScrollToPath = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    const target = document.getElementById("path");
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    const base = `${window.location.pathname}${window.location.search}`;
+    if (window.location.hash !== "#path") {
+      window.history.replaceState(null, "", `${base}#path`);
+    }
+  };
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 pt-24 text-center">
@@ -28,7 +42,11 @@ export default function Hero() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <I18nLink href="/#path" className="gap-2">
+            <I18nLink
+              href="/#path"
+              className="gap-2"
+              onClick={handleScrollToPath}
+            >
               {t("hero.ctaPrimary")}
               <ArrowRight className="h-4 w-4" />
             </I18nLink>
