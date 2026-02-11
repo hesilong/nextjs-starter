@@ -377,6 +377,72 @@
                 }
               ],
               "href": "https://github.com/VoltAgent/awesome-openclaw-skills#notes--pkm"
+            },
+            {
+              "title": "Productivity & Tasks",
+              "count": 93,
+              "skills": [
+                {
+                  "name": "todoist",
+                  "description": "Todoist tasks & projects",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/mjrussell/todoist/SKILL.md"
+                },
+                {
+                  "name": "linearis",
+                  "description": "Linear issue tracking",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/whoisnnamdi/linearis/SKILL.md"
+                },
+                {
+                  "name": "clickup-skill",
+                  "description": "ClickUp project management",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/d3layd/clickup-skill/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#productivity--tasks"
+            },
+            {
+              "title": "PDF & Documents",
+              "count": 35,
+              "skills": [
+                {
+                  "name": "pdf",
+                  "description": "PDF extract & tables",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/awspace/pdf/SKILL.md"
+                },
+                {
+                  "name": "docx",
+                  "description": "Word docs & tracking",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/seanphan/docx/SKILL.md"
+                },
+                {
+                  "name": "pptx-creator",
+                  "description": "PPTX deck creator",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/pptx-creator/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#pdf--documents"
+            },
+            {
+              "title": "Communication",
+              "count": 58,
+              "skills": [
+                {
+                  "name": "gmail-manager",
+                  "description": "Gmail management assistant",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/pepperbotts/gmail-manager/SKILL.md"
+                },
+                {
+                  "name": "telegram-bot",
+                  "description": "Telegram Bot API workflows",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/sebastian-buitrag0/telegram-bot/SKILL.md"
+                },
+                {
+                  "name": "whatsapp-styler",
+                  "description": "WhatsApp message styling",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/rubenfb23/whatsapp-styler/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#communication"
             }
           ],
           "scenarios": {
@@ -429,6 +495,29 @@
                     "title": "Notes & PKM",
                     "audience": "\u77e5\u8bc6\u5de5\u4f5c\u8005\u3001\u5b66\u4e60\u8005",
                     "example": "\u5728 Obsidian \u4e2d\u521b\u5efa AI \u5b66\u4e60\u7b14\u8bb0\uff0c\u5206\u7c7b\u5230\u201c\u6280\u672f\u5b66\u4e60\u201d\u76ee\u5f55"
+                  }
+                ]
+              },
+              {
+                "title": "\u529e\u516c\u6548\u7387\u7c7b\uff08\u6253\u5de5\u4eba\u5fc5\u5907\uff09",
+                "items": [
+                  {
+                    "title": "Productivity & Tasks",
+                    "count": 93,
+                    "audience": "\u804c\u573a\u4eba\u3001\u9879\u76ee\u7ecf\u7406",
+                    "example": "\u5728Todoist\u521b\u5efa\u4efb\u52a1\uff1a\u5b8c\u6210\u9879\u76ee\u62a5\u544a\uff0c\u622a\u6b62\u65e5\u671f\u660e\u592918\u70b9"
+                  },
+                  {
+                    "title": "PDF & Documents",
+                    "count": 35,
+                    "audience": "\u529e\u516c\u4eba\u5458\u3001\u5b66\u751f",
+                    "example": "\u63d0\u53d6report.pdf\u4e2d\u7684\u6240\u6709\u6587\u672c\uff0c\u8f6c\u6362\u4e3aWord\u6587\u6863"
+                  },
+                  {
+                    "title": "Communication",
+                    "count": 58,
+                    "audience": "\u5546\u52a1\u4eba\u58eb\u3001\u56e2\u961f\u7ba1\u7406\u8005",
+                    "example": "\u67e5\u770b\u672a\u8bfb\u90ae\u4ef6\uff0c\u603b\u7ed33\u5c01\u91cd\u8981\u90ae\u4ef6\u7684\u6838\u5fc3\u5185\u5bb9"
                   }
                 ]
               }

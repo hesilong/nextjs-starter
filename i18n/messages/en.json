@@ -377,6 +377,72 @@
                 }
               ],
               "href": "https://github.com/VoltAgent/awesome-openclaw-skills#notes--pkm"
+            },
+            {
+              "title": "Productivity & Tasks",
+              "count": 93,
+              "skills": [
+                {
+                  "name": "todoist",
+                  "description": "Todoist tasks & projects",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/mjrussell/todoist/SKILL.md"
+                },
+                {
+                  "name": "linearis",
+                  "description": "Linear issue tracking",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/whoisnnamdi/linearis/SKILL.md"
+                },
+                {
+                  "name": "clickup-skill",
+                  "description": "ClickUp project management",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/d3layd/clickup-skill/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#productivity--tasks"
+            },
+            {
+              "title": "PDF & Documents",
+              "count": 35,
+              "skills": [
+                {
+                  "name": "pdf",
+                  "description": "PDF extract & tables",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/awspace/pdf/SKILL.md"
+                },
+                {
+                  "name": "docx",
+                  "description": "Word docs & tracking",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/seanphan/docx/SKILL.md"
+                },
+                {
+                  "name": "pptx-creator",
+                  "description": "PPTX deck creator",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/pptx-creator/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#pdf--documents"
+            },
+            {
+              "title": "Communication",
+              "count": 58,
+              "skills": [
+                {
+                  "name": "gmail-manager",
+                  "description": "Gmail management assistant",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/pepperbotts/gmail-manager/SKILL.md"
+                },
+                {
+                  "name": "telegram-bot",
+                  "description": "Telegram Bot API workflows",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/sebastian-buitrag0/telegram-bot/SKILL.md"
+                },
+                {
+                  "name": "whatsapp-styler",
+                  "description": "WhatsApp message styling",
+                  "href": "https://github.com/openclaw/skills/tree/main/skills/rubenfb23/whatsapp-styler/SKILL.md"
+                }
+              ],
+              "href": "https://github.com/VoltAgent/awesome-openclaw-skills#communication"
             }
           ],
           "scenarios": {
@@ -432,6 +498,29 @@
                     "count": 61,
                     "audience": "Knowledge workers, learners",
                     "example": "Create AI study notes in Obsidian under 'Tech Learning'."
+                  }
+                ]
+              },
+              {
+                "title": "Office Productivity",
+                "items": [
+                  {
+                    "title": "Productivity & Tasks",
+                    "count": 93,
+                    "audience": "Professionals, project managers",
+                    "example": "Create a Todoist task to finish the report, due tomorrow at 6 PM."
+                  },
+                  {
+                    "title": "PDF & Documents",
+                    "count": 35,
+                    "audience": "Office staff, students",
+                    "example": "Extract all text from report.pdf and convert it to Word."
+                  },
+                  {
+                    "title": "Communication",
+                    "count": 58,
+                    "audience": "Business users, team leads",
+                    "example": "Check unread emails and summarize the 3 most important."
                   }
                 ]
               }
