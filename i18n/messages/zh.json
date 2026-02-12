@@ -151,8 +151,9 @@
           "cta": "\u914d\u7f6e\u6a21\u578b",
           "tabs": [
             {
-              "title": "Claude",
-              "description": "\u8bbe\u7f6e API Key \u5e76\u9009\u62e9 Claude \u9884\u8bbe\u6a21\u578b\u3002"
+              "title": "OpenClaw\u914d\u7f6eGLM-5",
+              "description": "\u67e5\u770b GLM-5 \u63a5\u5165\u4e0e\u914d\u7f6e\u6b65\u9aa4\u3002",
+              "href": "/blog/openclaw-glm5-config"
             },
             {
               "title": "Codex",

@@ -75,7 +75,7 @@ GLM-5 是智谱 AI 推出的、面向复杂系统工程与长链路智能体任�
 生成器会提供 JSON 配置，点击 "Copy" 复制到剪贴板。
 ![OpenClaw 配置生成器 JSON 输出示意图](https://cdn.openclawai.cv/openclaw-glm5-configure-2.png)
 
-#### 方案 A：配置文件合并（推荐）
+接下来：
 
 1. 在配置生成器中上传你当前的 `openclaw.json` 配置文件。
 2. 让工具自动合并新配置（例如 GLM-5 的 provider 和 model）。
@@ -85,15 +85,6 @@ GLM-5 是智谱 AI 推出的、面向复杂系统工程与长链路智能体任�
 
 ```bash
 cp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.backup
-```
-
-#### 方案 B：OpenClaw CLI 快速设置
-
-```bash
-openclaw config set agents.defaults.model "glm-5"
-openclaw config set agents.defaults.baseUrl "https://open.bigmodel.cn/api/paas/v4"
-openclaw config set agents.defaults.apiKey "你的GLM-5-API-密钥"
-openclaw config set agents.defaults.temperature 0.7
 ```
 
 ---

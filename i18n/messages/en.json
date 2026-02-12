@@ -151,15 +151,16 @@
           "cta": "Configure models",
           "tabs": [
             {
-              "title": "Claude",
-              "description": "Set API keys and select the Claude model preset."
+              "title": "OpenClaw Configure GLM-5",
+              "description": "See GLM-5 setup and configuration steps.",
+              "href": "/blog/openclaw-glm5-config"
             },
             {
               "title": "Codex",
               "description": "Connect Codex for coding workflows and agents."
             },
             {
-              "title": "NVIDIA free model",
+              "title": "OpenClaw Configure NVIDIA Free Model",
               "description": "Configure NVIDIA Build and the free minimax-m2.1 model.",
               "href": "/blog/nvidia-free-model-openclaw-config"
             }
@@ -196,11 +197,11 @@
               "href": "/blog/vps-openclaw-read-gmail"
             },
             {
-              "title": "Custom search",
+              "title": "Custom Search",
               "description": "Connect your own search endpoint or engine."
             },
             {
-              "title": "Safe proxy",
+              "title": "Safe Proxy",
               "description": "Add rate limits, caching, and safe proxy rules."
             }
           ]
