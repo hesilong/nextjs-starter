@@ -1,0 +1,203 @@
+---
+title: "Quick Guide: Configure GLM-5 for OpenClaw in 3 Steps"
+description: "Get GLM-5 running in minutes: create an API key, use the OpenClaw Config Generator, and apply the settings via CLI."
+image: "/cover.png"
+slug: "/openclaw-glm5-config"
+tags: ["OpenClaw", "GLM-5", "Zhipu AI", "Model Config", "OpenClaw Config Generator"]
+date: "2026-02-12"
+visible: "published"
+pin: false
+---
+
+# Quick Guide: Configure GLM-5 for OpenClaw in 3 Steps
+
+Want your OpenClaw AI assistant to use GLM-5? This guide walks you through 3 quick steps with the official Config Generator.
+
+Time: about 5 minutes  
+Tool: <a href="https://www.openclawai.cv/tools/openclaw-model-config-generator" target="_blank" rel="nofollow noopener noreferrer" className="text-blue-600 underline font-semibold">OpenClaw Config Generator</a>  
+Outcome: an assistant powered by GLM-5
+
+---
+
+## What is GLM-5?
+
+GLM-5 is Zhipu AI’s flagship model aimed at complex systems engineering and long-horizon agentic tasks. Compared to GLM-4.5, it scales from 355B parameters (32B active) to 744B parameters (40B active), increases pre-training data from 23T to 28.5T tokens, and integrates DeepSeek Sparse Attention (DSA) to reduce deployment cost while preserving long-context capability.
+
+On the post-training side, GLM-5 introduces an asynchronous reinforcement learning infrastructure called slime, enabling higher throughput and finer-grained iterations. With advances in both pre-training and post-training, GLM-5 significantly improves over GLM-4.7 across academic benchmarks and delivers best-in-class open-source performance in reasoning, coding, and agentic tasks.
+
+---
+
+## Setup (3 Steps)
+
+### Step 1: Get an API Key
+
+1. Visit <a href="https://bigmodel.cn/" target="_blank" rel="nofollow noopener noreferrer" className="text-blue-600 underline font-semibold">Zhipu AI Platform</a>
+2. Sign up or log in
+3. Create an API key in the console
+4. Copy and save the API key
+![GLM-5 API key creation](https://cdn.openclawai.cv/openclaw-glm5-configure-1.png)
+
+Keep these values:
+
+1. API key: `xxxxxxxxx`
+2. Base URL: `https://open.bigmodel.cn/api/paas/v4`
+3. Model ID: `glm-5`
+
+### Step 2: Use the Config Generator
+
+Open the <a href="https://www.openclawai.cv/tools/openclaw-model-config-generator" target="_blank" rel="nofollow noopener noreferrer" className="text-blue-600 underline font-semibold">OpenClaw Config Generator</a> and follow these steps.
+
+#### 2.1 Add a Provider
+
+Under “Providers”, click “Provider 1” and fill in:
+
+1. Provider key: `zhipuai`
+2. Base URL: `https://open.bigmodel.cn/api/paas/v4`
+3. API key: your GLM-5 API key
+
+#### 2.2 Configure the Model
+
+Under “Model 1”, set:
+
+1. Model ID: `glm-5`
+2. Model name: `glm-5-assistant`
+3. Max tokens: `4096`
+4. Reasoning: enabled (recommended)
+5. Text input: enabled
+6. Image input: optional
+
+#### 2.3 Set as Primary
+
+Set “GLM-5” as the Primary model.
+
+### Step 3: Apply the Configuration
+
+The generator outputs JSON. Click “Copy” to copy it.
+![OpenClaw Config Generator JSON output](https://cdn.openclawai.cv/openclaw-glm5-configure-2.png)
+
+#### Option A: Merge Config File (Recommended)
+
+1. Upload your current `openclaw.json` to the generator.
+2. Let the tool merge the new config (provider + model).
+3. Download the merged file and replace the original.
+
+Backup first:
+
+```bash
+cp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.backup
+```
+
+#### Option B: OpenClaw CLI Quick Setup
+
+```bash
+openclaw config set agents.defaults.model "glm-5"
+openclaw config set agents.defaults.baseUrl "https://open.bigmodel.cn/api/paas/v4"
+openclaw config set agents.defaults.apiKey "your-glm-5-api-key"
+openclaw config set agents.defaults.temperature 0.7
+```
+
+---
+
+## Validate the Setup
+
+### Quick Test
+
+1. Restart Gateway
+
+```bash
+openclaw gateway restart
+```
+
+2. Send a test message
+
+```
+GLM-5, introduce yourself
+```
+
+3. Check the response
+
+1. Is the answer correct?
+2. Is the response speed acceptable?
+
+### Common Test Prompts
+
+Code:
+
+```
+Write a Python function to compute the Fibonacci sequence.
+```
+
+Writing:
+
+```
+Write a short poem about spring.
+```
+
+Math:
+
+```
+Calculate 12345 × 67890.
+```
+
+---
+
+## Troubleshooting
+
+### Invalid API key
+
+Cause: key is wrong or expired  
+Fix: check your Zhipu AI console and regenerate the key
+
+### Connection timeout
+
+Cause: network issues  
+Fix:
+
+```bash
+openclaw config set agents.defaults.timeout 60000
+ping open.bigmodel.cn
+```
+
+### Model not found
+
+Cause: wrong model ID  
+Fix: use `glm-5`
+
+### Poor response quality
+
+Cause: temperature too high  
+Fix:
+
+```bash
+openclaw config set agents.defaults.temperature 0.5
+```
+
+---
+
+## Command Cheat Sheet
+
+```bash
+# Check current model
+openclaw config get agents.defaults.model
+
+# Update temperature
+openclaw config set agents.defaults.temperature 0.6
+
+# Restart to apply
+openclaw gateway restart
+
+# Help
+openclaw config --help
+```
+
+---
+
+## Summary
+
+You can enable GLM-5 in OpenClaw in just 3 steps:
+
+1. Create an API key
+2. Generate the config
+3. Apply it
+
+Your OpenClaw assistant is now powered by GLM-5.
