@@ -770,7 +770,7 @@
     "hero": {
       "eyebrow": "\u5b89\u88c5\u6307\u5357",
       "title": "\u7528\u6700\u9002\u5408\u4f60\u7684\u65b9\u5f0f\u90e8\u7f72 OpenClaw",
-      "subtitle": "OpenClaw \u652f\u6301\u672c\u5730\u3001\u4e91\u670d\u52a1\u5668\u3001Docker\u3001K8s \u7b49\u591a\u79cd\u5b89\u88c5\u65b9\u5f0f\u3002\u5148\u4ece 3 \u6761\u63a8\u8350\u8def\u5f84\u5f00\u59cb\uff0c\u7a0d\u540e\u53ef\u67e5\u770b\u5b8c\u6574\u6559\u7a0b\u3002",
+      "subtitle": "OpenClaw \u652f\u6301\u672c\u5730\u4e0e\u4e91\u7aef\u591a\u79cd\u90e8\u7f72\u65b9\u5f0f\u3002\u5efa\u8bae\u5148\u4ece\u63a8\u8350\u8def\u5f84\u5f00\u59cb\uff0c\u518d\u6309\u4f60\u7684\u73af\u5883\u9009\u62e9\u5b89\u88c5\u65b9\u6848\u3002",
       "ctaPrimary": "\u67e5\u770b\u63a8\u8350\u8def\u5f84",
       "ctaSecondary": "\u67e5\u770b\u66f4\u591a"
     },
@@ -809,6 +809,18 @@
       "title": "\u5168\u90e8\u5b89\u88c5\u65b9\u5f0f",
       "description": "\u6839\u636e\u73af\u5883\u4e0e\u89c4\u6a21\u9009\u62e9\u5408\u9002\u65b9\u6848\uff0c\u70b9\u51fb\u5361\u7247\u67e5\u770b\u6559\u7a0b\u7ec6\u8282\u3002",
       "items": [
+        {
+          "id": "method-ollama",
+          "title": "OpenClaw + Ollama",
+          "description": "\u5feb\u901f\u542f\u52a8 OpenClaw \u4e0e Ollama\uff0c\u5e76\u652f\u6301\u672c\u5730 / Cloud \u6a21\u578b\u914d\u7f6e\u3002",
+          "href": "/zh/blog/openclaw-ollama-integration",
+          "tags": [
+            "Ollama",
+            "Cloud \u6a21\u578b",
+            "\u6559\u7a0b"
+          ],
+          "icon": "script"
+        },
         {
           "id": "method-docker",
           "title": "Docker \u90e8\u7f72",

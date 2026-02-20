@@ -1,11 +1,24 @@
+"use client";
+
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // NEXTY.DEV Affiliate Link: https://affiliates.nexty.dev/
 // sign up and use your affiliate link on BuiltWithButton to earn money
 
 export default function BuiltWithButton() {
+  const pathname = usePathname() || "";
+  const isBlogRoute =
+    pathname === "/blog" ||
+    pathname.startsWith("/blog/") ||
+    /^\/(?:en|zh|ja)\/blog(?:\/.*)?$/.test(pathname);
+
+  if (isBlogRoute) {
+    return null;
+  }
+
   return (
     <Link
       href="https://nexty.dev"

@@ -1,0 +1,204 @@
+---
+title: "OpenClaw + Ollama 集成教程：本地与 Cloud 模型一站式配置"
+description: "从一键启动到手动安装，完整讲解 OpenClaw 与 Ollama 的集成流程，并给出模型推荐、排障方案与常用命令。"
+image: "/cover.png"
+slug: "/openclaw-ollama-integration"
+tags: ["OpenClaw", "Ollama", "GLM-5", "Local LLM", "Deployment"]
+date: "2026-02-20"
+visible: "published"
+pin: false
+---
+
+# OpenClaw + Ollama 集成教程
+
+这篇教程面向希望把 OpenClaw 接入 Ollama 的用户，包含两种安装方式：
+
+1. 官方推荐的一键启动（最简单）
+2. 手动安装与配置（可控性更高）
+
+## 前置要求
+
+- Ollama：已安装并正在运行
+- Node.js：`v22+`
+- 系统：macOS、Linux、Windows（建议 WSL）
+
+## 方法一：官方推荐（最简单）
+
+一步启动：
+
+```bash
+ollama launch openclaw
+```
+
+该命令会自动完成：
+
+- 安装最新 OpenClaw
+- 启动安装向导
+- 自动选择 Ollama 作为后端
+- 引导你选择模型
+- 配置消息通道（如 Telegram、WhatsApp 等）
+
+> 建议优先使用 `128k+` 上下文模型，至少 `64k`。
+
+## 方法二：手动安装（高级控制）
+
+### 1) 安装 OpenClaw（需 Node.js v22+）
+
+```bash
+# macOS / Linux
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# Windows PowerShell
+iwr -useb https://openclaw.ai/install.ps1 | iex
+```
+
+### 2) 运行安装向导
+
+```bash
+openclaw onboard --install-daemon
+```
+
+### 3) 配置 Ollama 后端
+
+在向导中选择：
+
+`Quick Start -> Skip Cloud -> Select Ollama`
+
+也可以手动编辑配置文件：
+
+```bash
+~/.openclaw/openclaw.json
+```
+
+模型配置如下：
+
+```json
+"models": {
+  "providers": {
+    "ollama": {
+      "api": "openai-completions",
+      "apiKey": "ollama-local",
+      "baseUrl": "http://127.0.0.1:11434/v1",
+      "models": [
+        {
+          "contextWindow": 131072,
+          "cost": {
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "input": 0,
+            "output": 0
+          },
+          "id": "glm-5:cloud",
+          "input": [
+            "text"
+          ],
+          "maxTokens": 16384,
+          "name": "glm-5:cloud",
+          "reasoning": false
+        }
+      ]
+    }
+  }
+},
+"agents": {
+  "defaults": {
+    "compaction": {
+      "mode": "safeguard"
+    },
+    "maxConcurrent": 4,
+    "model": {
+      "primary": "ollama/glm-5:cloud"
+    },
+    "subagents": {
+      "maxConcurrent": 8
+    },
+    "workspace": "C:\\Users\\ss\\.openclaw\\workspace"
+  }
+},
+```
+
+如果想配置其他模型，也可以使用：
+
+<a href="https://www.openclawai.cv/tools/openclaw-model-config-generator" target="_blank" rel="dofollow noopener noreferrer" className="text-blue-600 underline font-semibold">openclaw-model-config-generator</a>
+
+### 4) 启动服务
+
+```bash
+openclaw gateway start
+```
+
+## 配置消息通道
+
+安装完成后可在向导中配置消息平台，常见包括：
+
+| 平台 | 说明 |
+| --- | --- |
+| Feishu | 飞书接入 |
+| Telegram | Bot 对接常用 |
+| WhatsApp | 跨境消息场景常用 |
+
+## 推荐模型
+
+### 本地模型（建议 64k+ 上下文）
+
+| 模型 | 特点 |
+| --- | --- |
+| `qwen3-coder` | 编码场景优化，推荐 |
+| `glm-4.7` | 综合能力强 |
+| `qwen2.5:14b-instruct` | 工具调用能力强 |
+| `mistral-nemo` | 工具调用能力强 |
+| `gpt-oss:20b` | 性能与效果平衡 |
+
+### 云端模型（Ollama Cloud）
+
+| 模型 | 特点 |
+| --- | --- |
+| `kimi-k2.5` | 1T 参数，能力上限高 |
+| `minimax-m2.1` | 多语言能力强 |
+| `glm-5` | 适合高质量中文与复杂推理 |
+
+## 故障排除
+
+| 问题 | 解决方案 |
+| --- | --- |
+| 模型无法工具调用 | 改用 `qwen2.5-coder`、`qwen3`、`deepseek-r1`、`llama3.3` |
+| 响应太慢 | 换更小模型，如 `qwen2.5-coder:14b` |
+| 中文效果差 | 优先 `qwen3` 系列，其次 `deepseek-r1` |
+| Telegram 无响应 | 检查 `openclaw` 与 `ollama` 是否都在运行 |
+| 8B 模型效果不稳定 | 建议使用 `14B+` 模型 |
+
+## 快速上手命令
+
+```bash
+# 启动并配置
+ollama launch openclaw
+
+# 仅配置，不启动
+ollama launch openclaw --config
+
+# 查看 Ollama 运行状态
+ollama ps
+
+# 检查 OpenClaw 日志
+openclaw gateway logs
+
+# 使用 Cloud 模型（示例：GLM-5）
+ollama launch openclaw --model glm-5:cloud
+```
+
+## 注意事项
+
+- 上下文长度：建议至少 `64k`，优先 `128k+`
+- 历史别名：OpenClaw 早期也叫 Clawdbot / Moltbot，旧命令通常仍兼容
+- 自动重载：`gateway` 运行时修改配置通常会自动重载
+- GPU 加速：如设备可用，Ollama 会自动利用 GPU
+
+## 总结
+
+如果你希望快速完成集成，直接使用：
+
+```bash
+ollama launch openclaw
+```
+
+如果你需要更细粒度控制（安装方式、后端、模型、消息通道），使用手动流程即可。对于生产使用，优先选择 `64k+` 上下文且工具调用稳定的模型。

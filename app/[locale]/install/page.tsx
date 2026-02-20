@@ -1,6 +1,6 @@
 import MDXComponents from "@/components/mdx/MDXComponents";
 import { Button } from "@/components/ui/button";
-import { Locale, LOCALES } from "@/i18n/routing";
+import { Link as I18nLink, Locale, LOCALES } from "@/i18n/routing";
 import { constructMetadata } from "@/lib/metadata";
 import fs from "fs/promises";
 import { Metadata } from "next";
@@ -158,7 +158,32 @@ export default async function Page({ params }: { params: Params }) {
   const messages = await getMessages();
   const install = messages.Install as InstallMessages;
   const featured = install.featured.items || [];
-  const allMethods = install.allMethods.items || [];
+  const allMethodsFromI18n = install.allMethods.items || [];
+  const ollamaMethod: InstallCard =
+    locale === "zh"
+      ? {
+          id: "method-ollama",
+          title: "OpenClaw + Ollama",
+          description:
+            "快速启动 OpenClaw 与 Ollama，并支持本地 / Cloud 模型配置。",
+          href: "/blog/openclaw-ollama-integration",
+          tags: ["Ollama", "Cloud 模型", "教程"],
+          icon: "script",
+        }
+      : {
+          id: "method-ollama",
+          title: "OpenClaw + Ollama",
+          description:
+            "Launch OpenClaw with Ollama and configure local or cloud models fast.",
+          href: "/blog/openclaw-ollama-integration",
+          tags: ["Ollama", "Cloud Model", "Guide"],
+          icon: "script",
+        };
+  const allMethods = [
+    ollamaMethod,
+    ...allMethodsFromI18n.filter((item) => item.id !== "method-ollama"),
+  ];
+  const visitLabel = locale === "zh" ? "查看" : "Visit";
 
   return (
     <article className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
@@ -201,20 +226,17 @@ export default async function Page({ params }: { params: Params }) {
             {install.featured.more}
           </a>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {featured.map((item) => {
             const Icon =
               iconMap[(item.icon || "package") as IconKey] || Package;
-            const href = item.href || "#all-methods";
-            const isExternal = href.startsWith("http://") || href.startsWith("https://");
-            return (
-              <a
-                key={item.id}
-                href={href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noreferrer" : undefined}
-                className="group rounded-2xl border border-border bg-card/60 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
-              >
+            const href = item.href || "#featured";
+            const isExternal =
+              href.startsWith("http://") || href.startsWith("https://");
+            const isInternalPath = href.startsWith("/");
+
+            const cardContent = (
+              <>
                 <div className="flex items-center justify-between">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <Icon className="h-5 w-5" />
@@ -233,9 +255,46 @@ export default async function Page({ params }: { params: Params }) {
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
                   <span className="opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
-                    Visit
+                    {visitLabel}
                   </span>
                 </div>
+              </>
+            );
+
+            if (isExternal) {
+              return (
+                <a
+                  key={item.id}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group rounded-2xl border border-border bg-card/60 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
+                >
+                  {cardContent}
+                </a>
+              );
+            }
+
+            if (isInternalPath) {
+              return (
+                <I18nLink
+                  key={item.id}
+                  href={href}
+                  prefetch={false}
+                  className="group rounded-2xl border border-border bg-card/60 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
+                >
+                  {cardContent}
+                </I18nLink>
+              );
+            }
+
+            return (
+              <a
+                key={item.id}
+                href={href}
+                className="group rounded-2xl border border-border bg-card/60 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
+              >
+                {cardContent}
               </a>
             );
           })}
@@ -255,12 +314,16 @@ export default async function Page({ params }: { params: Params }) {
           {allMethods.map((item) => {
             const Icon =
               iconMap[(item.icon || "package") as IconKey] || Package;
-            return (
-              <div
-                key={item.id}
-                id={item.id}
-                className="rounded-2xl border border-border bg-card/40 p-5 shadow-sm"
-              >
+            const href = item.href ?? "";
+            const hasHref = Boolean(item.href);
+            const isExternal =
+              hasHref &&
+              (href.startsWith("http://") || href.startsWith("https://"));
+            const showVisitHint = item.id === "method-ollama" && hasHref;
+            const methodTags = item.tags || [];
+
+            const cardContent = (
+              <>
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Icon className="h-4 w-4" />
@@ -272,9 +335,9 @@ export default async function Page({ params }: { params: Params }) {
                 <p className="mt-3 text-sm text-muted-foreground">
                   {item.description}
                 </p>
-                {item.tags && item.tags.length > 0 && (
+                {methodTags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {item.tags.map((tag) => (
+                    {methodTags.map((tag) => (
                       <span
                         key={tag}
                         className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground"
@@ -284,12 +347,57 @@ export default async function Page({ params }: { params: Params }) {
                     ))}
                   </div>
                 )}
+                {showVisitHint && (
+                  <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
+                    <span className="opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0">
+                      {visitLabel}
+                    </span>
+                  </div>
+                )}
+              </>
+            );
+
+            if (hasHref && isExternal) {
+              return (
+                <a
+                  key={item.id}
+                  id={item.id}
+                  href={href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noreferrer" : undefined}
+                  className="group block rounded-2xl border border-border bg-card/40 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
+                >
+                  {cardContent}
+                </a>
+              );
+            }
+
+            if (hasHref && href.startsWith("/")) {
+              return (
+                <I18nLink
+                  key={item.id}
+                  id={item.id}
+                  href={href}
+                  prefetch={false}
+                  className="group block rounded-2xl border border-border bg-card/40 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-card hover:shadow-md"
+                >
+                  {cardContent}
+                </I18nLink>
+              );
+            }
+
+            return (
+              <div
+                key={item.id}
+                id={item.id}
+                className="rounded-2xl border border-border bg-card/40 p-5 shadow-sm"
+              >
+                {cardContent}
               </div>
             );
           })}
         </div>
       </section>
-
     </article>
   );
 }

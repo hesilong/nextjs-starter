@@ -759,7 +759,7 @@
     "hero": {
       "eyebrow": "Installation guide",
       "title": "Deploy OpenClaw the way that fits you",
-      "subtitle": "OpenClaw supports local, cloud servers, Docker, and Kubernetes. Start with 3 recommended paths, then explore the full guide.",
+      "subtitle": "OpenClaw supports local and cloud deployment options. Start with recommended paths, then pick the setup that fits your environment.",
       "ctaPrimary": "View recommended paths",
       "ctaSecondary": "See all methods"
     },
@@ -798,6 +798,18 @@
       "title": "All installation methods",
       "description": "Choose the right approach for your environment and scale. Click a card for details.",
       "items": [
+        {
+          "id": "method-ollama",
+          "title": "OpenClaw + Ollama",
+          "description": "Launch OpenClaw with Ollama and configure local or cloud models fast.",
+          "href": "/blog/openclaw-ollama-integration",
+          "tags": [
+            "Ollama",
+            "Cloud Model",
+            "Guide"
+          ],
+          "icon": "script"
+        },
         {
           "id": "method-docker",
           "title": "Docker deployment",

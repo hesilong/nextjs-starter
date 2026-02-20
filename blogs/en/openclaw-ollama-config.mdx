@@ -1,0 +1,204 @@
+---
+title: "OpenClaw + Ollama Integration Guide: Local and Cloud Models"
+description: "From one-command launch to manual setup, this guide covers full OpenClaw + Ollama integration with model recommendations, troubleshooting, and command cheatsheet."
+image: "/cover.png"
+slug: "/openclaw-ollama-integration"
+tags: ["OpenClaw", "Ollama", "GLM-5", "Local LLM", "Deployment"]
+date: "2026-02-20"
+visible: "published"
+pin: false
+---
+
+# OpenClaw + Ollama Integration Guide
+
+This tutorial is for users who want to connect OpenClaw with Ollama. It includes two setup paths:
+
+1. Official one-command setup (easiest)
+2. Manual setup and configuration (more control)
+
+## Prerequisites
+
+- Ollama: installed and running
+- Node.js: `v22+`
+- OS: macOS, Linux, Windows (WSL recommended)
+
+## Method 1: Official Recommended Setup (Easiest)
+
+One command to start:
+
+```bash
+ollama launch openclaw
+```
+
+This command will automatically:
+
+- Install the latest OpenClaw
+- Launch the onboarding wizard
+- Select Ollama as backend
+- Let you choose a model
+- Configure messaging channels (Telegram, WhatsApp, etc.)
+
+> Prefer models with `128k+` context window, with `64k` as minimum.
+
+## Method 2: Manual Setup (Advanced Control)
+
+### 1) Install OpenClaw (Node.js v22+ required)
+
+```bash
+# macOS / Linux
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# Windows PowerShell
+iwr -useb https://openclaw.ai/install.ps1 | iex
+```
+
+### 2) Run onboarding
+
+```bash
+openclaw onboard --install-daemon
+```
+
+### 3) Configure Ollama backend
+
+In the wizard, choose:
+
+`Quick Start -> Skip Cloud -> Select Ollama`
+
+Or edit the config file manually:
+
+```bash
+~/.openclaw/openclaw.json
+```
+
+Model configuration example:
+
+```json
+"models": {
+  "providers": {
+    "ollama": {
+      "api": "openai-completions",
+      "apiKey": "ollama-local",
+      "baseUrl": "http://127.0.0.1:11434/v1",
+      "models": [
+        {
+          "contextWindow": 131072,
+          "cost": {
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "input": 0,
+            "output": 0
+          },
+          "id": "glm-5:cloud",
+          "input": [
+            "text"
+          ],
+          "maxTokens": 16384,
+          "name": "glm-5:cloud",
+          "reasoning": false
+        }
+      ]
+    }
+  }
+},
+"agents": {
+  "defaults": {
+    "compaction": {
+      "mode": "safeguard"
+    },
+    "maxConcurrent": 4,
+    "model": {
+      "primary": "ollama/glm-5:cloud"
+    },
+    "subagents": {
+      "maxConcurrent": 8
+    },
+    "workspace": "C:\\Users\\ss\\.openclaw\\workspace"
+  }
+},
+```
+
+If you want to configure other models, use:
+
+<a href="https://www.openclawai.cv/tools/openclaw-model-config-generator" target="_blank" rel="dofollow noopener noreferrer" className="text-blue-600 underline font-semibold">openclaw-model-config-generator</a>
+
+### 4) Start services
+
+```bash
+openclaw gateway start
+```
+
+## Configure Messaging Channels
+
+After installation, you can configure messaging platforms such as:
+
+| Platform | Notes |
+| --- | --- |
+| Feishu | Feishu integration |
+| Telegram | Common bot integration |
+| WhatsApp | Common for cross-border messaging |
+
+## Recommended Models
+
+### Local models (64k+ context recommended)
+
+| Model | Highlights |
+| --- | --- |
+| `qwen3-coder` | Optimized for coding, recommended |
+| `glm-4.7` | Strong all-around performance |
+| `qwen2.5:14b-instruct` | Strong tool-calling capability |
+| `mistral-nemo` | Strong tool-calling capability |
+| `gpt-oss:20b` | Balanced performance and quality |
+
+### Cloud models (Ollama Cloud)
+
+| Model | Highlights |
+| --- | --- |
+| `kimi-k2.5` | 1T parameters, high ceiling |
+| `minimax-m2.1` | Strong multilingual performance |
+| `glm-5` | Great for high-quality Chinese and complex reasoning |
+
+## Troubleshooting
+
+| Issue | Solution |
+| --- | --- |
+| Model cannot call tools | Switch to `qwen2.5-coder`, `qwen3`, `deepseek-r1`, or `llama3.3` |
+| Response is too slow | Use a smaller model, e.g. `qwen2.5-coder:14b` |
+| Weak Chinese output | Prefer `qwen3` series, then `deepseek-r1` |
+| Telegram not responding | Check whether both `openclaw` and `ollama` are running |
+| 8B model quality is weak | Use `14B+` models |
+
+## Quick Start Commands
+
+```bash
+# Launch and configure
+ollama launch openclaw
+
+# Configure only (without start)
+ollama launch openclaw --config
+
+# Check Ollama runtime status
+ollama ps
+
+# Check OpenClaw logs
+openclaw gateway logs
+
+# Use Cloud model (example: GLM-5)
+ollama launch openclaw --model glm-5:cloud
+```
+
+## Notes
+
+- Context length: use at least `64k`, prefer `128k+`
+- Aliases: OpenClaw was previously known as Clawdbot / Moltbot; old commands are often still compatible
+- Auto reload: config changes are usually auto-reloaded while `gateway` is running
+- GPU: if available, Ollama uses GPU acceleration automatically
+
+## Summary
+
+If you want the fastest setup, use:
+
+```bash
+ollama launch openclaw
+```
+
+If you need finer control over installation, backend, models, and channels, use the manual flow. For production, prioritize models with `64k+` context and stable tool-calling.
