@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "generate:blog-cache": "node tools/generate-blog-cache.cjs",
+    "build": "pnpm generate:blog-cache && next build",
     "start": "next start",
     "build:cf": "opennextjs-cloudflare build",
     "preview:cf": "opennextjs-cloudflare build && wrangler dev",

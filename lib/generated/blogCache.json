@@ -1,0 +1,454 @@
+{
+  "generatedAt": "2026-03-05T08:50:23.801Z",
+  "locales": {
+    "en": [
+      {
+        "locale": "en",
+        "title": "Aliyun OpenClaw (formerly Moltbot/Clawdbot) Feishu Integration (Step-by-step)",
+        "description": "Use Alibaba Cloud AppFlow to connect OpenClaw with Feishu so you can interact in group or 1:1 chats with natural language.",
+        "image": "/cover.png",
+        "slug": "/aliyun-openclaw-feishu",
+        "tags": [
+          "OpenClaw",
+          "Moltbot",
+          "Clawdbot",
+          "Feishu",
+          "AppFlow",
+          "Alibaba Cloud"
+        ],
+        "date": "2026-02-05",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# Aliyun OpenClaw (formerly Moltbot/Clawdbot) Feishu Integration (Step-by-step)\r\n\r\nWith Alibaba Cloud AppFlow, you can integrate OpenClaw with Feishu and interact in Feishu group or 1:1 chats using natural language.\r\n\r\n## Step 1. Purchase the OpenClaw package\r\n\r\nPurchase link here: <a href=\"https://swasnext.console.aliyun.com/buy?regionId=us-east-1&planId=swas.s.c2m2s40b1.linux&imageId=bd45493af84846deb5dcd3fca6c1a1d9&amount=1&duration=12&autoRenew=false#/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">Buy a lightweight server with the preinstalled Moltbot image</a>.\r\n\r\n### Configuration notes\r\n\r\n1. On the lightweight server page, the resource configuration is pre-filled. If you need to adjust it, refer to the notes below.\r\n\r\n   - **Instance**: memory must be at least 2GiB. You can switch to a larger plan if needed.\r\n   - **Region**: default is US (Virginia).\r\n   - **Important**: lightweight servers in mainland China (excluding Hong Kong) cannot use OpenClaw’s web search feature.\r\n   - **Purchase period**: default is 12 months. Adjust based on your needs.\r\n\r\n## Step 2. Configure OpenClaw\r\n\r\nWe’ll use Alibaba’s default model first and finish the flow. You can switch models later.\r\n\r\n1. Go to <a href=\"https://bailian.console.aliyun.com/?tab=model#/model-market\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">Alibaba Cloud Bailian Model Service</a>, open the API key page, and create an API key.\r\n\r\n![Alibaba Cloud Bailian console](https://cdn.openclawai.cv/aliyun-openclaw-configure-1.PNG)\r\n\r\n   - Default model: `qwen3-max-2026-01-23`\r\n   - New users get 1,000,000 free credits; charges apply after that\r\n   - We’ll later show how to use NVIDIA’s free `minimax-m2` model\r\n\r\n2. On the server page, click the instance ID in the server card to open the overview page.\r\n\r\n![Server overview](https://cdn.openclawai.cv/aliyun-openclaw-configure-2.PNG)\r\n\r\n3. Open the application detail tab and configure OpenClaw.\r\n\r\n![OpenClaw configuration](https://cdn.openclawai.cv/aliyun-openclaw-configure-3.PNG)\r\n\r\n   - **Open ports**: allow the required firewall ports with one click.\r\n   - **Configure OpenClaw**: run the command, paste your Bailian API key, and continue.\r\n   - **Access the control panel**: run the command to get the Clawdbot chat URL.\r\n   - **View token**: go to Help > Token and run the command to get the token.\r\n\r\n4. Enable Response API access so AppFlow can call OpenClaw.\r\n\r\n![Clawdbot Gateway configuration](https://cdn.openclawai.cv/aliyun-openclaw-configure-4.PNG)\r\n\r\n   - In Clawdbot, open **Setting > Config** in the left sidebar.\r\n   - Switch to **Gateway** and then the **Http** tab.\r\n   - In the **Responses** section, toggle **Enabled** on and click **Save**.\r\n\r\n## Step 3. Create and configure the Feishu app\r\n\r\n1. Log in to the <a href=\"https://open.feishu.cn/app\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">Feishu developer console</a>, create an internal app, and fill in the app information.\r\n\r\n![Feishu developer console](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-1.PNG)\r\n\r\n2. In the left sidebar, click **Add App Capability**, choose **Bot**, and add it.\r\n\r\n![Add app capability](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-2.PNG)\r\n\r\n3. In **Permission management**, enable permissions and add the following API scopes:\r\n\r\n![Permission management](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-3.PNG)\r\n\r\n| Permission code | Purpose | Notes |\r\n|---------|---------|---------|\r\n| im:message:send_as_bot | Allow the bot to send messages as the app | Required |\r\n| contact:user.employee_id:readonly | Get user ID | Required |\r\n| im:message.group_at_msg:readonly | Receive @ mentions in group chats | Core permission |\r\n| im:message.p2p_msg:readonly | Read messages sent to the bot in 1:1 chats | Required for 1:1 |\r\n| im:message.group_msg:readonly | Read all messages in a group | Sensitive permission |\r\n\r\n4. Collect the required credentials. You’ll need them for AppFlow.\r\n\r\n   - In the left sidebar, open **Credentials & Basic Info** and copy **App ID** and **App Secret**.\r\n\r\n![Credentials & basic info](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-4.PNG)\r\n\r\n   - In **Events & Callbacks**, find **Encryption Strategy**, and copy **Encrypt Key** and **Verification Token**.  \r\n     If Encrypt Key is empty, click **Reset** to generate a new one.\r\n\r\n![Encryption strategy](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-5.PNG)\r\n\r\n## Step 4. Create the Feishu connection flow (AppFlow)\r\n\r\n1. Open the <a href=\"https://appflow.console.aliyun.com/vendor/cn-hangzhou/flow/fastTemplate/tl-fa74e4fee3a24ec6945c\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">AppFlow Feishu–OpenClaw template</a> and click **Use now**.\r\n\r\n![AppFlow template](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-6.PNG)\r\n\r\n2. Add Feishu auth credentials. Enter a name (any), and fill in the values from Step 3. Click **Confirm** and select the credential you created.\r\n\r\n![AppFlow credential config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-7.PNG)\r\n\r\n3. Create Moltbot auth credentials. Fill in the values from Step 2, click **Confirm**, and select the credential.\r\n\r\n![Moltbot credential config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-8.PNG)\r\n\r\n4. Click **Next** and fill your public IP and port (default port is 18789).  \r\n   Example: `48.253.178.133:18789`\r\n\r\n![Public IP config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-9.PNG)\r\n\r\n5. Publish the flow, then copy and save your **Webhook URL**.\r\n\r\n![Publish success](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-10.PNG)\r\n\r\n## Step 5. Configure the Feishu bot\r\n\r\n### 🖼️ Event configuration page\r\n\r\nThis page shows **Events & Callbacks** and the event configuration tab.\r\n\r\n1. Return to the <a href=\"https://open.feishu.cn/app\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">Feishu developer console</a>. In the left sidebar, go to **Events & Callbacks**, then configure the subscription method.\r\n\r\n![Event config](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-11.PNG)\r\n\r\n2. Choose **Send events to developer server**, paste the Webhook URL from Step 4, and save.\r\n\r\n3. In **Event Configuration**, add **Message Received** events.  \r\n   **This step is critical—without it, the bot will not receive your messages in groups.**\r\n\r\n![Add events](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-12.PNG)\r\n\r\n4. In the left sidebar, go to **Version Management & Release**, create a version (or open the latest draft), fill in the required fields, save, and submit for review.\r\n\r\n![Version management](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-13.PNG)\r\n\r\n## Validation\r\n\r\nAfter configuration, you can add the bot to a group to start interacting.  \r\nCurrently, adding bots is only supported on Feishu desktop. For external groups, follow Feishu’s docs for external group and external user support.\r\n\r\n### 🖼️ Add bot screenshot\r\n\r\nPath: `... > Settings > Group Bots > Add Bot`\r\n\r\n1. Follow the path above to add the bot.\r\n2. @mention the bot to start a conversation.\r\n\r\n![Add bot](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-14.PNG)\r\n",
+        "metadata": {
+          "title": "Aliyun OpenClaw (formerly Moltbot/Clawdbot) Feishu Integration (Step-by-step)",
+          "description": "Use Alibaba Cloud AppFlow to connect OpenClaw with Feishu so you can interact in group or 1:1 chats with natural language.",
+          "image": "/cover.png",
+          "slug": "/aliyun-openclaw-feishu",
+          "tags": [
+            "OpenClaw",
+            "Moltbot",
+            "Clawdbot",
+            "Feishu",
+            "AppFlow",
+            "Alibaba Cloud"
+          ],
+          "date": "2026-02-05",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "en",
+        "title": "How to Configure NVIDIA's Free Model for OpenClaw (minimax-m2.1)",
+        "description": "From getting an NVIDIA API key to generating and merging configs in moltbot.json.",
+        "image": "/cover.png",
+        "slug": "/nvidia-free-model-openclaw-config",
+        "tags": [
+          "OpenClaw",
+          "NVIDIA",
+          "minimax-m2.1",
+          "Model config"
+        ],
+        "date": "2026-02-07",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# How to Configure NVIDIA's Free Model for OpenClaw (minimax-m2.1)\r\n\r\nIf your OpenClaw setup fails to start, model parameters are often the culprit. This guide walks through configuring the free **minimax-m2.1** model from **NVIDIA Build**.\r\n\r\n---\r\n\r\n## Step 1: Register on NVIDIA Build and get an API key\r\n\r\nOpen the official site: https://build.nvidia.com/\r\n\r\n1. Sign up or log in.\r\n2. Create an **API key** in the console.\r\n3. Save the key — you will use it later.\r\n\r\n![NVIDIA Build API key](https://cdn.openclawai.cv/nvidia-minimax.png)\r\n\r\n---\r\n\r\n## Step 2: Pick the model and collect required values\r\n\r\nGo to **Models** and open the model you want. We use **minimax-m2.1** as the example.\r\n\r\n![minimax-m2.1 model page](https://cdn.openclawai.cv/nvidia-minimax-configure-1.png)\r\n\r\n1. Open the **minimax-m2.1** detail page.\r\n2. Click **View Code** (top right).\r\n3. Note the following values:\r\n\r\n- **Base URL**: e.g. `https://integrate.api.nvidia.com/v1`\r\n- **Model ID**: e.g. `minimaxai/minimax-m2.1`\r\n- **Max Tokens**: use the value shown on the page\r\n\r\n![View Code](https://cdn.openclawai.cv/nvidia-minimax-configure-2.png)\r\n\r\n---\r\n\r\n## Step 3: Use the config generator\r\n\r\nOpen the tool:\r\n\r\n<a href=\"/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"noreferrer noopener\" className=\"text-primary underline font-semibold\">openclaw-model-config-generator</a>\r\n\r\nFill it in like this:\r\n\r\n- **Provider**: `nvidia` (use other provider names if applicable)\r\n- **Base URL / API Key / Model ID / Max Tokens**: from steps 1–2\r\n- Multiple **providers** and **models** are supported\r\n- Select a **Primary model**\r\n\r\n![Config tool](https://cdn.openclawai.cv/nvidia-minimax-configure-4.png)\r\n\r\n---\r\n\r\n## Step 4: Merge into your OpenClaw config\r\n\r\nLocate your config file (usually `moltbot.json`). The easiest method is to upload and merge in the tool:\r\n\r\n1. Upload the full config file on the right\r\n2. The tool merges `models` and `agents`\r\n3. You can also copy/paste manually if needed\r\n\r\nIf your original config includes:\r\n\r\n```json\r\n\"auth\": {\r\n  \"profiles\": {\r\n    \"xxxxx\": {\r\n      \"provider\": \"xxxx\",\r\n      \"mode\": \"api_key\"\r\n    }\r\n  }\r\n}\r\n```\r\n\r\n**Delete `auth.profiles`** to avoid conflicts.\r\n\r\nAfter merging, check for JSON errors, then restart:\r\n\r\n```bash\r\nmoltbot gateway restart\r\n```\r\n\r\n![Merge and restart](https://cdn.openclawai.cv/nvidia-minimax-configure-5.png)\r\n\r\n---\r\n\r\nThat’s it — OpenClaw should now run with NVIDIA’s free model. Good luck!\r\n",
+        "metadata": {
+          "title": "How to Configure NVIDIA's Free Model for OpenClaw (minimax-m2.1)",
+          "description": "From getting an NVIDIA API key to generating and merging configs in moltbot.json.",
+          "image": "/cover.png",
+          "slug": "/nvidia-free-model-openclaw-config",
+          "tags": [
+            "OpenClaw",
+            "NVIDIA",
+            "minimax-m2.1",
+            "Model config"
+          ],
+          "date": "2026-02-07",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "en",
+        "title": "Quick Guide: Configure GLM-5 for OpenClaw in 3 Steps",
+        "description": "Get GLM-5 running in minutes: create an API key, use the OpenClaw Config Generator, and apply the settings via CLI.",
+        "image": "/cover.png",
+        "slug": "/openclaw-glm5-config",
+        "tags": [
+          "OpenClaw",
+          "GLM-5",
+          "Zhipu AI",
+          "Model Config",
+          "OpenClaw Config Generator"
+        ],
+        "date": "2026-02-12",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# Quick Guide: Configure GLM-5 for OpenClaw in 3 Steps\r\n\r\nWant your OpenClaw AI assistant to use GLM-5? This guide walks you through 3 quick steps with the official Config Generator.\r\n\r\nTime: about 5 minutes  \r\nTool: <a href=\"https://www.openclawai.cv/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">OpenClaw Config Generator</a>  \r\nOutcome: an assistant powered by GLM-5\r\n\r\n---\r\n\r\n## What is GLM-5?\r\n\r\nGLM-5 is Zhipu AI’s flagship model aimed at complex systems engineering and long-horizon agentic tasks. Compared to GLM-4.5, it scales from 355B parameters (32B active) to 744B parameters (40B active), increases pre-training data from 23T to 28.5T tokens, and integrates DeepSeek Sparse Attention (DSA) to reduce deployment cost while preserving long-context capability.\r\n\r\nOn the post-training side, GLM-5 introduces an asynchronous reinforcement learning infrastructure called slime, enabling higher throughput and finer-grained iterations. With advances in both pre-training and post-training, GLM-5 significantly improves over GLM-4.7 across academic benchmarks and delivers best-in-class open-source performance in reasoning, coding, and agentic tasks.\r\n\r\n---\r\n\r\n## Setup (3 Steps)\r\n\r\n### Step 1: Get an API Key\r\n\r\n1. Visit <a href=\"https://bigmodel.cn/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">Zhipu AI Platform</a>\r\n2. Sign up or log in\r\n3. Create an API key in the console\r\n4. Copy and save the API key\r\n![GLM-5 API key creation](https://cdn.openclawai.cv/openclaw-glm5-configure-1.png)\r\n\r\nKeep these values:\r\n\r\n1. API key: `xxxxxxxxx`\r\n2. Base URL: `https://open.bigmodel.cn/api/paas/v4`\r\n3. Model ID: `glm-5`\r\n\r\n### Step 2: Use the Config Generator\r\n\r\nOpen the <a href=\"https://www.openclawai.cv/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">OpenClaw Config Generator</a> and follow these steps.\r\n\r\n#### 2.1 Add a Provider\r\n\r\nUnder “Providers”, click “Provider 1” and fill in:\r\n\r\n1. Provider key: `zhipu`\r\n2. Base URL: `https://open.bigmodel.cn/api/paas/v4`\r\n3. API key: your GLM-5 API key\r\n\r\n#### 2.2 Configure the Model\r\n\r\nUnder “Model 1”, set:\r\n\r\n1. Model ID: `glm-5`\r\n2. Model name: `glm-5-assistant`\r\n3. Max tokens: `4096`\r\n4. Reasoning: enabled (recommended)\r\n5. Text input: enabled\r\n6. Image input: optional\r\n\r\n#### 2.3 Set as Primary\r\n\r\nSet “GLM-5” as the Primary model.\r\n\r\n### Step 3: Apply the Configuration\r\n\r\nThe generator outputs JSON. Click “Copy” to copy it.\r\n![OpenClaw Config Generator JSON output](https://cdn.openclawai.cv/openclaw-glm5-configure-2.png)\r\n\r\nThen:\r\n\r\n1. Upload your current `openclaw.json` to the generator.\r\n2. Let the tool merge the new config (provider + model).\r\n3. Download the merged file and replace the original.\r\n\r\nBackup first:\r\n\r\n```bash\r\ncp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.backup\r\n```\r\n\r\n---\r\n\r\n## Validate the Setup\r\n\r\n### Quick Test\r\n\r\n1. Restart Gateway\r\n\r\n```bash\r\nopenclaw gateway restart\r\n```\r\n\r\n2. Send a test message\r\n\r\n```\r\nGLM-5, introduce yourself\r\n```\r\n\r\n3. Check the response\r\n\r\n1. Is the answer correct?\r\n2. Is the response speed acceptable?\r\n\r\n### Common Test Prompts\r\n\r\nCode:\r\n\r\n```\r\nWrite a Python function to compute the Fibonacci sequence.\r\n```\r\n\r\nWriting:\r\n\r\n```\r\nWrite a short poem about spring.\r\n```\r\n\r\nMath:\r\n\r\n```\r\nCalculate 12345 × 67890.\r\n```\r\n\r\n---\r\n\r\n## Troubleshooting\r\n\r\n### Invalid API key\r\n\r\nCause: key is wrong or expired  \r\nFix: check your Zhipu AI console and regenerate the key\r\n\r\n### Connection timeout\r\n\r\nCause: network issues  \r\nFix:\r\n\r\n```bash\r\nopenclaw config set agents.defaults.timeout 60000\r\nping open.bigmodel.cn\r\n```\r\n\r\n### Model not found\r\n\r\nCause: wrong model ID  \r\nFix: use `glm-5`\r\n\r\n### Poor response quality\r\n\r\nCause: temperature too high  \r\nFix:\r\n\r\n```bash\r\nopenclaw config set agents.defaults.temperature 0.5\r\n```\r\n\r\n---\r\n\r\n## Command Cheat Sheet\r\n\r\n```bash\r\n# Check current model\r\nopenclaw config get agents.defaults.model\r\n\r\n# Update temperature\r\nopenclaw config set agents.defaults.temperature 0.6\r\n\r\n# Restart to apply\r\nopenclaw gateway restart\r\n\r\n# Help\r\nopenclaw config --help\r\n```\r\n\r\n---\r\n\r\n## Summary\r\n\r\nYou can enable GLM-5 in OpenClaw in just 3 steps:\r\n\r\n1. Create an API key\r\n2. Generate the config\r\n3. Apply it\r\n\r\nYour OpenClaw assistant is now powered by GLM-5.\r\n",
+        "metadata": {
+          "title": "Quick Guide: Configure GLM-5 for OpenClaw in 3 Steps",
+          "description": "Get GLM-5 running in minutes: create an API key, use the OpenClaw Config Generator, and apply the settings via CLI.",
+          "image": "/cover.png",
+          "slug": "/openclaw-glm5-config",
+          "tags": [
+            "OpenClaw",
+            "GLM-5",
+            "Zhipu AI",
+            "Model Config",
+            "OpenClaw Config Generator"
+          ],
+          "date": "2026-02-12",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "en",
+        "title": "OpenClaw Linux Deployment Guide",
+        "description": "Complete Linux server installation steps and caveats for OpenClaw.",
+        "image": "/cover.png",
+        "slug": "/openclaw-linux-deploy-guide",
+        "tags": "openclaw,linux,install,deploy,ai,automation",
+        "date": "2026-02-05T00:00:00.000Z",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n## I. Prerequisites\r\n\r\n### 1.1 Install Git\r\n\r\nUpdate the system and install Git:\r\n\r\n```bash\r\nsudo apt update\r\nsudo apt install git -y\r\n```\r\n\r\n### 1.2 Install Node.js (version ≥ 22)\r\n\r\nInstall NVM (Node Version Manager):\r\n\r\nMainland China servers (Gitee mirror):\r\n\r\n```bash\r\ncurl -o- https://gitee.com/RubyMetric/nvm-cn/raw/main/install.sh | bash\r\n```\r\n\r\nOverseas servers (official source):\r\n\r\n```bash\r\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash\r\n```\r\n\r\nReload environment variables:\r\n\r\n```bash\r\nsource ~/.bashrc\r\n```\r\n\r\nInstall Node.js 22:\r\n\r\n```bash\r\nnvm install 22\r\n```\r\n\r\nVerify: run `node -v`. If it prints `v22.x.x`, you are good.\r\n\r\n## II. Install OpenClaw\r\n\r\nRun the official one-line installer:\r\n\r\n```bash\r\ncurl -fsSL https://openclaw.bot/install.sh | bash\r\n```\r\n\r\nNotes:\r\n- If installation fails on mainland China servers, fix network access first.\r\n- 2GB RAM machines may hit OOM; configure swap to use disk as virtual memory.\r\n- The installation can take some time, so be patient.\r\n\r\n## III. Initialize configuration (Onboarding)\r\n\r\nAfter installation, the onboarding wizard starts automatically. Choose:\r\n\r\n- Safety prompt: when you see “OpenClaw is a hobby project and still in beta...”, enter “Yes” to continue (understand the permission risks).\r\n- Deployment mode: choose “QuickStart” (you can later add settings via `clawdbot configure`).\r\n- Model provider: choose “Qwen (OAuth)” (good free quota for getting started); the system will generate an authorization link.\r\n- Model authorization: open the link in a browser, log in to Qwen, return to the terminal and select the default model “qwen-portal/coder-model”.\r\n- Skip channels: choose “Skip for now” (configure Feishu later).\r\n- Skills: choose “No” (skip for now, add later if needed).\r\n- Hooks: choose “Skip for now”.\r\n- Startup mode: choose “TUI” (terminal chat UI). When it opens, type “Hello” to verify.\r\n- Exit TUI: press `Ctrl + C`, then use Web UI or Feishu later.\r\n\r\n## IV. Verify service status\r\n\r\nCheck whether services are running:\r\n\r\n```bash\r\nclawdbot status\r\n```\r\n\r\nIf you see “Gateway service: running” and “Node service: running”, services are up.\r\n\r\n## V. Access the Web UI\r\n\r\nCreate an SSH tunnel (run on your local machine):\r\n\r\n```bash\r\nssh -N -L 18789:127.0.0.1:18789 username@server_ip\r\n```\r\n\r\nEnter the server password to connect.\r\n\r\nGet the dashboard URL by running `clawdbot dashboard` on the server and copy the “Dashboard URL”.\r\n\r\nOpen the URL in your local browser to access OpenClaw Web UI. On first run you can set the assistant name and your name (e.g., “Name: Openclaw”, “My Name: Boss”).\r\n",
+        "metadata": {
+          "title": "OpenClaw Linux Deployment Guide",
+          "description": "Complete Linux server installation steps and caveats for OpenClaw.",
+          "image": "/cover.png",
+          "slug": "/openclaw-linux-deploy-guide",
+          "tags": "openclaw,linux,install,deploy,ai,automation",
+          "date": "2026-02-05T00:00:00.000Z",
+          "visible": "published"
+        }
+      },
+      {
+        "locale": "en",
+        "title": "OpenClaw MacOS Deployment Guide",
+        "description": "Local setup guidance for OpenClaw on MacOS.",
+        "image": "/cover.png",
+        "slug": "/openclaw-macos-deploy-guide",
+        "tags": "openclaw,macos,install,deploy,ai,automation",
+        "date": "2026-02-05T00:00:00.000Z",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\nHow to Set Up and Install Clawdbot (OpenClaw) on a Mac Mini\r\n\r\nSetting up Clawdbot on a Mac mini is straightforward, and the same steps work on any Mac. The Mac mini is just a common choice because it is one of the most affordable macOS devices. If you prefer, you can also install Clawdbot on Windows via PowerShell.\r\n\r\nEven if you do not code, you can finish this in a few minutes by following the steps below.\r\n\r\n## 1. Install OpenClaw\r\n\r\nOpen Terminal and run:\r\n\r\n```bash\r\ncurl -fsSL https://openclaw.ai/install.sh | bash\r\n```\r\n\r\nThe installer will download and set up everything automatically.\r\n\r\n## 2. Run the setup wizard\r\n\r\nStart onboarding:\r\n\r\n```bash\r\nopenclaw onboard\r\n```\r\n\r\nWhen you see the safety prompt, choose **Yes**:\r\n\r\n```\r\nI understand this is powerful and inherently risky. Continue?\r\n```\r\n\r\n## 3. Choose onboarding mode\r\n\r\nSelect **Quickstart** (recommended for first-time users).\r\n\r\n## 4. Choose your model provider\r\n\r\nPick your preferred LLM provider. If you choose OpenAI, select **OpenAI API key**.\r\n\r\nCreate an API key at:\r\n\r\n```\r\nhttps://platform.openai.com/api-keys\r\n```\r\n\r\nAfter pasting the key, select the model you want to use (the latest version is usually a good choice).\r\n\r\n## 5. Choose a channel (messaging app)\r\n\r\nPick the app where you want to chat with Clawdbot. Use the arrow keys, then press Return to confirm.\r\n\r\nIf you choose WhatsApp, a QR code will appear. Scan it using the Linked Devices option in WhatsApp.\r\n\r\n## 6. Configure skills\r\n\r\nWhen prompted, select **Yes** to enable skills, then choose the skills you want Clawdbot to access.\r\n\r\n## 7. Start using Clawdbot\r\n\r\nOnce setup finishes, message Clawdbot from your chosen channel. It will start executing commands on your Mac mini right away.\r\n",
+        "metadata": {
+          "title": "OpenClaw MacOS Deployment Guide",
+          "description": "Local setup guidance for OpenClaw on MacOS.",
+          "image": "/cover.png",
+          "slug": "/openclaw-macos-deploy-guide",
+          "tags": "openclaw,macos,install,deploy,ai,automation",
+          "date": "2026-02-05T00:00:00.000Z",
+          "visible": "published"
+        }
+      },
+      {
+        "locale": "en",
+        "title": "OpenClaw + Ollama Integration Guide: Local and Cloud Models",
+        "description": "From one-command launch to manual setup, this guide covers full OpenClaw + Ollama integration with model recommendations, troubleshooting, and command cheatsheet.",
+        "image": "/cover.png",
+        "slug": "/openclaw-ollama-integration",
+        "tags": [
+          "OpenClaw",
+          "Ollama",
+          "GLM-5",
+          "Local LLM",
+          "Deployment"
+        ],
+        "date": "2026-02-20",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# OpenClaw + Ollama Integration Guide\r\n\r\nThis tutorial is for users who want to connect OpenClaw with Ollama. It includes two setup paths:\r\n\r\n1. Official one-command setup (easiest)\r\n2. Manual setup and configuration (more control)\r\n\r\n## Prerequisites\r\n\r\n- Ollama: installed and running\r\n- Node.js: `v22+`\r\n- OS: macOS, Linux, Windows (WSL recommended)\r\n\r\n## Method 1: Official Recommended Setup (Easiest)\r\n\r\nOne command to start:\r\n\r\n```bash\r\nollama launch openclaw\r\n```\r\n\r\nThis command will automatically:\r\n\r\n- Install the latest OpenClaw\r\n- Launch the onboarding wizard\r\n- Select Ollama as backend\r\n- Let you choose a model\r\n- Configure messaging channels (Telegram, WhatsApp, etc.)\r\n\r\n> Prefer models with `128k+` context window, with `64k` as minimum.\r\n\r\n## Method 2: Manual Setup (Advanced Control)\r\n\r\n### 1) Install OpenClaw (Node.js v22+ required)\r\n\r\n```bash\r\n# macOS / Linux\r\ncurl -fsSL https://openclaw.ai/install.sh | bash\r\n\r\n# Windows PowerShell\r\niwr -useb https://openclaw.ai/install.ps1 | iex\r\n```\r\n\r\n### 2) Run onboarding\r\n\r\n```bash\r\nopenclaw onboard --install-daemon\r\n```\r\n\r\n### 3) Configure Ollama backend\r\n\r\nIn the wizard, choose:\r\n\r\n`Quick Start -> Skip Cloud -> Select Ollama`\r\n\r\nOr edit the config file manually:\r\n\r\n```bash\r\n~/.openclaw/openclaw.json\r\n```\r\n\r\nModel configuration example:\r\n\r\n```json\r\n\"models\": {\r\n  \"providers\": {\r\n    \"ollama\": {\r\n      \"api\": \"openai-completions\",\r\n      \"apiKey\": \"ollama-local\",\r\n      \"baseUrl\": \"http://127.0.0.1:11434/v1\",\r\n      \"models\": [\r\n        {\r\n          \"contextWindow\": 131072,\r\n          \"cost\": {\r\n            \"cacheRead\": 0,\r\n            \"cacheWrite\": 0,\r\n            \"input\": 0,\r\n            \"output\": 0\r\n          },\r\n          \"id\": \"glm-5:cloud\",\r\n          \"input\": [\r\n            \"text\"\r\n          ],\r\n          \"maxTokens\": 16384,\r\n          \"name\": \"glm-5:cloud\",\r\n          \"reasoning\": false\r\n        }\r\n      ]\r\n    }\r\n  }\r\n},\r\n\"agents\": {\r\n  \"defaults\": {\r\n    \"compaction\": {\r\n      \"mode\": \"safeguard\"\r\n    },\r\n    \"maxConcurrent\": 4,\r\n    \"model\": {\r\n      \"primary\": \"ollama/glm-5:cloud\"\r\n    },\r\n    \"subagents\": {\r\n      \"maxConcurrent\": 8\r\n    },\r\n    \"workspace\": \"C:\\\\Users\\\\ss\\\\.openclaw\\\\workspace\"\r\n  }\r\n},\r\n```\r\n\r\nIf you want to configure other models, use:\r\n\r\n<a href=\"https://www.openclawai.cv/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"dofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">openclaw-model-config-generator</a>\r\n\r\n### 4) Start services\r\n\r\n```bash\r\nopenclaw gateway start\r\n```\r\n\r\n## Configure Messaging Channels\r\n\r\nAfter installation, you can configure messaging platforms such as:\r\n\r\n| Platform | Notes |\r\n| --- | --- |\r\n| Feishu | Feishu integration |\r\n| Telegram | Common bot integration |\r\n| WhatsApp | Common for cross-border messaging |\r\n\r\n## Recommended Models\r\n\r\n### Local models (64k+ context recommended)\r\n\r\n| Model | Highlights |\r\n| --- | --- |\r\n| `qwen3-coder` | Optimized for coding, recommended |\r\n| `glm-4.7` | Strong all-around performance |\r\n| `qwen2.5:14b-instruct` | Strong tool-calling capability |\r\n| `mistral-nemo` | Strong tool-calling capability |\r\n| `gpt-oss:20b` | Balanced performance and quality |\r\n\r\n### Cloud models (Ollama Cloud)\r\n\r\n| Model | Highlights |\r\n| --- | --- |\r\n| `kimi-k2.5` | 1T parameters, high ceiling |\r\n| `minimax-m2.1` | Strong multilingual performance |\r\n| `glm-5` | Great for high-quality Chinese and complex reasoning |\r\n\r\n## Troubleshooting\r\n\r\n| Issue | Solution |\r\n| --- | --- |\r\n| Model cannot call tools | Switch to `qwen2.5-coder`, `qwen3`, `deepseek-r1`, or `llama3.3` |\r\n| Response is too slow | Use a smaller model, e.g. `qwen2.5-coder:14b` |\r\n| Weak Chinese output | Prefer `qwen3` series, then `deepseek-r1` |\r\n| Telegram not responding | Check whether both `openclaw` and `ollama` are running |\r\n| 8B model quality is weak | Use `14B+` models |\r\n\r\n## Quick Start Commands\r\n\r\n```bash\r\n# Launch and configure\r\nollama launch openclaw\r\n\r\n# Configure only (without start)\r\nollama launch openclaw --config\r\n\r\n# Check Ollama runtime status\r\nollama ps\r\n\r\n# Check OpenClaw logs\r\nopenclaw gateway logs\r\n\r\n# Use Cloud model (example: GLM-5)\r\nollama launch openclaw --model glm-5:cloud\r\n```\r\n\r\n## Notes\r\n\r\n- Context length: use at least `64k`, prefer `128k+`\r\n- Aliases: OpenClaw was previously known as Clawdbot / Moltbot; old commands are often still compatible\r\n- Auto reload: config changes are usually auto-reloaded while `gateway` is running\r\n- GPU: if available, Ollama uses GPU acceleration automatically\r\n\r\n## Summary\r\n\r\nIf you want the fastest setup, use:\r\n\r\n```bash\r\nollama launch openclaw\r\n```\r\n\r\nIf you need finer control over installation, backend, models, and channels, use the manual flow. For production, prioritize models with `64k+` context and stable tool-calling.\r\n",
+        "metadata": {
+          "title": "OpenClaw + Ollama Integration Guide: Local and Cloud Models",
+          "description": "From one-command launch to manual setup, this guide covers full OpenClaw + Ollama integration with model recommendations, troubleshooting, and command cheatsheet.",
+          "image": "/cover.png",
+          "slug": "/openclaw-ollama-integration",
+          "tags": [
+            "OpenClaw",
+            "Ollama",
+            "GLM-5",
+            "Local LLM",
+            "Deployment"
+          ],
+          "date": "2026-02-20",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "en",
+        "title": "Configure OpenClaw on a VPS to Read Gmail: 4 Steps to Long-term Access",
+        "description": "From Google Cloud setup to token generation, delivery to OpenClaw, and testing.",
+        "image": "/cover.png",
+        "slug": "/vps-openclaw-read-gmail",
+        "tags": [
+          "OpenClaw",
+          "Gmail",
+          "VPS",
+          "OAuth",
+          "Automation"
+        ],
+        "date": "2026-02-08",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# Configure OpenClaw on a VPS to Read Gmail: 4 Steps to Long-term Access\r\n\r\nOnce OpenClaw is running on a VPS, you can enable Gmail reading in four stages: get Google OAuth credentials, generate a token locally, send the files to OpenClaw, then test and schedule. This guide keeps it minimal and reliable.\r\n\r\n---\r\n\r\n## Step 1: Google Cloud setup (get your OAuth credentials)\r\n\r\n1. Sign in to Google Cloud Console and create a new project.\r\n![Google Cloud console home, open APIs & Services](https://cdn.openclawai.cv/openclaw-configure-gmail-1.png)\r\n2. Go to APIs & Services -> Library, search and enable Gmail API.\r\n![In APIs & Services, open \"Library\" and enable Gmail API](https://cdn.openclawai.cv/openclaw-configure-gmail-2.png)\r\n3. Create credentials: OAuth Client ID.\r\n![Create an OAuth client ID in \"Credentials\"](https://cdn.openclawai.cv/openclaw-configure-gmail-3.png)\r\n4. Choose \"Desktop App\" as the application type.\r\n![Choose Desktop App and create the OAuth client](https://cdn.openclawai.cv/openclaw-configure-gmail-4.png)\r\n5. Download the JSON file and rename it to `credentials.json`.\r\n![Download the OAuth JSON file after creation](https://cdn.openclawai.cv/openclaw-configure-gmail-5.png)\r\n6. Configure OAuth audience and add your Gmail address under \"Test users\" to avoid 403 errors.\r\n![Add your Gmail account under OAuth \"Audience\" test users](https://cdn.openclawai.cv/openclaw-configure-gmail-7.png)\r\n\r\n## Step 2: Generate the token locally (grant access)\r\n\r\nAfter the app is created, Google requires browser authorization. A VPS cannot open a browser, so use a device that can (your computer). Windows is shown below; macOS is similar.\r\n\r\nOpenClaw needs long-term access, so you must generate `gmail_token.json` on your local machine.\r\n\r\n1. Create a new folder and put `credentials.json` inside.\r\n2. Initialize and install dependencies.\r\n\r\n```bash\r\nnpm init -y\r\nnpm i googleapis @google-cloud/local-auth\r\n```\r\n\r\n3. Create `gmail_token_from_desktop.js` with the following content.\r\n\r\n```js\r\nconst fs = require('fs');\r\nconst path = require('path');\r\nconst { authenticate } = require('@google-cloud/local-auth');\r\nconst { google } = require('googleapis');\r\n\r\nconst SCOPES = ['https://www.googleapis.com/auth/gmail.modify'];\r\n\r\nasync function main() {\r\n  const clientPath = process.argv[2];\r\n  if (!clientPath) {\r\n    console.error('Usage: node gmail_token_from_desktop.js ./credentials.json');\r\n    process.exit(1);\r\n  }\r\n\r\n  const auth = await authenticate({\r\n    keyfilePath: path.resolve(clientPath),\r\n    scopes: SCOPES,\r\n  });\r\n\r\n  const tokenPath = path.join(process.cwd(), 'gmail_token.json');\r\n  fs.writeFileSync(tokenPath, JSON.stringify(auth.credentials, null, 2));\r\n  console.log('Saved token to:', tokenPath);\r\n  console.log('Scopes:', SCOPES.join(' '));\r\n}\r\n\r\nmain().catch(err => {\r\n  console.error(err);\r\n  process.exit(1);\r\n});\r\n```\r\n\r\n4. Run the script and complete the authorization flow.\r\n\r\n```bash\r\nnode gmail_token_from_desktop.js ./credentials.json\r\n```\r\n\r\n5. A browser window opens. Log in to Gmail and approve access.\r\n![Authorize with your Gmail account](https://cdn.openclawai.cv/openclaw-configure-gmail-6.png)\r\n\r\n6. After authorization, `gmail_token.json` is created in the folder.\r\n\r\nIf the authorization page times out, it is usually a network or proxy issue. Set proxy variables first (Windows example):\r\n\r\n```bat\r\nset HTTPS_PROXY=http://your.proxy.ip:port\r\nset HTTP_PROXY=http://your.proxy.ip:port\r\nnode gmail_token_from_desktop.js ./credentials.json\r\n```\r\n\r\n## Step 3: Send to OpenClaw (apply configuration)\r\n\r\n1. Send `credentials.json` to OpenClaw.\r\n2. Send `gmail_token.json` to OpenClaw (contains a refresh token).\r\n3. Tell OpenClaw your preferences.\r\n\r\nExample preferences:\r\n- Check every 3 hours.\r\n- Only push unread emails in the Primary category.\r\n- Mark as read after pushing.\r\n\r\n## Step 4: Test and use\r\n\r\n1. Test with \"Summarize recent emails\" and confirm it works.\r\n2. Set a schedule, e.g. \"Summarize important emails every day at 9:00 AM.\"\r\n\r\n![OpenClaw successfully reads emails](https://cdn.openclawai.cv/openclaw-configure-gmail-8.png)\r\n\r\n---\r\n\r\n## Notes\r\n\r\n- `credentials.json` and `gmail_token.json` are sensitive. Only send them privately to your own bot.\r\n- If you need to mark emails as read, keep `gmail.modify` in `SCOPES`. For read-only access, use `gmail.readonly`.\r\n- If OpenClaw prompts for a keyring password, try setting `GOG_KEYRING_PASSWORD` and `GOG_ACCOUNT`. The exact steps can vary by environment.\r\n",
+        "metadata": {
+          "title": "Configure OpenClaw on a VPS to Read Gmail: 4 Steps to Long-term Access",
+          "description": "From Google Cloud setup to token generation, delivery to OpenClaw, and testing.",
+          "image": "/cover.png",
+          "slug": "/vps-openclaw-read-gmail",
+          "tags": [
+            "OpenClaw",
+            "Gmail",
+            "VPS",
+            "OAuth",
+            "Automation"
+          ],
+          "date": "2026-02-08",
+          "visible": "published",
+          "pin": false
+        }
+      }
+    ],
+    "zh": [
+      {
+        "locale": "zh",
+        "title": "阿里云 OpenClaw（原Moltbot、Clawdbot）集成飞书（保姆级教程）",
+        "description": "通过阿里云应用连接器（AppFlow）可以将OpenClaw服务与飞书集成，实现在飞书群聊或单聊中，通过自然语言直接与OpenClaw交互。",
+        "image": "/cover.png",
+        "slug": "/aliyun-openclaw-feishu",
+        "tags": [
+          "OpenClaw",
+          "Moltbot",
+          "Clawdbot",
+          "飞书",
+          "AppFlow",
+          "阿里云"
+        ],
+        "date": "2026-02-05",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# 阿里云 OpenClaw（原Moltbot、Clawdbot）集成飞书（保姆级教程）\r\n\r\n通过阿里云应用连接器（AppFlow）可以将 OpenClaw 服务与飞书集成，实现在飞书群聊或单聊中，通过自然语言直接与 OpenClaw 交互。\r\n\r\n## 步骤一、购买 OpenClaw 套餐\r\n\r\n购买链接在这里<a href=\"https://swasnext.console.aliyun.com/buy?regionId=us-east-1&planId=swas.s.c2m2s40b1.linux&imageId=bd45493af84846deb5dcd3fca6c1a1d9&amount=1&duration=12&autoRenew=false#/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">购买预装 Moltbot 应用的轻量应用服务器</a>。\r\n\r\n### 详细配置说明：\r\n\r\n1. 在轻量应用服务器页面，预置了资源配置，如要更改配置项，请参考下面内容。\r\n\r\n   - **实例**：内存必须 2GiB 及以上，可以根据自己的需求切换套餐。\r\n   - **地域**：默认美国（弗吉尼亚）。\r\n   - **重要提示**：目前中国内地地域（除香港）的轻量应用服务器，无法使用 OpenClaw 的联网搜索功能。\r\n   - **购买配置**：默认 12 个月，可以根据自己的需求切换时长。\r\n\r\n## 步骤二、配置 OpenClaw\r\n\r\n先默认选择阿里的大模型，后续会讲如何切换，我们首先跑通流程：\r\n\r\n1. 在<a href=\"https://bailian.console.aliyun.com/?tab=model#/model-market\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">阿里云百炼大模型服务平台</a>前往密钥管理页面，单击创建 API-Key。\r\n![阿里云百炼平台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-1.PNG)\r\n\r\n\r\n\r\n   - 接入的模型默认是 qwen3-max-2026-01-23\r\n   - 新用户有 1,000,000 的免费额度，用完就要产生费用\r\n   - 后面我们讲一下如何接入 nvidia 的免费 minimax-m2 大模型\r\n\r\n2. 在服务器页面，单击服务器卡片中的实例 ID，进入服务器概览页面。\r\n\r\n![服务器概览页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-2.PNG)\r\n\r\n\r\n\r\n3. 单击应用详情页签，配置 OpenClaw。\r\n![OpenClaw配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-3.PNG)\r\n\r\n   - **端口放通**：需要放通对应端口的防火墙，单击一键放通即可。\r\n   - **配置 OpenClaw**：单击执行命令，输入百炼的 API-Key，单击下一步。\r\n   - **访问控制页面**：单击执行命令可获取 Clawdbot 对话的地址。\r\n   - **查看 Token**：在帮助 > Token 配置中单击执行命令，获取 Token。\r\n\r\n4. 开启 Response API 访问，后续 AppFlow 会通过 API 访问 OpenClaw。\r\n![Clawdbot Gateway配置截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-4.PNG)\r\n\r\n   - 在 Clawdbot 页面左侧导航栏，单击 Setting > Config。\r\n   - 在 Config 页面左侧导航栏单击 Gateway，切换至 Http 页签，在 Responses 区域将 Enabled 切换至开启，单击 Save。\r\n\r\n## 步骤三：创建并配置应用\r\n\r\n\r\n\r\n1. 登录<a href=\"https://open.feishu.cn/app\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">飞书开发者后台</a>，点击创建企业自建应用，填写应用信息后单击创建。\r\n![飞书开发者后台截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-1.PNG)\r\n2. 在左侧导航栏中单击添加应用能力，选择按能力添加页签，找到机器人卡片，点击添加。\r\n![添加应用能力页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-2.PNG)\r\n3. 在左侧导航栏中单击权限管理，单击开通权限，搜索并添加以下 API 权限：\r\n![权限管理页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-3.PNG)\r\n\r\n| 权限代码 | 用途说明 | 注意事项 |\r\n|---------|---------|---------|\r\n| im:message:send_as_bot | 允许机器人以应用身份发送消息 | 必需权限。 |\r\n| contact:user.employee_id:readonly | 获取用户 user ID。 | 必需权限。 |\r\n| im:message.group_at_msg:readonly | 允许机器人接收群聊中 @ 它的消息。 | 核心交互权限。 |\r\n| im:message.p2p_msg:readonly | 允许机器人读取用户私聊发给它的消息。 | 单聊场景下必需。 |\r\n| im:message.group_msg:readonly | 允许机器人获取所在群组的所有消息。 | 敏感权限。 |\r\n\r\n\r\n\r\n4. 收集集成所需的凭证。后续配置 AppFlow 连接时需要使用这些信息。\r\n   - 在左侧导航栏进入凭证与基础信息页面，查看并复制 App ID 和 App Secret。\r\n![凭证与基础信息页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-4.PNG)\r\n\r\n   \r\n\r\n   - 在左侧导航栏进入事件与回调页面，找到加密策略页签。复制 Encrypt Key 和 Verification Token。\r\n     若当前 Encrypt Key 为空，可点击重置生成一个新的 Encrypt Key。\r\n![加密策略页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-5.PNG)\r\n\r\n   \r\n\r\n## 步骤四：创建飞书连接流\r\n\r\n\r\n\r\n1. 访问 <a href=\"https://appflow.console.aliyun.com/vendor/cn-hangzhou/flow/fastTemplate/tl-fa74e4fee3a24ec6945c\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">AppFlow 模板中心飞书-OpenClaw 模板</a>，单击立即使用。\r\n![AppFlow模板中心截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-6.PNG)\r\n\r\n2. 点击添加飞书鉴权凭证，填写凭证名称（随便填写），及参考下图填入步骤三获取的信息。填写完成后单击确定并在下拉框中选中创建好的凭证。\r\n![AppFlow凭证配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-7.PNG)\r\n\r\n3. 创建 Moltbot 鉴权凭证。填入步骤二获取的凭证，填写完成后单击确定并在下拉框中选中创建好的凭证。\r\n![Moltbot凭证配置界面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-8.PNG)\r\n\r\n\r\n\r\n4. 点击下一步，前往服务器详情页获取服务器公网地址并按页面提示填入您的公网IP：端口号，端口号默认为 18789。 例如：48.253.178.133:18789\r\n   ![公网IP配置页面截图：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-9.PNG)\r\n\r\n5. 配置完成后点击发布，复制并保存您的 Webhook Url。\r\n![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-10.PNG)\r\n\r\n## 步骤五：配置飞书机器人\r\n\r\n### 🖼️ 飞书事件配置页面：\r\n显示事件与回调页面，事件配置页签的位置。\r\n\r\n1. 返回<a href=\"https://open.feishu.cn/app \" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\"> 飞书开发者后台</a>，在左侧导航栏单击事件与回调，在事件配置页签，单击按钮配置订阅方式。\r\n![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-11.PNG)\r\n\r\n2. 选择将事件发送至开发者服务器，并填写上一步复制的 Webhook Url，单击保存。\r\n\r\n\r\n3. 在事件配置页签的已添加事件区域，单击添加事件，搜索并添加接收消息事件。**这步很关键，不设置，群里机器人是不会收到你的消息的**\r\n![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-12.PNG)\r\n\r\n\r\n4. 填写完成后，在左侧导航栏点击版本管理与发布，创建版本或点击最新编辑的版本，填写完成相关信息后保存并提交审批。\r\n![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-13.PNG)\r\n\r\n## 方案验证\r\n\r\n配置完成后，用户可以把机器人添加到某个群里，从而实现机器人和群内成员的互动。\r\n\r\n目前仅支持在飞书电脑端添加机器人。若需在外部群中使用机器人，可参考配置文档机器人支持外部群和外部用户单聊。\r\n\r\n### 🖼️ 添加机器人界面截图：\r\n展示添加机器人的路径：··· > 设置 > 群机器人 > 添加机器人。\r\n\r\n1. 按照添加路径添加机器人：··· > 设置 > 群机器人 > 添加机器人。\r\n2. @机器人发送消息即可实现对话。\r\n![AppFlow发布成功页面：](https://cdn.openclawai.cv/aliyun-openclaw-configure-feishu-14.PNG)\r\n",
+        "metadata": {
+          "title": "阿里云 OpenClaw（原Moltbot、Clawdbot）集成飞书（保姆级教程）",
+          "description": "通过阿里云应用连接器（AppFlow）可以将OpenClaw服务与飞书集成，实现在飞书群聊或单聊中，通过自然语言直接与OpenClaw交互。",
+          "image": "/cover.png",
+          "slug": "/aliyun-openclaw-feishu",
+          "tags": [
+            "OpenClaw",
+            "Moltbot",
+            "Clawdbot",
+            "飞书",
+            "AppFlow",
+            "阿里云"
+          ],
+          "date": "2026-02-05",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "如何为 OpenClaw 配置 NVIDIA 免费模型（minimax-m2.1）",
+        "description": "从申请 NVIDIA API Key 到生成配置、合并到 moltbot.json 的完整教程。",
+        "image": "/cover.png",
+        "slug": "/nvidia-free-model-openclaw-config",
+        "tags": [
+          "OpenClaw",
+          "NVIDIA",
+          "minimax-m2.1",
+          "模型配置"
+        ],
+        "date": "2026-02-07",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# 如何为 OpenClaw 配置 NVIDIA 免费模型（minimax-m2.1）\r\n\r\n很多人配置 OpenClaw 时出错，往往是模型参数填错导致无法启动。下面用 **NVIDIA Build** 的免费模型 **minimax-m2.1** 做一个完整示例，你照着填就不会踩坑。\r\n\r\n---\r\n\r\n## 第一步：注册 NVIDIA Build 并申请 API Key\r\n\r\n打开官方站点：https://build.nvidia.com/\r\n\r\n1. 注册 / 登录账号。\r\n2. 进入控制台申请 **API Key**。\r\n3. 复制并保存这个 Key，后面要用到。\r\n![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax.png)\r\n\r\n\r\n## 第二步：选择模型并获取关键参数\r\n\r\n进入 **Models**，找到你要接入的模型。这里以 **minimax-m2.1** 为例：\r\n1. 打开 **minimax-m2.1** 详情页。\r\n2. 点击右上角 **View Code**。\r\n![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-1.png)\r\n3. 记录下以下参数：\r\n\r\n- **Base URL**：例如 `https://integrate.api.nvidia.com/v1`\r\n- **Model ID**：例如 `minimaxai/minimax-m2.1`\r\n- **Max Tokens**：以页面显示为准\r\n![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-2.png)\r\n\r\n\r\n\r\n\r\n\r\n## 第三步：使用配置生成器\r\n\r\n打开工具页：\r\n\r\n<a href=\"/zh/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"noreferrer noopener\" className=\"text-primary underline font-semibold\">openclaw-model-config-generator</a>\r\n\r\n填写说明：\r\n\r\n- **Provider**：输入 `nvidia`（如果是其他平台就填对应平台名）\r\n- **Base URL / API Key / Model ID / Max Tokens**：按前两步填\r\n- 支持多个 **providers** 和多个 **models**\r\n- 记得选择 **Primary model**\r\n![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-4.png)\r\n\r\n## 第四步：合并到 OpenClaw 配置文件\r\n![minimax-m2.1 模型页面截图：](https://cdn.openclawai.cv/nvidia-minimax-configure-5.png)\r\n找到配置文件（一般叫 `moltbot.json`）。推荐用工具直接合并：\r\n\r\n1. 在工具右侧上传整个配置文件\r\n2. 工具会自动合并 `models` / `agents`\r\n3. 也可以手动复制生成的配置，但要注意合并结构\r\n\r\n⚠️ 如果原文件里有以下内容：\r\n\r\n```json\r\n\"auth\": {\r\n  \"profiles\": {\r\n    \"xxxxx\": {\r\n      \"provider\": \"xxxx\",\r\n      \"mode\": \"api_key\"\r\n    }\r\n  }\r\n}\r\n```\r\n\r\n**请删除 `auth.profiles`**，否则可能影响配置生效。\r\n\r\n完成后检查 JSON 格式是否正确，然后重启服务：\r\n\r\n```bash\r\nmoltbot gateway restart\r\n```\r\n\r\n配置完成后，OpenClaw 就可以正常使用 NVIDIA 的免费模型了。祝你配置成功。\r\n",
+        "metadata": {
+          "title": "如何为 OpenClaw 配置 NVIDIA 免费模型（minimax-m2.1）",
+          "description": "从申请 NVIDIA API Key 到生成配置、合并到 moltbot.json 的完整教程。",
+          "image": "/cover.png",
+          "slug": "/nvidia-free-model-openclaw-config",
+          "tags": [
+            "OpenClaw",
+            "NVIDIA",
+            "minimax-m2.1",
+            "模型配置"
+          ],
+          "date": "2026-02-07",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "简单几步：OpenClaw 配置 GLM-5 模型完整指南",
+        "description": "3 步完成 GLM-5 接入：获取智谱 API 密钥、用 OpenClaw 配置生成器生成配置，并通过 CLI 应用到助手。",
+        "image": "/cover.png",
+        "slug": "/openclaw-glm5-config",
+        "tags": [
+          "OpenClaw",
+          "GLM-5",
+          "智谱AI",
+          "模型配置",
+          "OpenClaw配置生成器"
+        ],
+        "date": "2026-02-12",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# 简单几步：OpenClaw 配置 GLM-5 模型完整指南\r\n\r\n想要让你的 OpenClaw AI 助手使用 GLM-5 模型？本文通过 3 个步骤，配合官方配置生成器工具，带你快速完成 GLM-5 接入。\r\n\r\n完成时间：约 5 分钟  \r\n必备工具：<a href=\"https://www.openclawai.cv/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">OpenClaw 配置生成器</a>  \r\n预期效果：GLM-5 驱动的智能助手\r\n\r\n---\r\n\r\n## 什么是 GLM-5？\r\n\r\nGLM-5 是智谱 AI 推出的、面向复杂系统工程与长链路智能体任务的大模型，目标是提升通用智能在复杂场景下的效率与可靠性。相较 GLM-4.5，GLM-5 的规模从 355B 参数（32B 激活）扩展到 744B 参数（40B 激活），预训练数据从 23T 提升到 28.5T tokens，并引入 DeepSeek Sparse Attention（DSA）以在保持长上下文能力的同时显著降低部署成本。\r\n\r\n在后训练方面，GLM-5 引入了异步强化学习基础设施 slime，以更高吞吐与更细粒度的迭代提升模型表现。综合预训练与后训练进展，GLM-5 在推理、编程和智能体任务上相较 GLM-4.7 有明显提升，并在多项学术基准上达到开源模型中的领先水平。\r\n\r\n---\r\n\r\n## 配置流程（3 步搞定）\r\n\r\n### 步骤 1：准备 API 密钥\r\n\r\n1. 访问 <a href=\"https://bigmodel.cn/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">智谱 AI 开放平台</a>\r\n2. 注册或登录账户\r\n3. 在控制台创建 API 密钥\r\n4. 复制并保存 API 密钥\r\n![GLM-5 API 密钥创建示意图](https://cdn.openclawai.cv/openclaw-glm5-configure-1.png)\r\n\r\n请记录以下信息：\r\n\r\n1. API 密钥：`xxxxxxxxx`\r\n2. Base URL：`https://open.bigmodel.cn/api/paas/v4`\r\n3. 模型 ID：`glm-5`\r\n\r\n### 步骤 2：使用配置生成器\r\n\r\n访问 <a href=\"https://www.openclawai.cv/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">OpenClaw 配置生成器</a>，按以下顺序填写。\r\n\r\n#### 2.1 添加 Provider\r\n\r\n在 \"Providers\" 部分点击 \"Provider 1\"，填写：\r\n\r\n1. Provider key：`zhipu`\r\n2. Base URL：`https://open.bigmodel.cn/api/paas/v4`\r\n3. API key：你的 GLM-5 API 密钥\r\n\r\n#### 2.2 配置模型参数\r\n\r\n在 \"Model 1\" 部分设置：\r\n\r\n1. Model ID：`glm-5`\r\n2. Model name：`glm-5-assistant`\r\n3. Max tokens：`4096`\r\n4. Reasoning：开启（推荐）\r\n5. Text input：开启\r\n6. Image input：按需开启\r\n\r\n#### 2.3 设置主模型\r\n\r\n将 \"GLM-5\" 设置为 \"Primary model\"。\r\n\r\n### 步骤 3：应用配置\r\n\r\n生成器会提供 JSON 配置，点击 \"Copy\" 复制到剪贴板。\r\n![OpenClaw 配置生成器 JSON 输出示意图](https://cdn.openclawai.cv/openclaw-glm5-configure-2.png)\r\n\r\n接下来：\r\n\r\n1. 在配置生成器中上传你当前的 `openclaw.json` 配置文件。\r\n2. 让工具自动合并新配置（例如 GLM-5 的 provider 和 model）。\r\n3. 下载合并后的配置文件并覆盖原有配置。\r\n\r\n建议操作前先备份：\r\n\r\n```bash\r\ncp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.backup\r\n```\r\n\r\n---\r\n\r\n## 验证配置\r\n\r\n### 快速测试\r\n\r\n1. 重启 Gateway\r\n\r\n```bash\r\nopenclaw gateway restart\r\n```\r\n\r\n2. 测试 GLM-5 响应\r\n\r\n```\r\nGLM-5，请介绍一下你自己\r\n```\r\n\r\n3. 检查响应质量\r\n\r\n1. 回答是否准确\r\n2. 响应速度是否满意\r\n\r\n### 常见测试场景\r\n\r\n代码测试：\r\n\r\n```\r\n帮我写一个 Python 函数，计算斐波那契数列\r\n```\r\n\r\n写作测试：\r\n\r\n```\r\n写一首关于春天的诗\r\n```\r\n\r\n数学测试：\r\n\r\n```\r\n计算 12345 × 67890 的结果\r\n```\r\n\r\n---\r\n\r\n## 故障排除\r\n\r\n### Invalid API key\r\n\r\n原因：API 密钥错误或过期  \r\n解决：重新检查智谱 AI 控制台，确认 API 密钥正确\r\n\r\n### Connection timeout\r\n\r\n原因：网络连接问题  \r\n解决：\r\n\r\n```bash\r\nopenclaw config set agents.defaults.timeout 60000\r\nping open.bigmodel.cn\r\n```\r\n\r\n### Model not found\r\n\r\n原因：模型 ID 错误  \r\n解决：确认使用 `glm-5`\r\n\r\n### Poor response quality\r\n\r\n原因：温度参数不当  \r\n解决：\r\n\r\n```bash\r\nopenclaw config set agents.defaults.temperature 0.5\r\n```\r\n\r\n---\r\n\r\n## 常用命令速查\r\n\r\n```bash\r\n# 查看当前模型配置\r\nopenclaw config get agents.defaults.model\r\n\r\n# 更新 GLM-5 配置\r\nopenclaw config set agents.defaults.temperature 0.6\r\n\r\n# 重启应用新配置\r\nopenclaw gateway restart\r\n\r\n# 查看配置帮助\r\nopenclaw config --help\r\n```\r\n\r\n---\r\n\r\n## 总结\r\n\r\n使用配置生成器 + OpenClaw CLI 配置 GLM-5，只需要 3 个步骤：\r\n\r\n1. 准备 API 密钥\r\n2. 生成配置\r\n3. 应用配置\r\n\r\n现在你的 OpenClaw AI 助手已经可以使用 GLM-5 进行对话和任务处理了。\r\n",
+        "metadata": {
+          "title": "简单几步：OpenClaw 配置 GLM-5 模型完整指南",
+          "description": "3 步完成 GLM-5 接入：获取智谱 API 密钥、用 OpenClaw 配置生成器生成配置，并通过 CLI 应用到助手。",
+          "image": "/cover.png",
+          "slug": "/openclaw-glm5-config",
+          "tags": [
+            "OpenClaw",
+            "GLM-5",
+            "智谱AI",
+            "模型配置",
+            "OpenClaw配置生成器"
+          ],
+          "date": "2026-02-12",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "OpenClaw Linux 环境安装教程",
+        "description": "在 Linux 服务器上安装 OpenClaw 的完整步骤与注意事项。",
+        "image": "/cover.png",
+        "slug": "/openclaw-linux-deploy-guide",
+        "tags": "openclaw,linux,install,deploy,ai,automation",
+        "date": "2026-02-05T00:00:00.000Z",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n## 一、前置准备\r\n\r\n### 1.1 安装 Git\r\n\r\n执行以下命令更新系统并安装 Git：\r\n\r\n```bash\r\nsudo apt update\r\nsudo apt install git -y\r\n```\r\n\r\n### 1.2 安装 Node.js（版本 ≥ 22）\r\n\r\n安装 NVM（Node 版本管理工具）：\r\n\r\n国内服务器（使用 Gitee 镜像源）：\r\n\r\n```bash\r\ncurl -o- https://gitee.com/RubyMetric/nvm-cn/raw/main/install.sh | bash\r\n```\r\n\r\n海外服务器（使用官方源）：\r\n\r\n```bash\r\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash\r\n```\r\n\r\n重新加载环境变量：\r\n\r\n```bash\r\nsource ~/.bashrc\r\n```\r\n\r\n安装 Node.js 22 版本：\r\n\r\n```bash\r\nnvm install 22\r\n```\r\n\r\n验证版本：执行 `node -v`，输出 `v22.x.x` 即符合要求。\r\n\r\n## 二、安装 OpenClaw\r\n\r\n执行官方一键安装脚本：\r\n\r\n```bash\r\ncurl -fsSL https://openclaw.bot/install.sh | bash\r\n```\r\n\r\n注意事项：\r\n- 国内服务器若安装失败，需先解决网络问题。\r\n- 2G 内存服务器可能出现 OOM（内存溢出），建议配置 swap 交换空间（将硬盘空间作为虚拟内存）。\r\n- 安装过程耗时较长，需耐心等待。\r\n\r\n## 三、初始化配置（Onboarding）\r\n\r\n安装成功后自动进入初始化向导，按以下步骤选择配置：\r\n\r\n- 安全提示确认：提示 “OpenClaw is a hobby project and still in beta...”，输入 “Yes” 继续（需知晓其权限风险）。\r\n- 选择部署模式：选择 “QuickStart”（后续可通过 `clawdbot configure` 补充配置）。\r\n- 选择模型服务商：选择 “Qwen（OAuth）”（免费额度充足，适合入门），系统会生成授权链接。\r\n- 模型授权：复制链接在浏览器打开，登录 Qwen 账号完成授权，返回终端选择默认模型 “qwen-portal/coder-model”。\r\n- 跳过通信通道配置：选择 “Skip for now”（后续专门配置飞书）。\r\n- 技能配置：选择 “No”（暂不配置，后续可按需扩展）。\r\n- Hooks 配置：选择 “Skip for now”（暂不启用）。\r\n- 启动方式选择：选择 “TUI”（终端聊天界面），出现聊天界面后输入 “Hello” 测试，确认安装成功。\r\n- 关闭 TUI 界面：按 `Ctrl + C` 退出，后续通过 Web UI 或飞书交互。\r\n\r\n## 四、验证服务状态\r\n\r\n执行命令查看服务是否正常运行：\r\n\r\n```bash\r\nclawdbot status\r\n```\r\n\r\n若输出包含 “Gateway service: running”“Node service: running” 等信息，说明服务启动成功。\r\n\r\n## 五、访问 Web UI 面板\r\n\r\n建立 SSH 隧道（本地电脑终端执行）：\r\n\r\n```bash\r\nssh -N -L 18789:127.0.0.1:18789 用户名@服务器IP\r\n```\r\n\r\n输入服务器密码完成连接。\r\n\r\n获取授权链接：服务器终端执行 `clawdbot dashboard`，复制输出的 “Dashboard URL”。\r\n\r\n访问面板：本地浏览器打开复制的 URL，即可进入 OpenClaw Web UI。首次使用可设置 AI 助手名称与自身称呼（如输入 “Name: Openclaw”“My Name: Boss”）。\r\n",
+        "metadata": {
+          "title": "OpenClaw Linux 环境安装教程",
+          "description": "在 Linux 服务器上安装 OpenClaw 的完整步骤与注意事项。",
+          "image": "/cover.png",
+          "slug": "/openclaw-linux-deploy-guide",
+          "tags": "openclaw,linux,install,deploy,ai,automation",
+          "date": "2026-02-05T00:00:00.000Z",
+          "visible": "published"
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "OpenClaw MacOS 环境部署指南",
+        "description": "OpenClaw 在 MacOS 上的本地安装与配置步骤。",
+        "image": "/cover.png",
+        "slug": "/openclaw-macos-deploy-guide",
+        "tags": "openclaw,macos,install,deploy,ai,automation",
+        "date": "2026-02-05T00:00:00.000Z",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n如何在 Mac mini 上安装 Clawdbot（OpenClaw）\r\n\r\n在 Mac mini 上安装 Clawdbot 非常简单，同样的步骤也适用于任何 Mac 设备。之所以很多人选择 Mac mini，是因为它是目前最便宜的 macOS 设备之一。如果你更习惯 Windows，也可以通过 PowerShell 安装 Clawdbot。\r\n\r\n即便你不会写代码，也能在几分钟内完成安装。按下面步骤操作即可。\r\n\r\n## 1. 安装 OpenClaw\r\n\r\n打开 Terminal，执行：\r\n\r\n```bash\r\ncurl -fsSL https://openclaw.ai/install.sh | bash\r\n```\r\n\r\n安装脚本会自动下载并完成所需组件配置。\r\n\r\n## 2. 运行配置向导\r\n\r\n启动 onboarding：\r\n\r\n```bash\r\nopenclaw onboard\r\n```\r\n\r\n看到安全提示后，选择 **Yes**：\r\n\r\n```\r\nI understand this is powerful and inherently risky. Continue?\r\n```\r\n\r\n## 3. 选择 onboarding 模式\r\n\r\n选择 **Quickstart**（推荐新手）。\r\n\r\n## 4. 选择模型提供方\r\n\r\n选择你偏好的 LLM 提供方。如果你选择 OpenAI，请选择 **OpenAI API key**。\r\n\r\n在以下地址创建 API key：\r\n\r\n```\r\nhttps://platform.openai.com/api-keys\r\n```\r\n\r\n粘贴 key 后，选择你要使用的模型（通常建议选择最新版本）。\r\n\r\n## 5. 选择通道（聊天应用）\r\n\r\n选择你希望用来与 Clawdbot 对话的应用。使用方向键选择后按回车确认。\r\n\r\n如果选择 WhatsApp，会出现二维码。请在 WhatsApp 的 Linked Devices 里扫描。\r\n\r\n## 6. 配置技能\r\n\r\n当提示配置技能时，选择 **Yes**，并勾选你希望开放的技能。\r\n\r\n## 7. 开始使用 Clawdbot\r\n\r\n配置完成后，直接在你选择的聊天应用里与 Clawdbot 对话，它会开始在你的 Mac mini 上执行命令。\r\n",
+        "metadata": {
+          "title": "OpenClaw MacOS 环境部署指南",
+          "description": "OpenClaw 在 MacOS 上的本地安装与配置步骤。",
+          "image": "/cover.png",
+          "slug": "/openclaw-macos-deploy-guide",
+          "tags": "openclaw,macos,install,deploy,ai,automation",
+          "date": "2026-02-05T00:00:00.000Z",
+          "visible": "published"
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "OpenClaw + Ollama 集成教程：本地与 Cloud 模型一站式配置",
+        "description": "从一键启动到手动安装，完整讲解 OpenClaw 与 Ollama 的集成流程，并给出模型推荐、排障方案与常用命令。",
+        "image": "/cover.png",
+        "slug": "/openclaw-ollama-integration",
+        "tags": [
+          "OpenClaw",
+          "Ollama",
+          "GLM-5",
+          "Local LLM",
+          "Deployment"
+        ],
+        "date": "2026-02-20",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# OpenClaw + Ollama 集成教程\r\n\r\n这篇教程面向希望把 OpenClaw 接入 Ollama 的用户，包含两种安装方式：\r\n\r\n1. 官方推荐的一键启动（最简单）\r\n2. 手动安装与配置（可控性更高）\r\n\r\n## 前置要求\r\n\r\n- Ollama：已安装并正在运行\r\n- Node.js：`v22+`\r\n- 系统：macOS、Linux、Windows（建议 WSL）\r\n\r\n## 方法一：官方推荐（最简单）\r\n\r\n一步启动：\r\n\r\n```bash\r\nollama launch openclaw\r\n```\r\n\r\n该命令会自动完成：\r\n\r\n- 安装最新 OpenClaw\r\n- 启动安装向导\r\n- 自动选择 Ollama 作为后端\r\n- 引导你选择模型\r\n- 配置消息通道（如 Telegram、WhatsApp 等）\r\n\r\n> 建议优先使用 `128k+` 上下文模型，至少 `64k`。\r\n\r\n## 方法二：手动安装（高级控制）\r\n\r\n### 1) 安装 OpenClaw（需 Node.js v22+）\r\n\r\n```bash\r\n# macOS / Linux\r\ncurl -fsSL https://openclaw.ai/install.sh | bash\r\n\r\n# Windows PowerShell\r\niwr -useb https://openclaw.ai/install.ps1 | iex\r\n```\r\n\r\n### 2) 运行安装向导\r\n\r\n```bash\r\nopenclaw onboard --install-daemon\r\n```\r\n\r\n### 3) 配置 Ollama 后端\r\n\r\n在向导中选择：\r\n\r\n`Quick Start -> Skip Cloud -> Select Ollama`\r\n\r\n也可以手动编辑配置文件：\r\n\r\n```bash\r\n~/.openclaw/openclaw.json\r\n```\r\n\r\n模型配置如下：\r\n\r\n```json\r\n\"models\": {\r\n  \"providers\": {\r\n    \"ollama\": {\r\n      \"api\": \"openai-completions\",\r\n      \"apiKey\": \"ollama-local\",\r\n      \"baseUrl\": \"http://127.0.0.1:11434/v1\",\r\n      \"models\": [\r\n        {\r\n          \"contextWindow\": 131072,\r\n          \"cost\": {\r\n            \"cacheRead\": 0,\r\n            \"cacheWrite\": 0,\r\n            \"input\": 0,\r\n            \"output\": 0\r\n          },\r\n          \"id\": \"glm-5:cloud\",\r\n          \"input\": [\r\n            \"text\"\r\n          ],\r\n          \"maxTokens\": 16384,\r\n          \"name\": \"glm-5:cloud\",\r\n          \"reasoning\": false\r\n        }\r\n      ]\r\n    }\r\n  }\r\n},\r\n\"agents\": {\r\n  \"defaults\": {\r\n    \"compaction\": {\r\n      \"mode\": \"safeguard\"\r\n    },\r\n    \"maxConcurrent\": 4,\r\n    \"model\": {\r\n      \"primary\": \"ollama/glm-5:cloud\"\r\n    },\r\n    \"subagents\": {\r\n      \"maxConcurrent\": 8\r\n    },\r\n    \"workspace\": \"C:\\\\Users\\\\ss\\\\.openclaw\\\\workspace\"\r\n  }\r\n},\r\n```\r\n\r\n如果想配置其他模型，也可以使用：\r\n\r\n<a href=\"https://www.openclawai.cv/tools/openclaw-model-config-generator\" target=\"_blank\" rel=\"dofollow noopener noreferrer\" className=\"text-blue-600 underline font-semibold\">openclaw-model-config-generator</a>\r\n\r\n### 4) 启动服务\r\n\r\n```bash\r\nopenclaw gateway start\r\n```\r\n\r\n## 配置消息通道\r\n\r\n安装完成后可在向导中配置消息平台，常见包括：\r\n\r\n| 平台 | 说明 |\r\n| --- | --- |\r\n| Feishu | 飞书接入 |\r\n| Telegram | Bot 对接常用 |\r\n| WhatsApp | 跨境消息场景常用 |\r\n\r\n## 推荐模型\r\n\r\n### 本地模型（建议 64k+ 上下文）\r\n\r\n| 模型 | 特点 |\r\n| --- | --- |\r\n| `qwen3-coder` | 编码场景优化，推荐 |\r\n| `glm-4.7` | 综合能力强 |\r\n| `qwen2.5:14b-instruct` | 工具调用能力强 |\r\n| `mistral-nemo` | 工具调用能力强 |\r\n| `gpt-oss:20b` | 性能与效果平衡 |\r\n\r\n### 云端模型（Ollama Cloud）\r\n\r\n| 模型 | 特点 |\r\n| --- | --- |\r\n| `kimi-k2.5` | 1T 参数，能力上限高 |\r\n| `minimax-m2.1` | 多语言能力强 |\r\n| `glm-5` | 适合高质量中文与复杂推理 |\r\n\r\n## 故障排除\r\n\r\n| 问题 | 解决方案 |\r\n| --- | --- |\r\n| 模型无法工具调用 | 改用 `qwen2.5-coder`、`qwen3`、`deepseek-r1`、`llama3.3` |\r\n| 响应太慢 | 换更小模型，如 `qwen2.5-coder:14b` |\r\n| 中文效果差 | 优先 `qwen3` 系列，其次 `deepseek-r1` |\r\n| Telegram 无响应 | 检查 `openclaw` 与 `ollama` 是否都在运行 |\r\n| 8B 模型效果不稳定 | 建议使用 `14B+` 模型 |\r\n\r\n## 快速上手命令\r\n\r\n```bash\r\n# 启动并配置\r\nollama launch openclaw\r\n\r\n# 仅配置，不启动\r\nollama launch openclaw --config\r\n\r\n# 查看 Ollama 运行状态\r\nollama ps\r\n\r\n# 检查 OpenClaw 日志\r\nopenclaw gateway logs\r\n\r\n# 使用 Cloud 模型（示例：GLM-5）\r\nollama launch openclaw --model glm-5:cloud\r\n```\r\n\r\n## 注意事项\r\n\r\n- 上下文长度：建议至少 `64k`，优先 `128k+`\r\n- 历史别名：OpenClaw 早期也叫 Clawdbot / Moltbot，旧命令通常仍兼容\r\n- 自动重载：`gateway` 运行时修改配置通常会自动重载\r\n- GPU 加速：如设备可用，Ollama 会自动利用 GPU\r\n\r\n## 总结\r\n\r\n如果你希望快速完成集成，直接使用：\r\n\r\n```bash\r\nollama launch openclaw\r\n```\r\n\r\n如果你需要更细粒度控制（安装方式、后端、模型、消息通道），使用手动流程即可。对于生产使用，优先选择 `64k+` 上下文且工具调用稳定的模型。",
+        "metadata": {
+          "title": "OpenClaw + Ollama 集成教程：本地与 Cloud 模型一站式配置",
+          "description": "从一键启动到手动安装，完整讲解 OpenClaw 与 Ollama 的集成流程，并给出模型推荐、排障方案与常用命令。",
+          "image": "/cover.png",
+          "slug": "/openclaw-ollama-integration",
+          "tags": [
+            "OpenClaw",
+            "Ollama",
+            "GLM-5",
+            "Local LLM",
+            "Deployment"
+          ],
+          "date": "2026-02-20",
+          "visible": "published",
+          "pin": false
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "OpenClaw Windows环境部署全攻略",
+        "description": "从环境准备到飞书接入，梳理 OpenClaw 在 Windows 下的完整部署流程与避坑指南。",
+        "image": "/cover.png",
+        "slug": "/openclaw-windows-deploy-guide",
+        "tags": "openclaw,windows,install,deploy,ai,automation",
+        "date": "2026-02-05T00:00:00.000Z",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n关注 AI 自动化的朋友，最近应该都被 OpenClaw 刷屏了。\r\n\r\n简单来说，它就像是给 AI 加上了“手”和“眼”，让原本只能动嘴的 Agent 具备了实打实的桌面控制力。虽然功能很强，但 Windows 环境下的部署细节确实比较多，劝退了不少想尝鲜的朋友。\r\n\r\n本着“不仅要好用，还要好装”的原则，我们整理了这篇详细的配置指南。从环境准备到成功运行，所有可能踩雷的地方都标注好了，直接看实操。\r\n\r\n## 一、前置环境准备\r\n\r\nOpenClaw 依赖 Node.js 和 Git，需先完成以下组件安装。\r\n\r\n### 1.1 安装 Node.js（版本 ≥ 22）\r\n\r\n1. 下载：访问 Node.js 官网，选择“Windows 安装包（64 位）”（.msi 格式）。\r\n2. 安装步骤：\r\n   - 双击安装包，勾选“我接受许可协议”，点击“Next”。\r\n   - 保持默认安装路径（`C:\\Program Files\\nodejs\\`），点击“Next”。\r\n   - 关键选项：确保 “Add Node.js to PATH” 已勾选（自动配置环境变量）。\r\n   - 后续页面保持默认，点击 “Install” 完成安装。\r\n3. 验证：重启 PowerShell，执行命令：\r\n\r\n```bash\r\nnode -v\r\n```\r\n\r\n4. 输出 `v22.x.x` 或更高版本即成功。\r\n\r\n### 1.2 安装 Git\r\n\r\n作用：拉取 OpenClaw 的代码与依赖。\r\n\r\n1. 下载：访问 Git 官网，下载 64 位安装包。\r\n2. 安装步骤：全程保持默认选项（自动配置环境变量）。\r\n3. 验证：执行命令：\r\n\r\n```bash\r\ngit --version\r\n```\r\n\r\n4. 输出版本号即成功。\r\n\r\n### 1.3 解锁 PowerShell 脚本权限\r\n\r\nWindows 默认禁止运行脚本，需以管理员身份打开 PowerShell，执行：\r\n\r\n```powershell\r\nSet-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser\r\n```\r\n\r\n输入 `Y` 确认。\r\n\r\n## 二、安装 OpenClaw 主程序\r\n\r\n以管理员身份打开 PowerShell，执行官方一键安装脚本：\r\n\r\n```powershell\r\niwr -useb https://clawd.bot/install.ps1 | iex\r\n```\r\n\r\n等待终端显示 “Clawdbot installed successfully” 即完成安装。\r\n\r\n## 三、初始化配置向导\r\n\r\n执行以下命令启动配置向导：\r\n\r\n```bash\r\nopenclaw onboard\r\n```\r\n\r\n以下是每一步的选项说明与推荐选择：\r\n\r\n### 3.1 模式选择（Mode）\r\n\r\n选项：QuickStart / Advanced  \r\n含义：\r\n- QuickStart：自动配置基础参数，适合新手。\r\n- Advanced：自定义模型、端口等，适合技术用户。\r\n\r\n推荐：选择 QuickStart，按回车。\r\n\r\n### 3.2 模型提供方（Provider）\r\n\r\n选项：Qwen / OpenAI / Skip for now  \r\n含义：选择 OpenClaw 的 AI 模型平台。\r\n\r\n推荐：选择 Qwen（国内可直接访问），后续会弹出网页登录通义千问账号完成授权。\r\n\r\n### 3.3 默认模型（Default model）\r\n\r\n选项：qwen-portal/coder-model  \r\n含义：设置 OpenClaw 默认使用的 AI 模型。\r\n\r\n推荐：保持默认，直接按回车。\r\n\r\n### 3.4 通道配置（Channels）\r\n\r\n选项：Telegram / WhatsApp / Skip for now  \r\n含义：选择与 OpenClaw 交互的聊天平台。\r\n\r\n推荐：选择 Skip for now（默认选项均为国外平台，国内无法直接使用）。\r\n\r\n### 3.5 技能配置（Skills）\r\n\r\n选项：Yes / No  \r\n含义：Skills 是 OpenClaw 的功能模块（如文件操作、代码执行）。\r\n\r\n推荐：选择 Yes，启用基础技能。\r\n\r\n### 3.6 技能安装工具（Skill install）\r\n\r\n选项：npm / pnpm / bun  \r\n含义：选择安装技能依赖的包管理器。\r\n\r\n推荐：选择 npm（兼容性最好，国内可通过镜像加速）。\r\n\r\n### 3.7 技能依赖安装（Skill Dependencies）\r\n\r\n选项：Skip for now / 选择具体依赖  \r\n含义：部分技能依赖海外服务，国内无法直接下载。\r\n\r\n推荐：选择 Skip for now，后续按需安装本地技能。\r\n\r\n### 3.8 API 密钥配置\r\n\r\n选项：No / Yes  \r\n含义：配置第三方服务的 API 密钥（如谷歌地图）。\r\n\r\n推荐：选择 No（国内无法使用这些服务）。\r\n\r\n### 3.9 Hooks 配置（Hooks）\r\n\r\n选项：Skip for now / 启用  \r\n含义：Hooks 是自动化触发功能，需配置 Token。\r\n\r\n推荐：选择 Skip for now，后续手动配置。\r\n\r\n## 四、启动网关服务\r\n\r\n配置完成后，执行以下命令启动 OpenClaw 核心服务：\r\n\r\n```bash\r\nopenclaw gateway start\r\n```\r\n\r\n## 五、访问管理界面\r\n\r\n在浏览器中打开地址：\r\n\r\n```\r\nhttp://127.0.0.1:18789\r\n```\r\n\r\n## 六、国内适配：配置飞书通道\r\n\r\n飞书是国内支持的官方平台，配置步骤如下：\r\n\r\n1. 前往飞书开放平台，创建“企业自建应用”。\r\n2. 获取 App ID 和 App Secret。\r\n3. 编辑 `C:\\Users\\你的用户名\\.openclaw\\openclaw.json`，添加飞书配置：\r\n\r\n```json\r\n\"channels\": {\r\n  \"feishu\": {\r\n    \"enabled\": true,\r\n    \"appId\": \"你的App ID\",\r\n    \"appSecret\": \"你的App Secret\",\r\n    \"connectionMode\": \"websocket\"\r\n  }\r\n}\r\n```\r\n\r\n4. 重启网关：\r\n\r\n```bash\r\nopenclaw gateway restart\r\n```\r\n\r\n5. 重启后即可通过飞书与 OpenClaw 交互。\r\n",
+        "metadata": {
+          "title": "OpenClaw Windows环境部署全攻略",
+          "description": "从环境准备到飞书接入，梳理 OpenClaw 在 Windows 下的完整部署流程与避坑指南。",
+          "image": "/cover.png",
+          "slug": "/openclaw-windows-deploy-guide",
+          "tags": "openclaw,windows,install,deploy,ai,automation",
+          "date": "2026-02-05T00:00:00.000Z",
+          "visible": "published"
+        }
+      },
+      {
+        "locale": "zh",
+        "title": "在 VPS 上配置 OpenClaw 读取 Gmail：四步完成授权与长期访问",
+        "description": "从 Google Cloud 配置到生成 token，再到交付 OpenClaw 与测试使用的完整流程。",
+        "image": "/cover.png",
+        "slug": "/vps-openclaw-read-gmail",
+        "tags": [
+          "OpenClaw",
+          "Gmail",
+          "VPS",
+          "OAuth",
+          "自动化"
+        ],
+        "date": "2026-02-08",
+        "visible": "published",
+        "pin": false,
+        "content": "\r\n# 在 VPS 上配置 OpenClaw 读取 Gmail：四步完成授权与长期访问\r\n\r\n在 VPS 上部署 OpenClaw 后，如果想让它读取 Gmail，流程可以拆成四个阶段：申请 Google 授权、在本地生成 token、把文件交给 OpenClaw、最后测试与定时使用。本文按最短路径整理。\r\n\r\n---\r\n\r\n## 第一步：Google Cloud 后台配置（申请通行证）\r\n\r\n1. 登录 Google Cloud Console，新建项目。\r\n![Google Cloud 控制台首页，进入 API 和服务](https://cdn.openclawai.cv/openclaw-configure-gmail-1.png)\r\n2. 进入 API 和服务 → 库，搜索并启用：Gmail API\r\n![在 API 和服务中进入“库”并启用 Gmail API](https://cdn.openclawai.cv/openclaw-configure-gmail-2.png)\r\n3. 创建凭证：OAuth 客户端 ID。\r\n![在“凭证”里创建 OAuth 客户端 ID](https://cdn.openclawai.cv/openclaw-configure-gmail-3.png)\r\n4. 应用类型选择“Desktop App”。\r\n![选择“桌面应用”并创建 OAuth 客户端](https://cdn.openclawai.cv/openclaw-configure-gmail-4.png)\r\n5. 下载生成的 JSON 文件，并重命名为 `credentials.json`。\r\n![创建完成后下载 JSON 文件](https://cdn.openclawai.cv/openclaw-configure-gmail-5.png)\r\n6. 配置 OAuth 目标对象，并在“测试用户”里添加你的 Gmail 地址，避免 403 报错。\r\n![在 OAuth 目标对象中添加测试用户](https://cdn.openclawai.cv/openclaw-configure-gmail-7.png)\r\n\r\n## 第二步：本地生成 Token（盖章授权）\r\n应用创建好了之后，google需要浏览器认证，但是VPS上无法调用浏览器，这个时候就要找一台可以打开浏览器的设备，比如电脑，\r\n拿Windows举例，MacOS类似，\r\n1. 新建一个文件夹，把 `credentials.json` 放进去。\r\n2. 初始化并安装依赖。\r\n\r\n```bash\r\nnpm init -y\r\nnpm i googleapis @google-cloud/local-auth\r\n```\r\n\r\n3. 新建脚本 `gmail_token_from_desktop.js`，内容如下。\r\n\r\n```js\r\nconst fs = require('fs');\r\nconst path = require('path');\r\nconst { authenticate } = require('@google-cloud/local-auth');\r\nconst { google } = require('googleapis');\r\n\r\nconst SCOPES = ['https://www.googleapis.com/auth/gmail.modify'];\r\n\r\nasync function main() {\r\n  const clientPath = process.argv[2];\r\n  if (!clientPath) {\r\n    console.error('Usage: node gmail_token_from_desktop.js ./credentials.json');\r\n    process.exit(1);\r\n  }\r\n\r\n  const auth = await authenticate({\r\n    keyfilePath: path.resolve(clientPath),\r\n    scopes: SCOPES,\r\n  });\r\n\r\n  const tokenPath = path.join(process.cwd(), 'gmail_token.json');\r\n  fs.writeFileSync(tokenPath, JSON.stringify(auth.credentials, null, 2));\r\n  console.log('Saved token to:', tokenPath);\r\n  console.log('Scopes:', SCOPES.join(' '));\r\n}\r\n\r\nmain().catch(err => {\r\n  console.error(err);\r\n  process.exit(1);\r\n});\r\n```\r\n\r\n4. 运行脚本并完成授权。\r\n\r\n```bash\r\nnode gmail_token_from_desktop.js ./credentials.json\r\n```\r\n\r\n5. 浏览器会弹出授权页面，登录 Gmail 并确认授权。\r\n![浏览器授权登录 Gmail 账号](https://cdn.openclawai.cv/openclaw-configure-gmail-6.png)\r\n\r\n6. 授权成功后本地文件夹生成 `gmail_token.json`。\r\n\r\n如果授权页超时，通常是网络或代理问题，可以先设置代理再执行。\r\n\r\n```bat\r\nset HTTPS_PROXY=http://your.proxy.ip:port\r\nset HTTP_PROXY=http://your.proxy.ip:port\r\nnode gmail_token_from_desktop.js ./credentials.json\r\n```\r\n\r\n## 第三步：发送给 OpenClaw（配置生效）\r\n\r\n1. 发送 `credentials.json` 给 OpenClaw。\r\n2. 发送 `gmail_token.json` 给 OpenClaw（包含 refresh_token）。\r\n3. 告知你希望的配置偏好。\r\n\r\n示例偏好可以是：\r\n- 每 3 小时检查一次。\r\n- 只推送 Primary 分类未读邮件。\r\n- 推送后标记为已读。\r\n\r\n## 第四步：测试与使用\r\n\r\n1. 发送指令“帮忙总结一下最近的邮件”，确认能够读取并回复。\r\n2. 设置定时任务，例如“每天早上 9:00 总结重要邮件摘要”。\r\n\r\n![OpenClaw 成功读取邮件示例](https://cdn.openclawai.cv/openclaw-configure-gmail-8.png)\r\n\r\n---\r\n\r\n## 注意事项\r\n\r\n- `credentials.json` 和 `gmail_token.json` 都是敏感文件，只能私密发送给自己的机器人。\r\n- 如果需要自动标记已读，`SCOPES` 必须包含 `gmail.modify`。仅阅读则用 `gmail.readonly`。\r\n- 若 OpenClaw 提示 keyring，可尝试设置 `GOG_KEYRING_PASSWORD` 与 `GOG_ACCOUNT`，具体方式以你的环境为准。\r\n",
+        "metadata": {
+          "title": "在 VPS 上配置 OpenClaw 读取 Gmail：四步完成授权与长期访问",
+          "description": "从 Google Cloud 配置到生成 token，再到交付 OpenClaw 与测试使用的完整流程。",
+          "image": "/cover.png",
+          "slug": "/vps-openclaw-read-gmail",
+          "tags": [
+            "OpenClaw",
+            "Gmail",
+            "VPS",
+            "OAuth",
+            "自动化"
+          ],
+          "date": "2026-02-08",
+          "visible": "published",
+          "pin": false
+        }
+      }
+    ]
+  }
+}

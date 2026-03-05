@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE } from '@/i18n/routing';
+import blogCache from '@/lib/generated/blogCache.json';
 import { BlogPost } from '@/types/blog';
 import fs from 'fs';
 import matter from 'gray-matter';
@@ -6,12 +7,28 @@ import path from 'path';
 
 const POSTS_BATCH_SIZE = 10;
 
+function normalizeAndSortPosts(posts: BlogPost[]): BlogPost[] {
+  const publishedPosts = posts.filter((post) => post.visible === 'published');
+
+  return publishedPosts.sort((a, b) => {
+    if (a.pin !== b.pin) {
+      return (b.pin ? 1 : 0) - (a.pin ? 1 : 0);
+    }
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+}
+
+function getPostsFromCache(locale: string): BlogPost[] {
+  const localePosts = (blogCache.locales as unknown as Record<string, BlogPost[]>)[locale] || [];
+  return normalizeAndSortPosts(localePosts);
+}
+
 export async function getPosts(locale: string = DEFAULT_LOCALE): Promise<{ posts: BlogPost[] }> {
   const postsDirectory = path.join(process.cwd(), 'blogs', locale);
 
   // is directory exist
   if (!fs.existsSync(postsDirectory)) {
-    return { posts: [] };
+    return { posts: getPostsFromCache(locale) };
   }
 
   let filenames = await fs.promises.readdir(postsDirectory);
@@ -49,18 +66,7 @@ export async function getPosts(locale: string = DEFAULT_LOCALE): Promise<{ posts
     allPosts.push(...batchPosts);
   }
 
-  // filter out non-published articles
-  allPosts = allPosts.filter(post => post.visible === 'published');
-
-  // sort posts by pin and date
-  allPosts = allPosts.sort((a, b) => {
-    if (a.pin !== b.pin) {
-      return (b.pin ? 1 : 0) - (a.pin ? 1 : 0);
-    }
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
-
   return {
-    posts: allPosts,
+    posts: normalizeAndSortPosts(allPosts),
   };
 }
