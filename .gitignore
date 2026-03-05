@@ -86,6 +86,7 @@ web_modules/
 
 # Next.js build output
 .next
+.open-next
 out
 
 # Nuxt.js build / generate output
@@ -125,6 +126,7 @@ dist
 
 # pnpm
 .pnpm-store/
+.wrangler/
 
 /.vuepress/dist/
 
