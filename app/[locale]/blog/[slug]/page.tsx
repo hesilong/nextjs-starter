@@ -1,12 +1,12 @@
 import { Callout } from "@/components/mdx/Callout";
 import MDXComponents from "@/components/mdx/MDXComponents";
-import { Locale, LOCALES } from "@/i18n/routing";
+import { DEFAULT_LOCALE, Locale, LOCALES } from "@/i18n/routing";
 import { getPosts } from "@/lib/getBlogs";
 import { constructMetadata } from "@/lib/metadata";
 import { BlogPost } from "@/types/blog";
 import { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import remarkGfm from "remark-gfm";
 
 const mdxOptions = {
@@ -60,6 +60,17 @@ export default async function BlogPage({ params }: { params: Params }) {
   const post = posts.find((item) => item.slug === "/" + slug);
 
   if (!post) {
+    // Cross-locale fallback: if a post doesn't exist in the current locale,
+    // redirect to the locale where the slug exists.
+    for (const fallbackLocale of LOCALES.filter((item) => item !== locale)) {
+      const { posts: fallbackPosts } = await getPosts(fallbackLocale);
+      const fallbackPost = fallbackPosts.find((item) => item.slug === `/${slug}`);
+      if (fallbackPost) {
+        const prefix = fallbackLocale === DEFAULT_LOCALE ? "" : `/${fallbackLocale}`;
+        redirect(`${prefix}/blog/${slug}`);
+      }
+    }
+
     return notFound();
   }
   const content = post?.content || "";
@@ -108,19 +119,21 @@ export default async function BlogPage({ params }: { params: Params }) {
 }
 
 export async function generateStaticParams() {
-  let posts = (await getPosts()).posts;
+  const params: Array<{ locale: string; slug: string }> = [];
 
-  // Filter out posts without a slug
-  posts = posts.filter((post) => post.slug);
+  for (const locale of LOCALES) {
+    const { posts } = await getPosts(locale);
 
-  return LOCALES.flatMap((locale) =>
-    posts.map((post) => {
-      const slugPart = post.slug.replace(/^\//, "").replace(/^blog\//, "");
+    posts
+      .filter((post) => post.slug)
+      .forEach((post) => {
+        const slugPart = post.slug.replace(/^\//, "").replace(/^blog\//, "");
+        params.push({
+          locale,
+          slug: slugPart,
+        });
+      });
+  }
 
-      return {
-        locale,
-        slug: slugPart,
-      };
-    })
-  );
+  return params;
 }

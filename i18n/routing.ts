@@ -18,7 +18,7 @@ export const routing = defineRouting({
   // auto detect locale
   localeDetection: process.env.NEXT_PUBLIC_LOCALE_DETECTION === 'true',
 
-  localePrefix: 'as-needed',
+  localePrefix: 'always',
 });
 
 // Lightweight wrappers around Next.js' navigation APIs
