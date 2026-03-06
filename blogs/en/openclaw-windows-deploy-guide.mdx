@@ -1,0 +1,131 @@
+---
+title: "OpenClaw Windows Deployment Guide (Step by Step)"
+description: "A complete OpenClaw deployment walkthrough on Windows, from prerequisites to first run and common pitfalls."
+image: "/cover.png"
+slug: "/openclaw-windows-deploy-guide"
+tags: ["openclaw", "windows", "install", "deploy", "ai", "automation"]
+date: "2026-02-05"
+visible: "published"
+pin: false
+---
+
+OpenClaw is powerful on Windows, but the setup process has multiple steps and a few easy-to-miss details.
+This guide gives you a practical, copy-and-run path from zero to a working local deployment.
+
+## 1. Prerequisites
+
+Install these first:
+
+- Node.js `>= 22`
+- Git
+- PowerShell script execution permission for current user
+
+### 1.1 Install Node.js
+
+1. Download the Windows x64 installer (`.msi`) from the official site.
+2. Keep defaults during install and ensure **Add Node.js to PATH** is enabled.
+3. Verify:
+
+```bash
+node -v
+```
+
+You should see `v22.x.x` or newer.
+
+### 1.2 Install Git
+
+1. Download Git for Windows (64-bit) from the official site.
+2. Install with default options.
+3. Verify:
+
+```bash
+git --version
+```
+
+### 1.3 Enable PowerShell script execution
+
+Run PowerShell as Administrator and execute:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+Type `Y` to confirm.
+
+## 2. Install OpenClaw
+
+Run the official installer in PowerShell:
+
+```powershell
+iwr -useb https://clawd.bot/install.ps1 | iex
+```
+
+Wait until the terminal shows installation success.
+
+## 3. Initial onboarding
+
+Start interactive onboarding:
+
+```bash
+openclaw onboard
+```
+
+Recommended selections for a stable first run:
+
+- Mode: `QuickStart`
+- Provider: `Qwen` (or your available provider)
+- Default model: keep default
+- Channels: `Skip for now`
+- Skills: `Yes`
+- Skill installer: `npm`
+- Skill dependencies: `Skip for now`
+- API keys (extra integrations): `No`
+- Hooks: `Skip for now`
+
+## 4. Start gateway
+
+```bash
+openclaw gateway start
+```
+
+## 5. Open dashboard
+
+Visit:
+
+```text
+http://127.0.0.1:18789
+```
+
+If the page opens, the core deployment is done.
+
+## 6. Optional: configure Feishu channel (China-friendly)
+
+1. Create an internal app in Feishu Open Platform.
+2. Get `App ID` and `App Secret`.
+3. Update your config file (typically under your user profile):
+
+```json
+"channels": {
+  "feishu": {
+    "enabled": true,
+    "appId": "YOUR_APP_ID",
+    "appSecret": "YOUR_APP_SECRET",
+    "connectionMode": "websocket"
+  }
+}
+```
+
+4. Restart:
+
+```bash
+openclaw gateway restart
+```
+
+## 7. Troubleshooting quick checks
+
+- `openclaw` command not found: restart terminal and verify Node PATH.
+- Installer permission errors: rerun PowerShell as Administrator.
+- Dashboard unreachable: confirm gateway is running and port `18789` is free.
+- Skill install timeout: skip optional dependencies first, install later when network is stable.
+
+You now have a reproducible Windows baseline. After this, you can switch models, add channels, and enable advanced skills progressively.
