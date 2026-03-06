@@ -112,7 +112,7 @@ export default async function BlogPage({ params }: { params: Params }) {
       )}
       {html ? (
         <article
-          className="mt-6 prose prose-neutral max-w-none dark:prose-invert"
+          className="mt-6 max-w-none prose prose-neutral dark:prose-invert prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-lg prose-img:border prose-img:border-gray-200 dark:prose-img:border-gray-700 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-code:before:content-none prose-code:after:content-none"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       ) : (

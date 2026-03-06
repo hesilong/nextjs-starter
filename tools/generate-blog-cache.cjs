@@ -27,7 +27,9 @@ function loadLocalePosts(locale) {
       ? content.replace(/^\s*#\s+.*(?:\r?\n)+/, "")
       : content;
     const parsedHtml = marked.parse(contentWithoutLeadingH1, { async: false });
-    const html = typeof parsedHtml === "string" ? parsedHtml : "";
+    const html = typeof parsedHtml === "string"
+      ? parsedHtml.replace(/\bclassName=/g, "class=")
+      : "";
 
     return {
       locale,
