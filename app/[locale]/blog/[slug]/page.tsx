@@ -112,7 +112,7 @@ export default async function BlogPage({ params }: { params: Params }) {
       )}
       {html ? (
         <article
-          className="mt-6 max-w-none prose prose-neutral dark:prose-invert prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-lg prose-img:border prose-img:border-gray-200 dark:prose-img:border-gray-700 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-code:before:content-none prose-code:after:content-none"
+          className="mt-6 max-w-none prose prose-neutral dark:prose-invert prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-lg prose-img:border prose-img:border-gray-200 dark:prose-img:border-gray-700 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:text-gray-900 dark:prose-pre:text-gray-100 prose-pre:shadow-sm prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700 prose-pre:font-mono prose-code:before:content-none prose-code:after:content-none prose-code:text-gray-900 dark:prose-code:text-gray-100"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       ) : (
