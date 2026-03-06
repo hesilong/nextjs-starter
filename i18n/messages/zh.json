@@ -733,7 +733,9 @@
   },
   "Blog": {
     "title": "\u535a\u5ba2\u5217\u8868",
-    "description": "\u535a\u5ba2\u5217\u8868"
+    "description": "\u535a\u5ba2\u5217\u8868",
+    "previousPost": "\u4e0a\u4e00\u7bc7",
+    "nextPost": "\u4e0b\u4e00\u7bc7"
   },
   "About": {
     "title": "\u5173\u4e8e",

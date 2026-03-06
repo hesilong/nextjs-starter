@@ -1,11 +1,13 @@
 import { Callout } from "@/components/mdx/Callout";
 import MDXComponents from "@/components/mdx/MDXComponents";
+import { Link as I18nLink } from "@/i18n/routing";
 import { DEFAULT_LOCALE, Locale, LOCALES } from "@/i18n/routing";
 import { getPosts } from "@/lib/getBlogs";
 import { constructMetadata } from "@/lib/metadata";
 import { BlogPost } from "@/types/blog";
 import { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
+import { getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 import remarkGfm from "remark-gfm";
 
@@ -55,6 +57,7 @@ export async function generateMetadata({
 
 export default async function BlogPage({ params }: { params: Params }) {
   const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: "Blog" });
   let { posts }: { posts: BlogPost[] } = await getPosts(locale);
 
   const post = posts.find((item) => item.slug === "/" + slug);
@@ -73,6 +76,14 @@ export default async function BlogPage({ params }: { params: Params }) {
 
     return notFound();
   }
+
+  const currentIndex = posts.findIndex((item) => item.slug === post.slug);
+  const previousPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+  const nextPost =
+    currentIndex >= 0 && currentIndex < posts.length - 1
+      ? posts[currentIndex + 1]
+      : null;
+
   const content = post?.content || "";
   const html = post?.html || "";
   const hasLeadingH1 = /^\s*#\s+/.test(content);
@@ -87,7 +98,7 @@ export default async function BlogPage({ params }: { params: Params }) {
         .filter(Boolean) ?? [];
 
   return (
-    <div className="w-full md:w-3/5 px-2 md:px-12">
+    <div className="w-full md:w-3/5 px-2 md:px-12 pb-20 md:pb-28">
       <h1 className="break-words text-4xl font-bold mt-6 mb-4">
         {post.title}
       </h1>
@@ -121,6 +132,44 @@ export default async function BlogPage({ params }: { params: Params }) {
           components={MDXComponents}
           options={mdxOptions}
         />
+      )}
+
+      {(previousPost || nextPost) && (
+        <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {previousPost ? (
+              <I18nLink
+                href={`/blog${previousPost.slug}`}
+                className="group rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#161a20] px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-[#1b2028]"
+              >
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t("previousPost")}
+                </p>
+                <p className="mt-1 text-base font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 line-clamp-2">
+                  {previousPost.title}
+                </p>
+              </I18nLink>
+            ) : (
+              <div className="hidden md:block" />
+            )}
+
+            {nextPost ? (
+              <I18nLink
+                href={`/blog${nextPost.slug}`}
+                className="group rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#161a20] px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-[#1b2028] md:text-right"
+              >
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t("nextPost")}
+                </p>
+                <p className="mt-1 text-base font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 line-clamp-2">
+                  {nextPost.title}
+                </p>
+              </I18nLink>
+            ) : (
+              <div className="hidden md:block" />
+            )}
+          </div>
+        </nav>
       )}
     </div>
   );

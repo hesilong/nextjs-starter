@@ -722,7 +722,9 @@
   },
   "Blog": {
     "title": "Blog Posts",
-    "description": "A list of blog posts"
+    "description": "A list of blog posts",
+    "previousPost": "Previous post",
+    "nextPost": "Next post"
   },
   "About": {
     "title": "About",
