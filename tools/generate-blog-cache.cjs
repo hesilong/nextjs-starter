@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const matter = require("gray-matter");
+const { marked } = require("marked");
 
 const rootDir = process.cwd();
 const blogsDir = path.join(rootDir, "blogs");
@@ -21,6 +22,12 @@ function loadLocalePosts(locale) {
     const fullPath = path.join(localeDir, filename);
     const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
+    const hasLeadingH1 = /^\s*#\s+/.test(content);
+    const contentWithoutLeadingH1 = hasLeadingH1
+      ? content.replace(/^\s*#\s+.*(?:\r?\n)+/, "")
+      : content;
+    const parsedHtml = marked.parse(contentWithoutLeadingH1, { async: false });
+    const html = typeof parsedHtml === "string" ? parsedHtml : "";
 
     return {
       locale,
@@ -33,6 +40,7 @@ function loadLocalePosts(locale) {
       visible: data.visible || "published",
       pin: data.pin || false,
       content,
+      html,
       metadata: data,
     };
   });

@@ -74,6 +74,7 @@ export default async function BlogPage({ params }: { params: Params }) {
     return notFound();
   }
   const content = post?.content || "";
+  const html = post?.html || "";
   const hasLeadingH1 = /^\s*#\s+/.test(content);
   const contentWithoutLeadingH1 = hasLeadingH1
     ? content.replace(/^\s*#\s+.*(?:\r?\n)+/, "")
@@ -109,11 +110,18 @@ export default async function BlogPage({ params }: { params: Params }) {
       {!hasLeadingH1 && post.description && (
         <Callout>{post.description}</Callout>
       )}
-      <MDXRemote
-        source={contentWithoutLeadingH1}
-        components={MDXComponents}
-        options={mdxOptions}
-      />
+      {html ? (
+        <article
+          className="mt-6 prose prose-neutral max-w-none dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      ) : (
+        <MDXRemote
+          source={contentWithoutLeadingH1}
+          components={MDXComponents}
+          options={mdxOptions}
+        />
+      )}
     </div>
   );
 }

@@ -10,6 +10,7 @@ export type BlogPost = {
   visible?: 'draft' | 'invisible' | 'published'
   pin?: boolean
   content: string
+  html?: string
   metadata: {
     [key: string]: any
   },
