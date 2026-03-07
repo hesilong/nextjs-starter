@@ -1,0 +1,219 @@
+---
+title: "OpenClaw Security Checklist (2026): From Running to Running Safely"
+description: "A practical OpenClaw security guide with actionable steps: trust boundaries, openclaw security audit workflow, Control UI hardening, and a pre-launch checklist."
+image: "/cover.png"
+slug: "/openclaw-security-checklist-2026"
+tags: ["OpenClaw", "Security", "openclaw security", "openclaw security audit", "Control UI", "DevOps"]
+date: "2026-03-07"
+visible: "published"
+pin: false
+---
+
+# OpenClaw Security: From “It Runs” to “It Runs Safely” (2026 Checklist)
+
+Getting OpenClaw running is only step one.  
+The real issue is that it can read files, execute commands, and act on external input. This is not a passive chatbot. It is an agent runtime with execution power.
+
+If someone searches for `openclaw security`, they usually need three things:
+
+1. Where are the obvious risks in my current setup?
+2. What is the minimum viable security baseline?
+3. How do I keep auditing continuously, not by luck?
+
+This guide answers those three with implementation-level steps.
+
+## 1) Start with boundaries: OpenClaw is not a multi-tenant isolation system
+
+OpenClaw follows a personal-assistant trust model. One Gateway should be treated as one trust boundary.
+
+Key points:
+
+1. Session isolation is not host authorization isolation.
+2. Shared high-privilege instances effectively share delegated power.
+3. For strong separation, split instance, OS user, and credentials.
+
+Minimum recommendation:
+
+1. One person per instance (or machine)
+2. Dedicated tokens/passwords per instance
+3. Never mix personal high-value credentials with automation credentials
+
+## 2) Audit first: `openclaw security audit`
+
+Run audit before optimization.  
+`openclaw security audit` should be routine, not incident cleanup.
+
+### 2.1 Practical audit workflow
+
+1. Run baseline audit:
+
+```bash
+openclaw security audit
+```
+
+2. Run deep audit and store JSON output:
+
+```bash
+openclaw security audit --deep --json > ~/.openclaw/audit-$(date +%F).json
+```
+
+3. Use strict mode in CI when needed:
+
+```bash
+openclaw security audit --strict
+```
+
+### 2.2 Turn audit output into remediation tickets
+
+Do not stop at reading the report. Build a loop:
+
+1. Triage into `Critical`, `High`, `Medium/Low`
+2. Fix order: exposure first, over-privilege second, usability last
+3. Re-run `openclaw security audit --deep` after each remediation batch
+
+You can feed the audit JSON back to OpenClaw to generate an actionable fix plan:
+
+```text
+You are my OpenClaw security remediation assistant. Below is openclaw security audit output.
+Goal: remove Critical/High risks first without breaking core availability.
+Output format:
+1) Risk -> impact scope -> exploitation path
+2) Minimal-change remediation steps in execution order
+3) Regression validation checks with pass criteria
+4) Rollback plan if remediation causes issues
+5) Ticket template (title, owner, priority, definition of done)
+Constraint: actionable steps only, no generic advice.
+```
+
+## 3) Control UI is a high-risk entry point (implementation details)
+
+This is where many teams leave temporary insecure settings enabled for too long.
+
+### 3.1 Loopback-only access (default best option)
+
+Goal: keep Control UI local-only, not exposed to LAN/public internet.
+
+```bash
+openclaw config set gateway.bind loopback
+openclaw config set gateway.auth.mode token
+openclaw gateway restart
+```
+
+Use only:
+
+```text
+http://127.0.0.1:18789/
+```
+
+### 3.2 Remote operations without public exposure: SSH tunnel
+
+```bash
+ssh -N -L 18789:127.0.0.1:18789 user@your-server
+```
+
+Then open locally:
+
+```text
+http://127.0.0.1:18789/
+```
+
+### 3.3 Controlled remote access (recommended): Tailscale Serve
+
+```bash
+openclaw gateway --tailscale serve
+```
+
+Access:
+
+```text
+https://<magicdns>/
+```
+
+This keeps Gateway on loopback while exposing access through controlled HTTPS routing.
+
+### 3.4 Alternative controlled access: Tailnet IP + Token
+
+```bash
+openclaw gateway --bind tailnet --token "<strong-random-token>"
+```
+
+Access:
+
+```text
+http://<tailscale-ip>:18789/
+```
+
+### 3.5 What “public exposure” means in practice
+
+Any of these is high-risk public exposure:
+
+1. `bind=lan/custom` and firewall/security group allows `0.0.0.0/0`
+2. Router port-forward exposes `18789` publicly
+3. Funnel publishes Control UI to the internet
+4. Reverse proxy can be bypassed, allowing direct Gateway access
+
+### 3.6 How to implement auth + access control + audit + alerting
+
+1. Auth: use at least `token` or `password`, never unauthenticated access
+2. Access control: allow only tailnet/bastion/reverse-proxy source networks
+3. Audit: stream structured logs continuously
+
+```bash
+openclaw logs --follow --json
+```
+
+4. Alerting: trigger on at least
+   - `Critical` findings from security audit
+   - high-risk exposure findings (for example non-loopback without auth)
+   - spikes in auth failures or suspicious source patterns in logs
+
+Default file log path (configurable):
+
+```text
+/tmp/openclaw/openclaw-YYYY-MM-DD.log
+```
+
+## 4) Manage OpenClaw as a credentialed execution environment
+
+The main risk is not wrong answers. It is wrong actions.
+
+Minimum baseline:
+
+1. Least privilege: only required tools and paths
+2. Credential isolation: dedicated low-privilege accounts/tokens
+3. Runtime isolation: separate VM/host where possible
+4. Fast rollback: disable risky tools, rotate tokens, rebuild quickly
+
+## 5) 10-minute pre-launch checklist
+
+1. `openclaw security audit --deep` has run and high risks are handled
+2. Control UI exposure is minimized (loopback or controlled tailnet)
+3. No unnecessary public port exposure
+4. Agent tool allowlist is minimized
+5. Credentials are separate and low privilege
+6. Logs and alerts are active
+7. Incident actions are tested (disable tools, rotate tokens, rebuild)
+
+## Conclusion
+
+OpenClaw’s value is execution power, and so is its risk.  
+Security is not about removing capability. It is about controlled capability inside clear boundaries.
+
+One-line version:
+
+**Audit first, open later. Isolate first, elevate later.**
+
+## FAQ (SEO long-tail)
+
+### How often should I run `openclaw security audit`?
+
+Run it on every config change. In production, schedule deep audits daily or weekly and track trends over time.
+
+### Should I expose Control UI directly to the public internet?
+
+No, unless absolutely required. Prefer loopback + SSH tunnel, or Tailscale Serve with strict access policy and logging.
+
+### What is the safest collaboration pattern for teams?
+
+Per-user instance boundaries, controlled network access, and least-privilege tool policies. Share workflow, not privilege.
+

@@ -1,0 +1,221 @@
+---
+title: "OpenClaw Security 实战清单（2026）：从“能跑”到“安全可跑”"
+description: "这是一份可直接执行的 OpenClaw 安全指南：信任边界、openclaw security audit 闭环、Control UI 加固、上线前检查清单。"
+image: "/cover.png"
+slug: "/openclaw-security-checklist-2026"
+tags: ["OpenClaw", "Security", "openclaw security", "openclaw security audit", "Control UI", "DevOps"]
+date: "2026-03-07"
+visible: "published"
+pin: false
+---
+
+# OpenClaw Security：从“能跑”到“安全可跑”的实战清单（2026）
+
+把 OpenClaw 跑起来，只是第一步。  
+真正要解决的是：它有文件权限、命令执行能力、外部输入通道。它不是“只会回答”的聊天机器人，而是“会执行动作”的 agent runtime。
+
+如果你在搜 `openclaw security`，你真正关心的通常是三件事：
+
+1. 现在这套配置有没有明显雷区？
+2. 最小可行安全基线怎么配？
+3. 怎么持续审计，不靠运气？
+
+这篇文章按这三件事展开，并给出可执行命令。
+
+## 1) 先定边界：OpenClaw 不是多租户隔离系统
+
+OpenClaw 的核心是“个人助手信任模型”。一个 Gateway 就是一条信任边界。
+
+要点：
+
+1. 会话隔离不等于主机授权隔离。
+2. 多人共享高权限实例，本质上是共享“代操作权”。
+3. 需要强隔离时，必须拆：实例、OS 用户、凭据。
+
+最小建议：
+
+1. 一人一实例（或一人一机）。
+2. 每个实例单独 token/password。
+3. 不把工作账号和个人高价值账号混用。
+
+## 2) 第一件事就做审计：`openclaw security audit`
+
+先审计，再优化。  
+`openclaw security audit` 应该是例行动作，不是事故后补作业。
+
+### 2.1 立刻能用的审计流程
+
+1. 跑基础审计：
+
+```bash
+openclaw security audit
+```
+
+2. 跑深度审计（建议线上环境固定执行）：
+
+```bash
+openclaw security audit --deep --json > ~/.openclaw/audit-$(date +%F).json
+```
+
+3. 若你希望 CI/自动化里“有风险就失败”，可使用严格模式：
+
+```bash
+openclaw security audit --strict
+```
+
+### 2.2 如何把审计结果变成整改工单
+
+不要只“看报告”，要形成闭环：
+
+1. 风险分级：`Critical`、`High`、`Medium/Low`
+2. 处理顺序：先入口暴露，再权限过宽，再体验优化
+3. 每修一批就复跑 `openclaw security audit --deep`
+
+你还可以把审计 JSON 直接喂给 OpenClaw 生成执行清单：
+
+```text
+你是我的 OpenClaw 安全整改助手。以下是 openclaw security audit 输出。
+目标：在不影响核心业务可用性的前提下，优先清除 Critical/High 风险。
+请按固定格式输出：
+1) 风险项 -> 影响面 -> 利用路径
+2) 最小改动修复步骤（按顺序）
+3) 回归验证方法（成功判定标准）
+4) 回滚方案（异常时如何撤销）
+5) 工单模板（标题、负责人、优先级、完成标准）
+要求：只给可执行动作，不给空泛建议。
+```
+
+## 3) Control UI 是高危入口，别裸奔（具体实现）
+
+这部分最容易“为了方便先放开”，然后长期忘记回收。
+
+### 3.1 本机回环访问（默认首选）
+
+目标：UI 只在本机可访问，不暴露到 LAN/公网。
+
+```bash
+openclaw config set gateway.bind loopback
+openclaw config set gateway.auth.mode token
+openclaw gateway restart
+```
+
+访问地址仅使用：
+
+```text
+http://127.0.0.1:18789/
+```
+
+### 3.2 远程运维但不公网暴露：SSH 隧道
+
+```bash
+ssh -N -L 18789:127.0.0.1:18789 user@your-server
+```
+
+然后在本机浏览器打开：
+
+```text
+http://127.0.0.1:18789/
+```
+
+这类方式不改变 Gateway 的 loopback 暴露面。
+
+### 3.3 受控远程访问（推荐）：Tailscale Serve
+
+```bash
+openclaw gateway --tailscale serve
+```
+
+访问：
+
+```text
+https://<magicdns>/
+```
+
+说明：Serve 模式下 Gateway 仍可保持 loopback 绑定，由 Tailscale 提供 HTTPS 和受控路由。
+
+### 3.4 另一种受控访问：Tailnet IP + Token
+
+```bash
+openclaw gateway --bind tailnet --token "<强随机token>"
+```
+
+访问：
+
+```text
+http://<tailscale-ip>:18789/
+```
+
+### 3.5 什么是“公网直暴露”
+
+满足任一条就属于高风险公网暴露：
+
+1. `bind` 到 `lan`/`custom`，且防火墙或安全组对 `0.0.0.0/0` 放行端口。
+2. 路由器端口映射把 `18789` 暴露到公网。
+3. 使用 Funnel 将 Control UI 公开到互联网。
+4. 反向代理可被绕过，存在绕过代理直接访问 Gateway 端口的路径。
+
+### 3.6 “鉴权 + 访问控制 + 审计 + 告警”怎么落地
+
+1. 鉴权：至少启用 `token` 或 `password`，不要无鉴权。
+2. 访问控制：限制来源网络，只允许 tailnet/堡垒机/反向代理来源访问。
+3. 审计：持续跟踪日志，优先结构化输出：
+
+```bash
+openclaw logs --follow --json
+```
+
+4. 告警：最少配置三类触发
+   - 审计出现 `Critical`
+   - 出现“无鉴权非回环暴露”等高危项
+   - 日志出现异常认证失败、可疑来源激增
+
+默认文件日志路径（可改）：
+
+```text
+/tmp/openclaw/openclaw-YYYY-MM-DD.log
+```
+
+## 4) 把 OpenClaw 当“带凭据的执行环境”管理
+
+风险重点不是“回答错”，而是“执行错”。
+
+最小安全基线：
+
+1. 最小权限：只给任务所需工具和路径。
+2. 凭据隔离：专用账号、专用 token，不混用个人主账号。
+3. 运行隔离：尽量单独 VM/主机，不和办公环境混跑。
+4. 快速回滚：可以快速禁用高风险工具、轮换凭据、重建实例。
+
+## 5) 上线前 10 分钟检查单
+
+1. 已运行 `openclaw security audit --deep` 并处理高危项
+2. Control UI 仍为最小暴露面（loopback 或受控 tailnet）
+3. 未存在不必要公网端口暴露
+4. Agent 工具白名单最小化
+5. 凭据已做到独立低权限
+6. 关键日志和告警已生效
+7. 应急流程已演练（禁用工具、轮换 token、重建）
+
+## 结语
+
+OpenClaw 的价值在“能执行”，风险也在“能执行”。  
+安全的目标不是把它阉割成玩具，而是在清晰边界内稳定执行。
+
+一句话版本：
+
+**先审计，后开放；先隔离，后提权。**
+
+## FAQ（SEO 长尾）
+
+### `openclaw security audit` 应该多久跑一次？
+
+配置有变更就跑一次；生产环境建议固定周期（每日或每周）跑 `--deep`，并保留结果用于趋势对比。
+
+### Control UI 能否直接暴露公网？
+
+不建议。优先 loopback + SSH 隧道，或 Tailscale Serve。必须公网访问时，至少叠加强鉴权、严格来源控制、日志审计和告警。
+
+### 远程团队协作时，如何兼顾安全和效率？
+
+推荐“每人独立实例 + 受控网络访问 + 最小权限工具策略”。把共享权限改为共享流程，风险会小很多。
+
